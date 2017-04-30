@@ -87,10 +87,10 @@ var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'ro
 });
 
 let sprites = {
-    black: '/images/black.png',
-    tilemap: '/images/tilemap.png',
-    char: '/images/char.png',
-    fadePlatform: '/images/fade_platform.png',
+    black: 'images/black.png',
+    tilemap: 'images/tilemap.png',
+    char: 'images/char.png',
+    fadePlatform: 'images/fade_platform.png',
 }
 
 function preload() {
@@ -98,7 +98,7 @@ function preload() {
         this.load.image(spriteKey, sprites[spriteKey]);
     }
 
-    Game.load.tilemap('tilemap', '/tilemap.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
         root: root,
@@ -236,7 +236,6 @@ Platform.prototype.fade = function(player, platform) {
   platform.kill();
   setTimeout(() => {
     platform.revive();
-    console.log(platform);
   }, 1000);
 }
 
