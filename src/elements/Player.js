@@ -9,7 +9,6 @@ Player.prototype.create = function() {
   this.player.body.bounce.y = 0;
   this.player.body.collideWorldBounds = true;
 
-  console.log(this.player.body);
   //this.Game.camera.follow(this.player);
 }
 

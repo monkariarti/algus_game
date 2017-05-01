@@ -4,7 +4,7 @@ function Map(Game) {
 
 Map.prototype.create = function() {
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
-  this.tilemap.addTilesetImage('tilemap', 'tilemap', 40, 40);
+  this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
   this.tilemap.setCollisionByExclusion([0]);
 
   this.mapLayer =  this.tilemap.createLayer(0);

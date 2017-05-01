@@ -111,7 +111,7 @@ function preload() {
 function create() {
   Game.world.setBounds(0, 0, 4000, 2000);
 
-  Game.stage.backgroundColor = '#f1f1f1';
+  Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
   Game.physics.arcade.gravity.y = 2000;
@@ -125,17 +125,29 @@ function create() {
   this.Player.create();
 
   this.Platform1 = new Platform('fade', {
-    x: 1520,
+    x: 1560,
     y: 920,
     width: 60,
   }, this);
   this.Platform1.create();
   this.Platform2 = new Platform('fade', {
-    x: 1820,
+    x: 1900,
     y: 1120,
-    width: 60,
+    width: 100,
   }, this);
   this.Platform2.create();
+  this.Platform3 = new Platform('moving', {
+    x: 700,
+    y: 920,
+    width: 120,
+  }, this);
+  this.Platform3.create();
+  this.Platform4 = new Platform('moving', {
+    x: 3080,
+    y: 880,
+    width: 120,
+  }, this);
+  this.Platform4.create();
 }
 
 function update() {
@@ -144,6 +156,8 @@ function update() {
 
   this.Platform1.update();
   this.Platform2.update();
+  this.Platform3.update();
+  this.Platform4.update();
 
   if (cursors.left.isDown)
   {
@@ -191,7 +205,7 @@ function Map(Game) {
 
 Map.prototype.create = function() {
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
-  this.tilemap.addTilesetImage('tilemap', 'tilemap', 40, 40);
+  this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
   this.tilemap.setCollisionByExclusion([0]);
 
   this.mapLayer =  this.tilemap.createLayer(0);
@@ -214,22 +228,35 @@ function Platform(type, set, Game) {
 }
 
 Platform.prototype.create = function() {
+  //Подвижная плафторма
   if(this.type == 'moving') {
-
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
   }
+  //Пропадающая платформа
   if(this.type == 'fade') {
-    this.platform = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
-    this.platform.width = this.set.width,
-    this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);
-    this.platform.body.immovable = true;
-    this.platform.body.allowGravity = false;
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
+  }
+
+  this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);
+  this.platform.body.immovable = true;
+  this.platform.body.allowGravity = false;
+
+  if(this.type == 'moving') {
+    this.platform.body.velocity.set(150, 0);
+    this.platform.body.bounce.set(1);
   }
 }
 
 Platform.prototype.update = function() {
-
-  //Столкновения
-  this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
+  if(this.type == 'moving') {
+    //Столкновения
+    this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
+    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform);
+  }
+  if(this.type == 'fade') {
+    //Столкновения
+    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
+  }
 }
 
 Platform.prototype.fade = function(player, platform) {
@@ -257,7 +284,6 @@ Player.prototype.create = function() {
   this.player.body.bounce.y = 0;
   this.player.body.collideWorldBounds = true;
 
-  console.log(this.player.body);
   //this.Game.camera.follow(this.player);
 }
 
