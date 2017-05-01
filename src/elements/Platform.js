@@ -5,13 +5,14 @@ function Platform(type, set, Game) {
 }
 
 Platform.prototype.create = function() {
+  this.set.height = this.set.height ? this.set.height : 20;
   //Подвижная плафторма
   if(this.type == 'moving') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
   //Пропадающая платформа
   if(this.type == 'fade') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
 
   this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);

@@ -148,6 +148,25 @@ function create() {
     width: 120,
   }, this);
   this.Platform4.create();
+  this.Platform5 = new Platform('moving', {
+    x: 2890,
+    y: 1580,
+    width: 120,
+  }, this);
+  this.Platform5.create();
+  this.Platform6 = new Platform('fade', {
+    x: 2580,
+    y: 1960,
+    width: 120,
+    height: 40,
+  }, this);
+  this.Platform6.create();
+  this.Platform7 = new Platform('fade', {
+    x: 1740,
+    y: 1660,
+    width: 100,
+  }, this);
+  this.Platform7.create();
 }
 
 function update() {
@@ -158,6 +177,9 @@ function update() {
   this.Platform2.update();
   this.Platform3.update();
   this.Platform4.update();
+  this.Platform5.update();
+  this.Platform6.update();
+  this.Platform7.update();
 
   if (cursors.left.isDown)
   {
@@ -203,7 +225,7 @@ function update() {
 }
 
 function render() {
-  //Game.debug.spriteInfo(this.Player.player, 32, 32);
+  Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
@@ -242,13 +264,14 @@ function Platform(type, set, Game) {
 }
 
 Platform.prototype.create = function() {
+  this.set.height = this.set.height ? this.set.height : 20;
   //Подвижная плафторма
   if(this.type == 'moving') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
   //Пропадающая платформа
   if(this.type == 'fade') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, 20, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
 
   this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);
