@@ -225,7 +225,7 @@ function update() {
 }
 
 function render() {
-  Game.debug.spriteInfo(this.Player.player, 32, 32);
+  //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
