@@ -1,6 +1,7 @@
 let Map = require( './elements/Map' );
 let Player = require( './elements/Player' );
 let Platform = require( './elements/Platform' );
+let Spike = require( './elements/Spike' );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -95,6 +96,14 @@ function create() {
     width: 100,
   }, this);
   this.Platform7.create();
+
+  this.Spike1 = new Spike({
+    x: 1400,
+    y: 1240,
+    width: 600,
+    height: 100,
+  }, this);
+  this.Spike1.create();
 }
 
 function update() {
@@ -108,6 +117,8 @@ function update() {
   this.Platform5.update();
   this.Platform6.update();
   this.Platform7.update();
+
+  this.Spike1.update();
 
   if (cursors.left.isDown)
   {

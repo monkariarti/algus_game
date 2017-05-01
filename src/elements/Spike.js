@@ -14,7 +14,11 @@ Spike.prototype.create = function() {
 
 Spike.prototype.update = function() {
   //Столкновения
-  this.Game.physics.arcade.collide(this.Game.Player.player, this.spike);
+  this.Game.physics.arcade.collide(this.Game.Player.player, this.spike, this.collide, null, this.Game);
+}
+
+Spike.prototype.collide = function(player, spike) {
+  player.death();
 }
 
 module.exports = Spike;

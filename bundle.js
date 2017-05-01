@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,6 +73,7 @@
 let Map = __webpack_require__( 1 );
 let Player = __webpack_require__( 3 );
 let Platform = __webpack_require__( 2 );
+let Spike = __webpack_require__( 4 );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -167,6 +168,14 @@ function create() {
     width: 100,
   }, this);
   this.Platform7.create();
+
+  this.Spike1 = new Spike({
+    x: 1400,
+    y: 1240,
+    width: 600,
+    height: 100,
+  }, this);
+  this.Spike1.create();
 }
 
 function update() {
@@ -180,6 +189,8 @@ function update() {
   this.Platform5.update();
   this.Platform6.update();
   this.Platform7.update();
+
+  this.Spike1.update();
 
   if (cursors.left.isDown)
   {
@@ -312,14 +323,24 @@ module.exports = Platform;
 
 function Player(Game) {
     this.Game = Game;
+
+    this.default = {
+      x: 80,
+      y: 1000,
+    };
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(80, 1000, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
   this.player.body.collideWorldBounds = true;
+
+  this.player.death = () => {
+    this.player.x = this.default.x;
+    this.player.y = this.default.y;
+  }
 
   //this.Game.camera.follow(this.player);
 }
@@ -341,6 +362,36 @@ module.exports = Player;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+function Spike(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Spike.prototype.create = function() {
+  this.spike = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.spike.width = this.set.width;
+  this.spike.height = this.set.height;
+  this.Game.physics.enable(this.spike, Phaser.Physics.ARCADE);
+  this.spike.body.immovable = true;
+  this.spike.body.allowGravity = false;
+}
+
+Spike.prototype.update = function() {
+  //Столкновения
+  this.Game.physics.arcade.collide(this.Game.Player.player, this.spike, this.collide, null, this.Game);
+}
+
+Spike.prototype.collide = function(player, spike) {
+  player.death();
+}
+
+module.exports = Spike;
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
