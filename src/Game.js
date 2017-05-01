@@ -102,6 +102,7 @@ function update() {
       jumpTimer = Game.time.now + 150;
   }
 
+  //Камера по X
   if(this.Player.player.x > 660) {
     Game.camera.x = 550;
   }
@@ -114,10 +115,23 @@ function update() {
   if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
     Game.camera.x = 550;
   }
+  //Камера по Y
+  if(this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
+  if(this.Player.player.y < 660) {
+    Game.camera.y = 0;
+  }
+  if(this.Player.player.y > 1280) {
+    Game.camera.y = 1280;
+  }
+  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
 }
 
 function render() {
-
+  //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
