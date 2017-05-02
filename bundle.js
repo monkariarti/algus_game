@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,8 @@
 let Map = __webpack_require__( 1 );
 let Player = __webpack_require__( 3 );
 let Platform = __webpack_require__( 2 );
-let Spike = __webpack_require__( 4 );
+let Spike = __webpack_require__( 5 );
+let Rope = __webpack_require__( 4 );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -123,7 +124,6 @@ function create() {
   jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
   this.Map.create();
-  this.Player.create();
 
   this.Platform1 = new Platform('fade', {
     x: 1560,
@@ -176,6 +176,16 @@ function create() {
     height: 100,
   }, this);
   this.Spike1.create();
+
+  this.Rope1 = new Rope({
+    x: 1320,
+    y: 920,
+    height: 160,
+  }, this);
+  this.Rope1.create();
+
+
+  this.Player.create();
 }
 
 function update() {
@@ -192,17 +202,26 @@ function update() {
 
   this.Spike1.update();
 
-  if (cursors.left.isDown)
-  {
+  this.Rope1.update();
+
+  if (cursors.up.isDown) {
+    if(this.Player.player.inRope) {
+      this.Player.player.body.velocity.y = -300;
+    }
+  }
+  if (cursors.down.isDown) {
+    if(this.Player.player.inRope) {
+      this.Player.player.body.velocity.y = 300;
+    }
+  }
+  if (cursors.left.isDown) {
       this.Player.player.body.velocity.x = -300;
   }
-  else if (cursors.right.isDown)
-  {
+  else if (cursors.right.isDown) {
       this.Player.player.body.velocity.x = 300;
   }
 
-  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer)
-  {
+  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer) {
       this.Player.jump();
       jumpTimer = Game.time.now + 150;
   }
@@ -349,8 +368,15 @@ Player.prototype.update = function() {
   this.player.body.velocity.x = 0;
 
   //Столкновения
-  this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer);
+  this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
+}
+
+Player.prototype.collideMap = function(player, map) {
+  if(player.inRope) {
+    return false;
+  }
+  return true;
 }
 
 Player.prototype.jump = function() {
@@ -362,6 +388,37 @@ module.exports = Player;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+function Rope(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Rope.prototype.create = function() {
+  this.rope = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.rope.width = 5;
+  this.rope.height = this.set.height;
+  this.Game.physics.enable(this.rope, Phaser.Physics.ARCADE);
+  this.rope.body.immovable = true;
+  this.rope.body.allowGravity = false;
+}
+
+Rope.prototype.update = function() {
+  this.Game.Player.player.inRope = false;
+  //Наложение
+  this.Game.physics.arcade.overlap(this.Game.Player.player, this.rope, this.overlap, null, this.Game);
+}
+
+Rope.prototype.overlap = function(player, spike) {
+  player.inRope = true;
+}
+
+module.exports = Rope;
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -391,7 +448,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );

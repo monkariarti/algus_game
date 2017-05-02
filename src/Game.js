@@ -2,6 +2,7 @@ let Map = require( './elements/Map' );
 let Player = require( './elements/Player' );
 let Platform = require( './elements/Platform' );
 let Spike = require( './elements/Spike' );
+let Rope = require( './elements/Rope' );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -51,7 +52,6 @@ function create() {
   jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
   this.Map.create();
-  this.Player.create();
 
   this.Platform1 = new Platform('fade', {
     x: 1560,
@@ -104,6 +104,16 @@ function create() {
     height: 100,
   }, this);
   this.Spike1.create();
+
+  this.Rope1 = new Rope({
+    x: 1320,
+    y: 920,
+    height: 160,
+  }, this);
+  this.Rope1.create();
+
+
+  this.Player.create();
 }
 
 function update() {
@@ -120,17 +130,26 @@ function update() {
 
   this.Spike1.update();
 
-  if (cursors.left.isDown)
-  {
+  this.Rope1.update();
+
+  if (cursors.up.isDown) {
+    if(this.Player.player.inRope) {
+      this.Player.player.body.velocity.y = -300;
+    }
+  }
+  if (cursors.down.isDown) {
+    if(this.Player.player.inRope) {
+      this.Player.player.body.velocity.y = 300;
+    }
+  }
+  if (cursors.left.isDown) {
       this.Player.player.body.velocity.x = -300;
   }
-  else if (cursors.right.isDown)
-  {
+  else if (cursors.right.isDown) {
       this.Player.player.body.velocity.x = 300;
   }
 
-  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer)
-  {
+  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer) {
       this.Player.jump();
       jumpTimer = Game.time.now + 150;
   }

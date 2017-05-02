@@ -26,8 +26,15 @@ Player.prototype.update = function() {
   this.player.body.velocity.x = 0;
 
   //Столкновения
-  this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer);
+  this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
+}
+
+Player.prototype.collideMap = function(player, map) {
+  if(player.inRope) {
+    return false;
+  }
+  return true;
 }
 
 Player.prototype.jump = function() {
