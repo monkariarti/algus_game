@@ -15,6 +15,7 @@ Platform.prototype.create = function() {
     this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
 
+  this.platform.settedData = this.set;
   this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);
   this.platform.body.immovable = true;
   this.platform.body.allowGravity = false;
@@ -41,6 +42,11 @@ Platform.prototype.fade = function(player, platform) {
   platform.kill();
   setTimeout(() => {
     platform.revive();
+    platform.x = platform.settedData.x;
+    platform.y = platform.settedData.y;
+    console.log(platform.settedData);
+    console.log(platform.x);
+    console.log(platform.y);
   }, 1000);
 }
 

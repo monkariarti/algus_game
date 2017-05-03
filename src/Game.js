@@ -3,6 +3,7 @@ let Player = require( './elements/Player' );
 let Platform = require( './elements/Platform' );
 let Spike = require( './elements/Spike' );
 let Rope = require( './elements/Rope' );
+let Stairs = require( './elements/Stairs' );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -44,7 +45,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 2000;
+  Game.physics.arcade.gravity.y = 250;
 
   Game.camera.y = 550;
 
@@ -112,6 +113,14 @@ function create() {
   }, this);
   this.Rope1.create();
 
+  this.Stairs1 = new Stairs({
+    x: 3840,
+    y: 1340,
+    width: 120,
+    height: 280,
+  }, this);
+  this.Stairs1.create();
+
 
   this.Player.create();
 }
@@ -132,13 +141,15 @@ function update() {
 
   this.Rope1.update();
 
+  this.Stairs1.update();
+
   if (cursors.up.isDown) {
-    if(this.Player.player.inRope) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -300;
     }
   }
   if (cursors.down.isDown) {
-    if(this.Player.player.inRope) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = 300;
     }
   }

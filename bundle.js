@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -75,6 +75,7 @@ let Player = __webpack_require__( 3 );
 let Platform = __webpack_require__( 2 );
 let Spike = __webpack_require__( 5 );
 let Rope = __webpack_require__( 4 );
+let Stairs = __webpack_require__( 6 );
 
 var jumpButton;
 var jumpTimer = 0;
@@ -116,7 +117,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 2000;
+  Game.physics.arcade.gravity.y = 250;
 
   Game.camera.y = 550;
 
@@ -184,6 +185,14 @@ function create() {
   }, this);
   this.Rope1.create();
 
+  this.Stairs1 = new Stairs({
+    x: 3840,
+    y: 1340,
+    width: 120,
+    height: 280,
+  }, this);
+  this.Stairs1.create();
+
 
   this.Player.create();
 }
@@ -204,13 +213,15 @@ function update() {
 
   this.Rope1.update();
 
+  this.Stairs1.update();
+
   if (cursors.up.isDown) {
-    if(this.Player.player.inRope) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -300;
     }
   }
   if (cursors.down.isDown) {
-    if(this.Player.player.inRope) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = 300;
     }
   }
@@ -304,6 +315,7 @@ Platform.prototype.create = function() {
     this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
   }
 
+  this.platform.settedData = this.set;
   this.Game.physics.enable(this.platform, Phaser.Physics.ARCADE);
   this.platform.body.immovable = true;
   this.platform.body.allowGravity = false;
@@ -330,6 +342,11 @@ Platform.prototype.fade = function(player, platform) {
   platform.kill();
   setTimeout(() => {
     platform.revive();
+    platform.x = platform.settedData.x;
+    platform.y = platform.settedData.y;
+    console.log(platform.settedData);
+    console.log(platform.x);
+    console.log(platform.y);
   }, 1000);
 }
 
@@ -354,6 +371,7 @@ Player.prototype.create = function() {
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
+  this.player.body.gravity.y = 2000;
   this.player.body.collideWorldBounds = true;
 
   this.player.death = () => {
@@ -380,7 +398,7 @@ Player.prototype.collideMap = function(player, map) {
 }
 
 Player.prototype.jump = function() {
-  this.player.body.velocity.y = -700;
+  this.player.body.velocity.y = -770;
 }
 
 module.exports = Player;
@@ -449,6 +467,37 @@ module.exports = Spike;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+function Stairs(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Stairs.prototype.create = function() {
+  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.stairs.width = this.set.width;
+  this.stairs.height = this.set.height;
+  this.Game.physics.enable(this.stairs, Phaser.Physics.ARCADE);
+  this.stairs.body.immovable = true;
+  this.stairs.body.allowGravity = false;
+}
+
+Stairs.prototype.update = function() {
+  this.Game.Player.player.inStairs = false;
+  //Наложение
+  this.Game.physics.arcade.overlap(this.Game.Player.player, this.stairs, this.overlap, null, this.Game);
+}
+
+Stairs.prototype.overlap = function(player, spike) {
+  player.inStairs = true;
+}
+
+module.exports = Stairs;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
