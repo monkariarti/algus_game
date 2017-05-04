@@ -13,7 +13,6 @@ Stairs.prototype.create = function() {
 }
 
 Stairs.prototype.update = function() {
-  this.Game.Player.player.inStairs = false;
   //Наложение
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.stairs, this.overlap, null, this.Game);
 }
