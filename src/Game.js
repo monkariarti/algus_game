@@ -54,50 +54,49 @@ function create() {
 
   this.Map.create();
 
-  this.FadePlatform1 = new Platform('fade', {
+  this.Platform1 = new Platform('fade', {
     x: 1560,
     y: 920,
     width: 60,
   }, this);
-  this.FadePlatform1.create();
-  this.FadePlatform2 = new Platform('fade', {
+  this.Platform1.create();
+  this.Platform2 = new Platform('fade', {
     x: 1900,
     y: 1120,
     width: 100,
   }, this);
-  this.FadePlatform2.create();
-  this.FadePlatform3 = new Platform('fade', {
+  this.Platform2.create();
+  this.Platform3 = new Platform('moving', {
+    x: 700,
+    y: 920,
+    width: 120,
+  }, this);
+  this.Platform3.create();
+  this.Platform4 = new Platform('moving', {
+    x: 3080,
+    y: 880,
+    width: 120,
+  }, this);
+  this.Platform4.create();
+  this.Platform5 = new Platform('moving', {
+    x: 2890,
+    y: 1580,
+    width: 120,
+  }, this);
+  this.Platform5.create();
+  this.Platform6 = new Platform('fade', {
     x: 2580,
     y: 1960,
     width: 120,
     height: 40,
   }, this);
-  this.FadePlatform3.create();
-  this.FadePlatform4 = new Platform('fade', {
+  this.Platform6.create();
+  this.Platform7 = new Platform('fade', {
     x: 1740,
     y: 1660,
     width: 100,
   }, this);
-  this.FadePlatform4.create();
-
-  this.MovingPlatform1 = new Platform('moving', {
-    x: 700,
-    y: 920,
-    width: 120,
-  }, this);
-  this.MovingPlatform1.create();
-  this.MovingPlatform2 = new Platform('moving', {
-    x: 3080,
-    y: 880,
-    width: 120,
-  }, this);
-  this.MovingPlatform2.create();
-  this.MovingPlatform3 = new Platform('moving', {
-    x: 2890,
-    y: 1580,
-    width: 120,
-  }, this);
-  this.MovingPlatform3.create();
+  this.Platform7.create();
 
   this.Spike1 = new Spike({
     x: 1400,
@@ -113,18 +112,6 @@ function create() {
     height: 160,
   }, this);
   this.Rope1.create();
-  this.Rope2 = new Rope({
-    x: 2400,
-    y: 680,
-    height: 160,
-  }, this);
-  this.Rope2.create();
-  this.Rope3 = new Rope({
-    x: 3900,
-    y: 880,
-    height: 360,
-  }, this);
-  this.Rope3.create();
 
   this.Stairs1 = new Stairs({
     x: 3840,
@@ -133,13 +120,6 @@ function create() {
     height: 280,
   }, this);
   this.Stairs1.create();
-  this.Stairs2 = new Stairs({
-    x: 120,
-    y: 680,
-    width: 120,
-    height: 100,
-  }, this);
-  this.Stairs2.create();
 
 
   this.Player.create();
@@ -149,23 +129,19 @@ function update() {
 
   this.Player.update();
 
-  this.FadePlatform1.update();
-  this.FadePlatform2.update();
-  this.FadePlatform3.update();
-  this.FadePlatform4.update();
-
-  this.MovingPlatform1.update();
-  this.MovingPlatform2.update();
-  this.MovingPlatform3.update();
+  this.Platform1.update();
+  this.Platform2.update();
+  this.Platform3.update();
+  this.Platform4.update();
+  this.Platform5.update();
+  this.Platform6.update();
+  this.Platform7.update();
 
   this.Spike1.update();
 
   this.Rope1.update();
-  this.Rope2.update();
-  this.Rope3.update();
 
   this.Stairs1.update();
-  this.Stairs2.update();
 
   if (cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {

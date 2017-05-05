@@ -13,6 +13,7 @@ Rope.prototype.create = function() {
 }
 
 Rope.prototype.update = function() {
+  this.Game.Player.player.inRope = false;
   //Наложение
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.rope, this.overlap, null, this.Game);
 }

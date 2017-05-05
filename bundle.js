@@ -184,18 +184,6 @@ function create() {
     height: 160,
   }, this);
   this.Rope1.create();
-  this.Rope2 = new Rope({
-    x: 2400,
-    y: 680,
-    height: 160,
-  }, this);
-  this.Rope2.create();
-  this.Rope3 = new Rope({
-    x: 3900,
-    y: 880,
-    height: 360,
-  }, this);
-  this.Rope3.create();
 
   this.Stairs1 = new Stairs({
     x: 3840,
@@ -204,13 +192,6 @@ function create() {
     height: 280,
   }, this);
   this.Stairs1.create();
-  this.Stairs2 = new Stairs({
-    x: 120,
-    y: 680,
-    width: 120,
-    height: 100,
-  }, this);
-  this.Stairs2.create();
 
 
   this.Player.create();
@@ -231,11 +212,8 @@ function update() {
   this.Spike1.update();
 
   this.Rope1.update();
-  this.Rope2.update();
-  this.Rope3.update();
 
   this.Stairs1.update();
-  this.Stairs2.update();
 
   if (cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
@@ -407,14 +385,9 @@ Player.prototype.create = function() {
 Player.prototype.update = function() {
   this.player.body.velocity.x = 0;
 
-
   //Столкновения
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
-  //Веревки
-  this.Game.Player.player.inRope = false;
-  //Лестницы
-  this.Game.Player.player.inStairs = false;
 }
 
 Player.prototype.collideMap = function(player, map) {
@@ -450,6 +423,7 @@ Rope.prototype.create = function() {
 }
 
 Rope.prototype.update = function() {
+  this.Game.Player.player.inRope = false;
   //Наложение
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.rope, this.overlap, null, this.Game);
 }
@@ -510,6 +484,7 @@ Stairs.prototype.create = function() {
 }
 
 Stairs.prototype.update = function() {
+  this.Game.Player.player.inStairs = false;
   //Наложение
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.stairs, this.overlap, null, this.Game);
 }
