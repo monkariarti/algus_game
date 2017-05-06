@@ -256,7 +256,7 @@ function update() {
       this.Player.player.body.velocity.x = 300;
   }
 
-  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer) {
+  if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
       this.Player.jump();
       jumpTimer = Game.time.now + 150;
   }
@@ -354,7 +354,7 @@ Platform.prototype.update = function() {
   if(this.type == 'moving') {
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
-    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform);
+    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
   }
   if(this.type == 'fade') {
     //Столкновения
@@ -362,7 +362,12 @@ Platform.prototype.update = function() {
   }
 }
 
+Platform.prototype.checkPlatform = function(player, platform) {
+  player.inPlatform = true;
+}
+
 Platform.prototype.fade = function(player, platform) {
+  player.inPlatform = true;
   platform.kill();
   setTimeout(() => {
     platform.revive();
@@ -413,6 +418,8 @@ Player.prototype.update = function() {
   //Столкновения
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
+  //Платформы
+  this.Game.Player.player.inPlatform = false;
   //Веревки
   this.Game.Player.player.inRope = false;
   //Лестницы

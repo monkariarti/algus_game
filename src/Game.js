@@ -184,7 +184,7 @@ function update() {
       this.Player.player.body.velocity.x = 300;
   }
 
-  if (jumpButton.isDown && this.Player.player.body.onFloor() && Game.time.now > jumpTimer) {
+  if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
       this.Player.jump();
       jumpTimer = Game.time.now + 150;
   }

@@ -30,6 +30,8 @@ Player.prototype.update = function() {
   //Столкновения
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
+  //Платформы
+  this.Game.Player.player.inPlatform = false;
   //Веревки
   this.Game.Player.player.inRope = false;
   //Лестницы

@@ -30,7 +30,7 @@ Platform.prototype.update = function() {
   if(this.type == 'moving') {
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
-    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform);
+    this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
   }
   if(this.type == 'fade') {
     //Столкновения
@@ -38,7 +38,12 @@ Platform.prototype.update = function() {
   }
 }
 
+Platform.prototype.checkPlatform = function(player, platform) {
+  player.inPlatform = true;
+}
+
 Platform.prototype.fade = function(player, platform) {
+  player.inPlatform = true;
   platform.kill();
   setTimeout(() => {
     platform.revive();
