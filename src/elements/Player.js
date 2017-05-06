@@ -12,7 +12,7 @@ Player.prototype.create = function() {
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
-  this.player.body.gravity.y = 2000;
+  this.player.body.gravity.y = 1000;
   this.player.body.collideWorldBounds = true;
 
   this.player.death = () => {
@@ -44,7 +44,7 @@ Player.prototype.collideMap = function(player, map) {
 }
 
 Player.prototype.jump = function() {
-  this.player.body.velocity.y = -770;
+  this.player.body.velocity.y = -620;
 }
 
 module.exports = Player;

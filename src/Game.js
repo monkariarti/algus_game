@@ -45,7 +45,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 250;
+  Game.physics.arcade.gravity.y = 500;
 
   Game.camera.y = 550;
 
@@ -134,7 +134,7 @@ function create() {
   }, this);
   this.Stairs1.create();
   this.Stairs2 = new Stairs({
-    x: 120,
+    x: 160,
     y: 680,
     width: 120,
     height: 100,

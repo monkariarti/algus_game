@@ -117,7 +117,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 250;
+  Game.physics.arcade.gravity.y = 500;
 
   Game.camera.y = 550;
 
@@ -126,49 +126,50 @@ function create() {
 
   this.Map.create();
 
-  this.Platform1 = new Platform('fade', {
+  this.FadePlatform1 = new Platform('fade', {
     x: 1560,
     y: 920,
     width: 60,
   }, this);
-  this.Platform1.create();
-  this.Platform2 = new Platform('fade', {
+  this.FadePlatform1.create();
+  this.FadePlatform2 = new Platform('fade', {
     x: 1900,
     y: 1120,
     width: 100,
   }, this);
-  this.Platform2.create();
-  this.Platform3 = new Platform('moving', {
-    x: 700,
-    y: 920,
-    width: 120,
-  }, this);
-  this.Platform3.create();
-  this.Platform4 = new Platform('moving', {
-    x: 3080,
-    y: 880,
-    width: 120,
-  }, this);
-  this.Platform4.create();
-  this.Platform5 = new Platform('moving', {
-    x: 2890,
-    y: 1580,
-    width: 120,
-  }, this);
-  this.Platform5.create();
-  this.Platform6 = new Platform('fade', {
+  this.FadePlatform2.create();
+  this.FadePlatform3 = new Platform('fade', {
     x: 2580,
     y: 1960,
     width: 120,
     height: 40,
   }, this);
-  this.Platform6.create();
-  this.Platform7 = new Platform('fade', {
+  this.FadePlatform3.create();
+  this.FadePlatform4 = new Platform('fade', {
     x: 1740,
     y: 1660,
     width: 100,
   }, this);
-  this.Platform7.create();
+  this.FadePlatform4.create();
+
+  this.MovingPlatform1 = new Platform('moving', {
+    x: 700,
+    y: 920,
+    width: 120,
+  }, this);
+  this.MovingPlatform1.create();
+  this.MovingPlatform2 = new Platform('moving', {
+    x: 3080,
+    y: 880,
+    width: 120,
+  }, this);
+  this.MovingPlatform2.create();
+  this.MovingPlatform3 = new Platform('moving', {
+    x: 2890,
+    y: 1580,
+    width: 120,
+  }, this);
+  this.MovingPlatform3.create();
 
   this.Spike1 = new Spike({
     x: 1400,
@@ -205,7 +206,7 @@ function create() {
   }, this);
   this.Stairs1.create();
   this.Stairs2 = new Stairs({
-    x: 120,
+    x: 160,
     y: 680,
     width: 120,
     height: 100,
@@ -220,13 +221,14 @@ function update() {
 
   this.Player.update();
 
-  this.Platform1.update();
-  this.Platform2.update();
-  this.Platform3.update();
-  this.Platform4.update();
-  this.Platform5.update();
-  this.Platform6.update();
-  this.Platform7.update();
+  this.FadePlatform1.update();
+  this.FadePlatform2.update();
+  this.FadePlatform3.update();
+  this.FadePlatform4.update();
+
+  this.MovingPlatform1.update();
+  this.MovingPlatform2.update();
+  this.MovingPlatform3.update();
 
   this.Spike1.update();
 
@@ -393,7 +395,7 @@ Player.prototype.create = function() {
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
-  this.player.body.gravity.y = 2000;
+  this.player.body.gravity.y = 1000;
   this.player.body.collideWorldBounds = true;
 
   this.player.death = () => {
@@ -425,7 +427,7 @@ Player.prototype.collideMap = function(player, map) {
 }
 
 Player.prototype.jump = function() {
-  this.player.body.velocity.y = -770;
+  this.player.body.velocity.y = -620;
 }
 
 module.exports = Player;
