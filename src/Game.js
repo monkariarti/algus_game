@@ -93,8 +93,9 @@ function create() {
   }, this);
   this.MovingPlatform2.create();
   this.MovingPlatform3 = new Platform('moving', {
-    x: 2890,
+    x: 2710,
     y: 1580,
+    x2: 3480,
     width: 120,
   }, this);
   this.MovingPlatform3.create();
