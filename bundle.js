@@ -174,9 +174,9 @@ function create() {
 
   this.Spike1 = new Spike({
     x: 1400,
-    y: 1240,
-    width: 600,
-    height: 100,
+    y: 1220,
+    width: 620,
+    height: 120,
   }, this);
   this.Spike1.create();
 
@@ -242,19 +242,19 @@ function update() {
 
   if (cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -300;
+      this.Player.player.body.velocity.y = -250;
     }
   }
   if (cursors.down.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 300;
+      this.Player.player.body.velocity.y = 250;
     }
   }
   if (cursors.left.isDown) {
-      this.Player.player.body.velocity.x = -300;
+      this.Player.player.body.velocity.x = -250;
   }
   else if (cursors.right.isDown) {
-      this.Player.player.body.velocity.x = 300;
+      this.Player.player.body.velocity.x = 250;
   }
 
   if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
