@@ -26,9 +26,14 @@ Player.prototype.create = function() {
 Player.prototype.update = function() {
   this.player.body.velocity.x = 0;
 
+
   //Столкновения
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
+  //Веревки
+  this.Game.Player.player.inRope = false;
+  //Лестницы
+  this.Game.Player.player.inStairs = false;
 }
 
 Player.prototype.collideMap = function(player, map) {
