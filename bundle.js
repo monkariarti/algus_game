@@ -165,17 +165,18 @@ function create() {
   }, this);
   this.MovingPlatform2.create();
   this.MovingPlatform3 = new Platform('moving', {
-    x: 2890,
+    x: 2710,
     y: 1580,
+    x2: 3480,
     width: 120,
   }, this);
   this.MovingPlatform3.create();
 
   this.Spike1 = new Spike({
     x: 1400,
-    y: 1240,
-    width: 600,
-    height: 100,
+    y: 1220,
+    width: 620,
+    height: 120,
   }, this);
   this.Spike1.create();
 
@@ -241,19 +242,19 @@ function update() {
 
   if (cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -300;
+      this.Player.player.body.velocity.y = -250;
     }
   }
   if (cursors.down.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 300;
+      this.Player.player.body.velocity.y = 250;
     }
   }
   if (cursors.left.isDown) {
-      this.Player.player.body.velocity.x = -300;
+      this.Player.player.body.velocity.x = -250;
   }
   else if (cursors.right.isDown) {
-      this.Player.player.body.velocity.x = 300;
+      this.Player.player.body.velocity.x = 250;
   }
 
   if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
@@ -352,6 +353,15 @@ Platform.prototype.create = function() {
 
 Platform.prototype.update = function() {
   if(this.type == 'moving') {
+    if(this.set.x2) {
+      if(this.platform.x >= this.set.x2) {
+        this.platform.body.velocity.set(-150, 0);
+      }
+      if(this.platform.x <= this.set.x) {
+        this.platform.body.velocity.set(150, 0);
+      }
+    }
+
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);

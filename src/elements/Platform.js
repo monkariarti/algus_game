@@ -28,6 +28,15 @@ Platform.prototype.create = function() {
 
 Platform.prototype.update = function() {
   if(this.type == 'moving') {
+    if(this.set.x2) {
+      if(this.platform.x >= this.set.x2) {
+        this.platform.body.velocity.set(-150, 0);
+      }
+      if(this.platform.x <= this.set.x) {
+        this.platform.body.velocity.set(150, 0);
+      }
+    }
+
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
