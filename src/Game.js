@@ -4,10 +4,7 @@ let Platform = require( './elements/Platform' );
 let Spike = require( './elements/Spike' );
 let Rope = require( './elements/Rope' );
 let Stairs = require( './elements/Stairs' );
-
-var jumpButton;
-var jumpTimer = 0;
-var cursors;
+let Worker = require( './elements/Worker' );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -49,8 +46,9 @@ function create() {
 
   Game.camera.y = 550;
 
-  cursors = Game.input.keyboard.createCursorKeys();
-  jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.cursors = Game.input.keyboard.createCursorKeys();
+  this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.jumpTimer = 0;
 
   this.Map.create();
 
@@ -142,6 +140,92 @@ function create() {
   }, this);
   this.Stairs2.create();
 
+  this.Workers = [];
+  //Саня
+  this.Workers[0] = new Worker({
+    x: 40,
+    y: 650,
+  }, this);
+  this.Workers[0].create();
+  //Костя
+  this.Workers[1] = new Worker({
+    x: 430,
+    y: 650,
+  }, this);
+  this.Workers[1].create();
+  //Ярик
+  this.Workers[2] = new Worker({
+    x: 990,
+    y: 650,
+  }, this);
+  this.Workers[2].create();
+  //Миха
+  this.Workers[3] = new Worker({
+    x: 1680,
+    y: 650,
+  }, this);
+  this.Workers[3].create();
+  //Маша
+  this.Workers[4] = new Worker({
+    x: 650,
+    y: 550,
+  }, this);
+  this.Workers[4].create();
+  //Ирина
+  this.Workers[5] = new Worker({
+    x: 990,
+    y: 350,
+  }, this);
+  this.Workers[5].create();
+  //Оля СЕО
+  this.Workers[6] = new Worker({
+    x: 2540,
+    y: 330,
+  }, this);
+  this.Workers[6].create();
+  //Инна
+  this.Workers[7] = new Worker({
+    x: 2900,
+    y: 330,
+  }, this);
+  this.Workers[7].create();
+  //Илья
+  this.Workers[8] = new Worker({
+    x: 3700,
+    y: 150,
+  }, this);
+  this.Workers[8].create();
+  //Лера
+  this.Workers[9] = new Worker({
+    x: 3540,
+    y: 650,
+  }, this);
+  this.Workers[9].create();
+  //Катя
+  this.Workers[10] = new Worker({
+    x: 3820,
+    y: 530,
+  }, this);
+  this.Workers[10].create();
+  //Анжелика
+  this.Workers[11] = new Worker({
+    x: 1140,
+    y: 1730,
+  }, this);
+  this.Workers[11].create();
+  //Анна
+  this.Workers[12] = new Worker({
+    x: 580,
+    y: 1550,
+  }, this);
+  this.Workers[12].create();
+  //Вера
+  this.Workers[13] = new Worker({
+    x: 200,
+    y: 1730,
+  }, this);
+  this.Workers[13].create();
+
 
   this.Player.create();
 }
@@ -168,26 +252,30 @@ function update() {
   this.Stairs1.update();
   this.Stairs2.update();
 
-  if (cursors.up.isDown) {
+  for(let i = 0; i < this.Workers.length; i++) {
+    this.Workers[i].update();
+  }
+
+  if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -250;
     }
   }
-  if (cursors.down.isDown) {
+  if (this.cursors.down.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = 250;
     }
   }
-  if (cursors.left.isDown) {
-      this.Player.player.body.velocity.x = -250;
+  if (this.cursors.left.isDown) {
+    this.Player.player.body.velocity.x = -250;
   }
-  else if (cursors.right.isDown) {
-      this.Player.player.body.velocity.x = 250;
+  else if (this.cursors.right.isDown) {
+    this.Player.player.body.velocity.x = 250;
   }
 
-  if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
-      this.Player.jump();
-      jumpTimer = Game.time.now + 150;
+  if (this.jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > this.jumpTimer) {
+    this.Player.jump();
+    this.jumpTimer = Game.time.now + 150;
   }
 
   //Камера по X

@@ -15,10 +15,15 @@ Player.prototype.create = function() {
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
 
+  this.player.body.tilePadding.x = 10;
+  this.player.body.tilePadding.y = 10;
+
   this.player.death = () => {
     this.player.x = this.default.x;
     this.player.y = this.default.y;
   }
+
+  this.player.haveWorker = false;
 
   //this.Game.camera.follow(this.player);
 }

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -76,10 +76,7 @@ let Platform = __webpack_require__( 2 );
 let Spike = __webpack_require__( 5 );
 let Rope = __webpack_require__( 4 );
 let Stairs = __webpack_require__( 6 );
-
-var jumpButton;
-var jumpTimer = 0;
-var cursors;
+let Worker = __webpack_require__( 7 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -121,8 +118,9 @@ function create() {
 
   Game.camera.y = 550;
 
-  cursors = Game.input.keyboard.createCursorKeys();
-  jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.cursors = Game.input.keyboard.createCursorKeys();
+  this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.jumpTimer = 0;
 
   this.Map.create();
 
@@ -214,6 +212,92 @@ function create() {
   }, this);
   this.Stairs2.create();
 
+  this.Workers = [];
+  //Саня
+  this.Workers[0] = new Worker({
+    x: 40,
+    y: 650,
+  }, this);
+  this.Workers[0].create();
+  //Костя
+  this.Workers[1] = new Worker({
+    x: 430,
+    y: 650,
+  }, this);
+  this.Workers[1].create();
+  //Ярик
+  this.Workers[2] = new Worker({
+    x: 990,
+    y: 650,
+  }, this);
+  this.Workers[2].create();
+  //Миха
+  this.Workers[3] = new Worker({
+    x: 1680,
+    y: 650,
+  }, this);
+  this.Workers[3].create();
+  //Маша
+  this.Workers[4] = new Worker({
+    x: 650,
+    y: 550,
+  }, this);
+  this.Workers[4].create();
+  //Ирина
+  this.Workers[5] = new Worker({
+    x: 990,
+    y: 350,
+  }, this);
+  this.Workers[5].create();
+  //Оля СЕО
+  this.Workers[6] = new Worker({
+    x: 2540,
+    y: 330,
+  }, this);
+  this.Workers[6].create();
+  //Инна
+  this.Workers[7] = new Worker({
+    x: 2900,
+    y: 330,
+  }, this);
+  this.Workers[7].create();
+  //Илья
+  this.Workers[8] = new Worker({
+    x: 3700,
+    y: 150,
+  }, this);
+  this.Workers[8].create();
+  //Лера
+  this.Workers[9] = new Worker({
+    x: 3540,
+    y: 650,
+  }, this);
+  this.Workers[9].create();
+  //Катя
+  this.Workers[10] = new Worker({
+    x: 3820,
+    y: 530,
+  }, this);
+  this.Workers[10].create();
+  //Анжелика
+  this.Workers[11] = new Worker({
+    x: 1140,
+    y: 1730,
+  }, this);
+  this.Workers[11].create();
+  //Анна
+  this.Workers[12] = new Worker({
+    x: 580,
+    y: 1550,
+  }, this);
+  this.Workers[12].create();
+  //Вера
+  this.Workers[13] = new Worker({
+    x: 200,
+    y: 1730,
+  }, this);
+  this.Workers[13].create();
+
 
   this.Player.create();
 }
@@ -240,26 +324,30 @@ function update() {
   this.Stairs1.update();
   this.Stairs2.update();
 
-  if (cursors.up.isDown) {
+  for(let i = 0; i < this.Workers.length; i++) {
+    this.Workers[i].update();
+  }
+
+  if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -250;
     }
   }
-  if (cursors.down.isDown) {
+  if (this.cursors.down.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = 250;
     }
   }
-  if (cursors.left.isDown) {
-      this.Player.player.body.velocity.x = -250;
+  if (this.cursors.left.isDown) {
+    this.Player.player.body.velocity.x = -250;
   }
-  else if (cursors.right.isDown) {
-      this.Player.player.body.velocity.x = 250;
+  else if (this.cursors.right.isDown) {
+    this.Player.player.body.velocity.x = 250;
   }
 
-  if (jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > jumpTimer) {
-      this.Player.jump();
-      jumpTimer = Game.time.now + 150;
+  if (this.jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > this.jumpTimer) {
+    this.Player.jump();
+    this.jumpTimer = Game.time.now + 150;
   }
 
   //Камера по X
@@ -409,10 +497,15 @@ Player.prototype.create = function() {
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
 
+  this.player.body.tilePadding.x = 10;
+  this.player.body.tilePadding.y = 10;
+
   this.player.death = () => {
     this.player.x = this.default.x;
     this.player.y = this.default.y;
   }
+
+  this.player.haveWorker = false;
 
   //this.Game.camera.follow(this.player);
 }
@@ -542,6 +635,108 @@ module.exports = Stairs;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+function Worker(set, Game) {
+  this.set = set;
+  this.Game = Game;
+
+  this.upTimer = 0;
+}
+
+Worker.prototype.create = function() {
+  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
+  this.table.width = 100;
+  this.table.height = 30;
+  this.table.body.immovable = true;
+  this.table.body.allowGravity = false;
+
+  this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
+  this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
+  this.worker.body.bounce.x = 1;
+  this.worker.body.gravity.y = 980;
+  this.worker.body.collideWorldBounds = true;
+  this.worker.isUp = false;
+  this.worker.inPlayer = false;
+}
+
+Worker.prototype.update = function() {
+  this.worker.overlapPlayer = false;
+  this.table.overlapPlayer = false;
+
+  //Столкновения с картой
+  this.Game.physics.arcade.collide(this.worker, this.Game.Map.mapLayer, this.collideMap, null, this.Game);
+
+  this.Game.physics.arcade.overlap(this.Game.Player.player, this.worker, this.overlapPlayer, null, this.Game);
+  this.Game.physics.arcade.overlap(this.Game.Player.player, this.table, this.overlapTablePlayer, null, this.Game);
+
+  if(this.Game.time.now > this.upTimer && !this.worker.isUp) {
+    this.worker.isUp = true;
+    this.moveWorker();
+  }
+
+  if(this.worker.overlapPlayer && this.Game.jumpButton.isDown && this.worker.isUp ) {
+    this.goInPlayer();
+    this.Game.Player.player.haveWorker = true;
+  }
+
+  if(this.worker.inPlayer) {
+    this.worker.position.x = this.Game.Player.player.position.x + 50;
+    this.worker.position.y = this.Game.Player.player.position.y - 40;
+  }
+
+  if(this.table.overlapPlayer && this.worker.inPlayer) {
+    this.startWorkWorker();
+    this.Game.Player.player.haveWorker = false;
+  }
+}
+
+Worker.prototype.startWorkWorker = function() {
+  this.upTimer = this.Game.time.now + (this.Game.rnd.between(90, 180) * 1000);
+  this.worker.position.x = this.set.x + 30;
+  this.worker.position.y = this.set.y - 30;
+  this.worker.body.velocity.x = 0;
+  this.worker.body.velocity.y = 0;
+  this.worker.body.allowGravity = true;
+  this.worker.angle = 0;
+  this.worker.inPlayer = false;
+  this.worker.isUp = false;
+}
+
+Worker.prototype.goInPlayer = function() {
+  this.worker.body.velocity.x = 0;
+  this.worker.body.velocity.y = 0;
+  this.worker.angle = 90;
+  this.worker.body.allowGravity = false;
+  this.worker.inPlayer = true;
+  this.worker.isUp = false;
+}
+
+Worker.prototype.moveWorker = function() {
+  if(this.Game.rnd.between(1, 50) > 25) {
+    this.worker.body.velocity.x = 220;
+  } else {
+    this.worker.body.velocity.x = -220;
+  }
+}
+
+Worker.prototype.overlapPlayer = function(player, worker) {
+  worker.overlapPlayer = true;
+}
+Worker.prototype.overlapTablePlayer = function(player, table) {
+  table.overlapPlayer = true;
+}
+
+Worker.prototype.collideMap = function(worker, map) {
+
+}
+
+module.exports = Worker;
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
