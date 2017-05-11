@@ -26,8 +26,12 @@ Player.prototype.create = function() {
 Player.prototype.update = function() {
   this.player.body.velocity.x = 0;
 
+  //Выход за пределы карты
+  if(this.player.body.checkWorldBounds()) {
+    this.player.death();
+  }
 
-  //Столкновения
+  //Столкновения с картой
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
 
   //Платформы
