@@ -45,7 +45,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 500;
+  Game.physics.arcade.gravity.y = 490;
 
   Game.camera.y = 550;
 

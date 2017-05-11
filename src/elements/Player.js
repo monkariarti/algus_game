@@ -12,7 +12,7 @@ Player.prototype.create = function() {
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
-  this.player.body.gravity.y = 1000;
+  this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
 
   this.player.death = () => {

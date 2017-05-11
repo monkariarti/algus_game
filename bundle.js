@@ -117,7 +117,7 @@ function create() {
   Game.stage.backgroundColor = '#ffffff';
 
   Game.physics.startSystem(Phaser.Physics.ARCADE);
-  Game.physics.arcade.gravity.y = 500;
+  Game.physics.arcade.gravity.y = 490;
 
   Game.camera.y = 550;
 
@@ -377,16 +377,12 @@ Platform.prototype.checkPlatform = function(player, platform) {
 }
 
 Platform.prototype.fade = function(player, platform) {
-  player.inPlatform = true;
   platform.kill();
   setTimeout(() => {
     platform.revive();
     platform.x = platform.settedData.x;
     platform.y = platform.settedData.y;
-    console.log(platform.settedData);
-    console.log(platform.x);
-    console.log(platform.y);
-  }, 1000);
+  }, 300);
 }
 
 module.exports = Platform;
@@ -410,7 +406,7 @@ Player.prototype.create = function() {
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
-  this.player.body.gravity.y = 1000;
+  this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
 
   this.player.death = () => {

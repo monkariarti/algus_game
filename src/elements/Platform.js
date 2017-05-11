@@ -52,16 +52,12 @@ Platform.prototype.checkPlatform = function(player, platform) {
 }
 
 Platform.prototype.fade = function(player, platform) {
-  player.inPlatform = true;
   platform.kill();
   setTimeout(() => {
     platform.revive();
     platform.x = platform.settedData.x;
     platform.y = platform.settedData.y;
-    console.log(platform.settedData);
-    console.log(platform.x);
-    console.log(platform.y);
-  }, 1000);
+  }, 300);
 }
 
 module.exports = Platform;
