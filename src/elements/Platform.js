@@ -42,6 +42,8 @@ Platform.prototype.update = function() {
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
   }
   if(this.type == 'fade') {
+    this.platform.position.x = this.set.x;
+    this.platform.position.y = this.set.y;
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
   }
@@ -55,9 +57,7 @@ Platform.prototype.fade = function(player, platform) {
   platform.kill();
   setTimeout(() => {
     platform.revive();
-    platform.x = platform.settedData.x;
-    platform.y = platform.settedData.y;
-  }, 300);
+  }, 1000);
 }
 
 module.exports = Platform;

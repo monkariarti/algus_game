@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -77,6 +77,7 @@ let Spike = __webpack_require__( 5 );
 let Rope = __webpack_require__( 4 );
 let Stairs = __webpack_require__( 6 );
 let Worker = __webpack_require__( 7 );
+let Menu = __webpack_require__( 8 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -91,6 +92,7 @@ let sprites = {
     tilemap: 'images/tilemap.png',
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
+    menuBg: 'images/menuBg.png',
 }
 
 function preload() {
@@ -106,6 +108,7 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+    this.Menu = new Menu(this);
 }
 
 function create() {
@@ -206,6 +209,22 @@ function create() {
     height: 120,
   }, this);
   this.Spikes[0].create();
+  this.Spikes[1] = new Spike({
+    x: 790,
+    y: 660,
+    width: 60,
+    height: 20,
+    noCollidesBot: true,
+  }, this);
+  this.Spikes[1].create();
+  this.Spikes[2] = new Spike({
+    x: 3040,
+    y: 660,
+    width: 60,
+    height: 20,
+    noCollidesBot: true,
+  }, this);
+  this.Spikes[2].create();
 
   this.Ropes = [];
   this.Ropes[0] = new Rope({
@@ -334,11 +353,22 @@ function create() {
     y: 1730,
   }, this);
   this.Workers[13].create();
+  //Рыжич
+  this.Workers[14] = new Worker({
+    x: 860,
+    y: 130,
+  }, this);
+  this.Workers[14].create();
 
   this.Player.create();
+
+  this.Menu.create();
 }
 
 function update() {
+  this.Menu.update();
+
+  if(Game.physics.arcade.isPaused) return;
 
   this.Player.update();
 
@@ -355,8 +385,10 @@ function update() {
     this.MovingPlatforms[i].update();
   }
   for(let i = 0; i < this.Spikes.length; i++) {
-    for(let o = 0; o < this.Workers.length; o++) {
-      Game.physics.arcade.collide(this.Workers[o].worker, this.Spikes[i].spike);
+    if(!this.Spikes[i].set.noCollidesBot) {
+      for(let o = 0; o < this.Workers.length; o++) {
+          Game.physics.arcade.collide(this.Workers[o].worker, this.Spikes[i].spike);
+      }
     }
     this.Spikes[i].update();
   }
@@ -503,6 +535,8 @@ Platform.prototype.update = function() {
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
   }
   if(this.type == 'fade') {
+    this.platform.position.x = this.set.x;
+    this.platform.position.y = this.set.y;
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
   }
@@ -516,9 +550,7 @@ Platform.prototype.fade = function(player, platform) {
   platform.kill();
   setTimeout(() => {
     platform.revive();
-    platform.x = platform.settedData.x;
-    platform.y = platform.settedData.y;
-  }, 300);
+  }, 1000);
 }
 
 module.exports = Platform;
@@ -785,6 +817,71 @@ module.exports = Worker;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports) {
+
+function Menu(Game) {
+  this.Game = Game;
+
+  this.textStyle = { font: "40px Arial", fill: "#ffffff" };
+  this.textStyleHover = { font: "40px Arial", fill: "#cccccc" };
+
+  this.paused = false;
+  this.firstStart = true;
+}
+
+Menu.prototype.create = function() {
+  this.bg = this.Game.add.tileSprite(0, 0, this.Game.camera.width, this.Game.camera.height, 'menuBg');
+  this.bg.fixedToCamera = true;
+  this.startGame = this.Game.add.text(this.Game.global.root.clientWidth / 2, this.Game.global.root.clientHeight / 2 - 150, "Начать игру", this.textStyle);
+  this.startGame.anchor.set(0.5, 0.5);
+  this.startGame.fixedToCamera = true;
+  this.startGame.inputEnabled = true;
+
+  this.startGame.events.onInputOver.add((e) => {
+    e.setStyle(this.textStyleHover, true);
+  }, this.Game);
+  this.startGame.events.onInputOut.add((e) => {
+    e.setStyle(this.textStyle, true);
+  }, this.Game);
+  this.startGame.events.onInputDown.add((e) => {
+    this.close();
+  }, this.Game);
+
+  this.open();
+}
+
+Menu.prototype.update = function() {
+  this.bindKey();
+}
+
+Menu.prototype.bindKey = function() {
+  if (this.Game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+    this.open();
+  }
+}
+
+Menu.prototype.open = function() {
+  this.Game.physics.arcade.isPaused = true;
+  this.bg.revive();
+  this.startGame.revive();
+
+  if(!this.firstStart) {
+    this.startGame.setText('Продолжить игру');
+  }
+  this.firstStart = false;
+}
+
+Menu.prototype.close = function() {
+  this.Game.physics.arcade.isPaused = false;
+  this.bg.kill();
+  this.startGame.kill();
+}
+
+module.exports = Menu;
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
