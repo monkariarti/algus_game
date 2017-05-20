@@ -113,6 +113,18 @@ function create() {
     width: 120,
   }, this);
   this.MovingPlatforms[2].create();
+  this.MovingPlatforms[3] = new Platform('moving', {
+    x: 1060,
+    y: 180,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[3].create();
+  this.MovingPlatforms[4] = new Platform('moving', {
+    x: 360,
+    y: 380,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[4].create();
 
   this.Spikes = [];
   this.Spikes[0] = new Spike({
