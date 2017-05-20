@@ -48,103 +48,128 @@ function create() {
 
   this.cursors = Game.input.keyboard.createCursorKeys();
   this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.checkButton = Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
   this.jumpTimer = 0;
 
   this.Map.create();
 
-  this.FadePlatform1 = new Platform('fade', {
+  this.FadePlatforms = [];
+  this.FadePlatforms[0] = new Platform('fade', {
     x: 1560,
     y: 920,
     width: 60,
   }, this);
-  this.FadePlatform1.create();
-  this.FadePlatform2 = new Platform('fade', {
+  this.FadePlatforms[0].create();
+  this.FadePlatforms[1] = new Platform('fade', {
     x: 1900,
     y: 1120,
     width: 100,
   }, this);
-  this.FadePlatform2.create();
-  this.FadePlatform3 = new Platform('fade', {
+  this.FadePlatforms[1].create();
+  this.FadePlatforms[2] = new Platform('fade', {
     x: 2580,
     y: 1960,
     width: 120,
     height: 40,
   }, this);
-  this.FadePlatform3.create();
-  this.FadePlatform4 = new Platform('fade', {
+  this.FadePlatforms[2].create();
+  this.FadePlatforms[3] = new Platform('fade', {
     x: 1740,
     y: 1660,
     width: 100,
   }, this);
-  this.FadePlatform4.create();
+  this.FadePlatforms[3].create();
+  this.FadePlatforms[4] = new Platform('fade', {
+    x: 1560,
+    y: 680,
+    width: 80,
+    height: 40,
+  }, this);
+  this.FadePlatforms[4].create();
+  this.FadePlatforms[5] = new Platform('fade', {
+    x: 840,
+    y: 480,
+    width: 60,
+  }, this);
+  this.FadePlatforms[5].create();
 
-  this.MovingPlatform1 = new Platform('moving', {
+  this.MovingPlatforms = [];
+  this.MovingPlatforms[0] = new Platform('moving', {
     x: 700,
     y: 920,
     width: 120,
   }, this);
-  this.MovingPlatform1.create();
-  this.MovingPlatform2 = new Platform('moving', {
+  this.MovingPlatforms[0].create();
+  this.MovingPlatforms[1] = new Platform('moving', {
     x: 3080,
     y: 880,
     width: 120,
   }, this);
-  this.MovingPlatform2.create();
-  this.MovingPlatform3 = new Platform('moving', {
+  this.MovingPlatforms[1].create();
+  this.MovingPlatforms[2] = new Platform('moving', {
     x: 2710,
     y: 1580,
     x2: 3480,
     width: 120,
   }, this);
-  this.MovingPlatform3.create();
+  this.MovingPlatforms[2].create();
 
-  this.Spike1 = new Spike({
+  this.Spikes = [];
+  this.Spikes[0] = new Spike({
     x: 1400,
     y: 1220,
     width: 620,
     height: 120,
   }, this);
-  this.Spike1.create();
+  this.Spikes[0].create();
 
-  this.Rope1 = new Rope({
+  this.Ropes = [];
+  this.Ropes[0] = new Rope({
     x: 1320,
     y: 920,
     height: 160,
   }, this);
-  this.Rope1.create();
-  this.Rope2 = new Rope({
+  this.Ropes[0].create();
+  this.Ropes[1] = new Rope({
     x: 2400,
     y: 680,
     height: 160,
   }, this);
-  this.Rope2.create();
-  this.Rope3 = new Rope({
+  this.Ropes[1].create();
+  this.Ropes[2] = new Rope({
     x: 3900,
     y: 880,
     height: 360,
   }, this);
-  this.Rope3.create();
+  this.Ropes[2].create();
+  this.Ropes[3] = new Rope({
+    x: 240,
+    y: 140,
+    height: 160,
+  }, this);
+  this.Ropes[3].create();
 
-  this.Stairs1 = new Stairs({
+  this.Stairs = [];
+  this.Stairs[0] = new Stairs({
     x: 3840,
     y: 1340,
     width: 120,
     height: 280,
   }, this);
-  this.Stairs1.create();
-  this.Stairs2 = new Stairs({
+  this.Stairs[0].create();
+  this.Stairs[1] = new Stairs({
     x: 160,
     y: 680,
     width: 120,
     height: 100,
   }, this);
-  this.Stairs2.create();
+  this.Stairs[1].create();
 
   this.Workers = [];
   //Саня
   this.Workers[0] = new Worker({
-    x: 40,
-    y: 650,
+    x: 400,
+    y: 250,
   }, this);
   this.Workers[0].create();
   //Костя
@@ -226,7 +251,6 @@ function create() {
   }, this);
   this.Workers[13].create();
 
-
   this.Player.create();
 }
 
@@ -234,24 +258,36 @@ function update() {
 
   this.Player.update();
 
-  this.FadePlatform1.update();
-  this.FadePlatform2.update();
-  this.FadePlatform3.update();
-  this.FadePlatform4.update();
-
-  this.MovingPlatform1.update();
-  this.MovingPlatform2.update();
-  this.MovingPlatform3.update();
-
-  this.Spike1.update();
-
-  this.Rope1.update();
-  this.Rope2.update();
-  this.Rope3.update();
-
-  this.Stairs1.update();
-  this.Stairs2.update();
-
+  for(let i = 0; i < this.FadePlatforms.length; i++) {
+    for(let o = 0; o < this.Workers.length; o++) {
+      Game.physics.arcade.collide(this.Workers[o].worker, this.FadePlatforms[i].platform);
+    }
+    this.FadePlatforms[i].update();
+  }
+  for(let i = 0; i < this.MovingPlatforms.length; i++) {
+    for(let o = 0; o < this.Workers.length; o++) {
+      Game.physics.arcade.collide(this.Workers[o].worker, this.MovingPlatforms[i].platform);
+    }
+    this.MovingPlatforms[i].update();
+  }
+  for(let i = 0; i < this.Spikes.length; i++) {
+    for(let o = 0; o < this.Workers.length; o++) {
+      Game.physics.arcade.collide(this.Workers[o].worker, this.Spikes[i].spike);
+    }
+    this.Spikes[i].update();
+  }
+  for(let i = 0; i < this.Ropes.length; i++) {
+    for(let o = 0; o < this.Workers.length; o++) {
+      Game.physics.arcade.collide(this.Workers[o].worker, this.Ropes[i].rope);
+    }
+    this.Ropes[i].update();
+  }
+  for(let i = 0; i < this.Stairs.length; i++) {
+    for(let o = 0; o < this.Workers.length; o++) {
+      Game.physics.arcade.collide(this.Workers[o].worker, this.Stairs[i].stairs);
+    }
+    this.Stairs[i].update();
+  }
   for(let i = 0; i < this.Workers.length; i++) {
     this.Workers[i].update();
   }

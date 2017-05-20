@@ -37,7 +37,7 @@ Worker.prototype.update = function() {
     this.moveWorker();
   }
 
-  if(this.worker.overlapPlayer && this.Game.jumpButton.isDown && this.worker.isUp ) {
+  if(this.worker.overlapPlayer && this.Game.checkButton.isDown && this.worker.isUp ) {
     this.goInPlayer();
     this.Game.Player.player.haveWorker = true;
   }
@@ -76,9 +76,9 @@ Worker.prototype.goInPlayer = function() {
 
 Worker.prototype.moveWorker = function() {
   if(this.Game.rnd.between(1, 50) > 25) {
-    this.worker.body.velocity.x = 220;
+    this.worker.body.velocity.x = 150;
   } else {
-    this.worker.body.velocity.x = -220;
+    this.worker.body.velocity.x = -150;
   }
 }
 
