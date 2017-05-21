@@ -17,7 +17,7 @@ var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'ro
 
 let sprites = {
     black: 'images/black.png',
-    tilemap: 'images/tilemap.png',
+    tilemap: 'images/map_sprites.png',
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',

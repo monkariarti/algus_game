@@ -89,7 +89,7 @@ var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'ro
 
 let sprites = {
     black: 'images/black.png',
-    tilemap: 'images/tilemap.png',
+    tilemap: 'images/map_sprites.png',
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
@@ -476,7 +476,7 @@ function Map(Game) {
 Map.prototype.create = function() {
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
-  this.tilemap.setCollisionByExclusion([0]);
+  this.tilemap.setCollisionByExclusion([]);
 
   this.mapLayer =  this.tilemap.createLayer(0);
   this.Game.physics.enable(this.mapLayer, Phaser.Physics.ARCADE);
