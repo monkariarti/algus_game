@@ -8,7 +8,7 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;

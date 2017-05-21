@@ -572,9 +572,11 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
+  this.player.width = 80;
+  this.player.height = 120;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
@@ -584,7 +586,7 @@ Player.prototype.create = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  this.player.animations.add('dih');
+  //this.player.animations.add('dih');
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -616,11 +618,11 @@ Player.prototype.update = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  if(this.player.body.velocity.x == 0) {
-    this.player.animations.play('dih', 9, true);
-  } else {
-    this.player.animations.stop('dih', 0);
-  }
+  // if(this.player.body.velocity.x == 0) {
+  //   this.player.animations.play('dih', 9, true);
+  // } else {
+  //   this.player.animations.stop('dih', 0);
+  // }
 }
 
 Player.prototype.collideMap = function(player, map) {
