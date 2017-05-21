@@ -15,6 +15,8 @@ Worker.prototype.create = function() {
 
   this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
+  this.worker.width = 40;
+  this.worker.height = 60;
   this.worker.body.bounce.x = 1;
   this.worker.body.gravity.y = 980;
   this.worker.body.collideWorldBounds = true;

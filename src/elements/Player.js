@@ -2,13 +2,13 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 80,
+      x: 120,
       y: 1000,
     };
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
@@ -17,6 +17,10 @@ Player.prototype.create = function() {
 
   this.player.body.tilePadding.x = 10;
   this.player.body.tilePadding.y = 10;
+
+  //АНИМАЦИИ
+  //Дыхание
+  this.player.animations.add('dih');
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -45,6 +49,14 @@ Player.prototype.update = function() {
   this.Game.Player.player.inRope = false;
   //Лестницы
   this.Game.Player.player.inStairs = false;
+
+  //АНИМАЦИИ
+  //Дыхание
+  if(this.player.body.velocity.x == 0) {
+    this.player.animations.play('dih', 9, true);
+  } else {
+    this.player.animations.stop('dih', 0);
+  }
 }
 
 Player.prototype.collideMap = function(player, map) {

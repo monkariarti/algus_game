@@ -100,6 +100,8 @@ function preload() {
         this.load.image(spriteKey, sprites[spriteKey]);
     }
 
+    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
+
     Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
@@ -476,7 +478,7 @@ function Map(Game) {
 Map.prototype.create = function() {
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
-  this.tilemap.setCollisionByExclusion([28]);
+  this.tilemap.setCollisionByExclusion([28, 31, 44, 57]);
 
   this.mapLayer =  this.tilemap.createLayer(0);
   this.Game.physics.enable(this.mapLayer, Phaser.Physics.ARCADE);
@@ -564,13 +566,13 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 80,
+      x: 120,
       y: 1000,
     };
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.body.bounce.y = 0;
@@ -579,6 +581,10 @@ Player.prototype.create = function() {
 
   this.player.body.tilePadding.x = 10;
   this.player.body.tilePadding.y = 10;
+
+  //АНИМАЦИИ
+  //Дыхание
+  this.player.animations.add('dih');
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -607,6 +613,14 @@ Player.prototype.update = function() {
   this.Game.Player.player.inRope = false;
   //Лестницы
   this.Game.Player.player.inStairs = false;
+
+  //АНИМАЦИИ
+  //Дыхание
+  if(this.player.body.velocity.x == 0) {
+    this.player.animations.play('dih', 9, true);
+  } else {
+    this.player.animations.stop('dih', 0);
+  }
 }
 
 Player.prototype.collideMap = function(player, map) {
@@ -734,6 +748,8 @@ Worker.prototype.create = function() {
 
   this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
+  this.worker.width = 40;
+  this.worker.height = 60;
   this.worker.body.bounce.x = 1;
   this.worker.body.gravity.y = 980;
   this.worker.body.collideWorldBounds = true;

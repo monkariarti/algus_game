@@ -28,6 +28,8 @@ function preload() {
         this.load.image(spriteKey, sprites[spriteKey]);
     }
 
+    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
+
     Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
