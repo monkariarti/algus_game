@@ -8,9 +8,11 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
+  this.player.width = 40;
+  this.player.height = 60;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
@@ -28,6 +30,8 @@ Player.prototype.create = function() {
   }
 
   this.player.haveWorker = false;
+
+  this.player.animations.stop();
 
   //this.Game.camera.follow(this.player);
 }

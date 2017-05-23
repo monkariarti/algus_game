@@ -3,6 +3,7 @@ function Worker(set, Game) {
   this.Game = Game;
 
   this.upTimer = 0;
+  this.moneyTimer = 0;
 }
 
 Worker.prototype.create = function() {
@@ -52,6 +53,12 @@ Worker.prototype.update = function() {
   if(this.table.overlapPlayer && this.worker.inPlayer) {
     this.startWorkWorker();
     this.Game.Player.player.haveWorker = false;
+  }
+
+  //Деньги
+  if(!this.worker.isUp && !this.worker.inPlayer && this.Game.time.now >= this.moneyTimer) {
+    this.Game.Money.addMoney(1);
+    this.moneyTimer = this.Game.time.now + 1000;
   }
 }
 

@@ -6,6 +6,7 @@ let Rope = require( './elements/Rope' );
 let Stairs = require( './elements/Stairs' );
 let Worker = require( './elements/Worker' );
 let Menu = require( './gui/Menu' );
+let Money = require( './gui/Money' );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -38,6 +39,9 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+
+    //GUI
+    this.Money = new Money(this);
     this.Menu = new Menu(this);
 }
 
@@ -292,6 +296,8 @@ function create() {
 
   this.Player.create();
 
+  //GUI
+  this.Money.create();
   this.Menu.create();
 }
 
@@ -299,6 +305,8 @@ function update() {
   this.Menu.update();
 
   if(Game.physics.arcade.isPaused) return;
+
+  this.Money.update();
 
   this.Player.update();
 

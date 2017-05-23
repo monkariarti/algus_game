@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -78,6 +78,7 @@ let Rope = __webpack_require__( 4 );
 let Stairs = __webpack_require__( 6 );
 let Worker = __webpack_require__( 7 );
 let Menu = __webpack_require__( 8 );
+let Money = __webpack_require__( 9 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -110,6 +111,9 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+
+    //GUI
+    this.Money = new Money(this);
     this.Menu = new Menu(this);
 }
 
@@ -364,6 +368,8 @@ function create() {
 
   this.Player.create();
 
+  //GUI
+  this.Money.create();
   this.Menu.create();
 }
 
@@ -371,6 +377,8 @@ function update() {
   this.Menu.update();
 
   if(Game.physics.arcade.isPaused) return;
+
+  this.Money.update();
 
   this.Player.update();
 
@@ -572,11 +580,11 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
-  this.player.width = 80;
-  this.player.height = 120;
+  this.player.width = 40;
+  this.player.height = 60;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
@@ -586,7 +594,7 @@ Player.prototype.create = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  //this.player.animations.add('dih');
+  this.player.animations.add('dih');
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -594,6 +602,8 @@ Player.prototype.create = function() {
   }
 
   this.player.haveWorker = false;
+
+  this.player.animations.stop();
 
   //this.Game.camera.follow(this.player);
 }
@@ -618,11 +628,11 @@ Player.prototype.update = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  // if(this.player.body.velocity.x == 0) {
-  //   this.player.animations.play('dih', 9, true);
-  // } else {
-  //   this.player.animations.stop('dih', 0);
-  // }
+  if(this.player.body.velocity.x == 0) {
+    this.player.animations.play('dih', 9, true);
+  } else {
+    this.player.animations.stop('dih', 0);
+  }
 }
 
 Player.prototype.collideMap = function(player, map) {
@@ -738,6 +748,7 @@ function Worker(set, Game) {
   this.Game = Game;
 
   this.upTimer = 0;
+  this.moneyTimer = 0;
 }
 
 Worker.prototype.create = function() {
@@ -787,6 +798,12 @@ Worker.prototype.update = function() {
   if(this.table.overlapPlayer && this.worker.inPlayer) {
     this.startWorkWorker();
     this.Game.Player.player.haveWorker = false;
+  }
+
+  //Деньги
+  if(!this.worker.isUp && !this.worker.inPlayer && this.Game.time.now >= this.moneyTimer) {
+    this.Game.Money.addMoney(1);
+    this.moneyTimer = this.Game.time.now + 1000;
   }
 }
 
@@ -900,6 +917,41 @@ module.exports = Menu;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports) {
+
+function Money(Game) {
+  this.Game = Game;
+
+  this.textStyle = { font: "30px Arial", fill: "#000000" };
+
+  this.money = 0;
+  this.maxMoney = 100000;
+
+  this.penalty = 200;
+}
+
+Money.prototype.create = function() {
+  this.text = this.Game.add.text(40, 40, this.money + " / " + this.maxMoney, this.textStyle);
+  this.text.fixedToCamera = true;
+}
+
+Money.prototype.update = function() {
+  this.text.setText(this.money + " / " + this.maxMoney);
+}
+
+Money.prototype.addMoney = function(money) {
+  this.money += money;
+}
+
+Money.prototype.setPenalty = function(money) {
+  this.money -= money;
+}
+
+module.exports = Money;
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
