@@ -5,6 +5,7 @@ let Spike = require( './elements/Spike' );
 let Rope = require( './elements/Rope' );
 let Stairs = require( './elements/Stairs' );
 let Worker = require( './elements/Worker' );
+let Bonus = require( './elements/Bonus' );
 let Menu = require( './gui/Menu' );
 let Money = require( './gui/Money' );
 
@@ -294,6 +295,103 @@ function create() {
   }, this);
   this.Workers[14].create();
 
+  this.Bonuses = [];
+  this.Bonuses[0] = new Bonus({
+    x: 100,
+    y: 530,
+  }, this);
+  this.Bonuses[0].create();
+  this.Bonuses[1] = new Bonus({
+    x: 440,
+    y: 410,
+  }, this);
+  this.Bonuses[1].create();
+  this.Bonuses[2] = new Bonus({
+    x: 640,
+    y: 130,
+  }, this);
+  this.Bonuses[2].create();
+  this.Bonuses[3] = new Bonus({
+    x: 1480,
+    y: 330,
+  }, this);
+  this.Bonuses[3].create();
+  this.Bonuses[4] = new Bonus({
+    x: 2680,
+    y: 110,
+  }, this);
+  this.Bonuses[4].create();
+  this.Bonuses[5] = new Bonus({
+    x: 3480,
+    y: 130,
+  }, this);
+  this.Bonuses[5].create();
+  this.Bonuses[6] = new Bonus({
+    x: 440,
+    y: 870,
+  }, this);
+  this.Bonuses[6].create();
+  this.Bonuses[7] = new Bonus({
+    x: 900,
+    y: 950,
+  }, this);
+  this.Bonuses[7].create();
+  this.Bonuses[8] = new Bonus({
+    x: 2100,
+    y: 770,
+  }, this);
+  this.Bonuses[8].create();
+  this.Bonuses[9] = new Bonus({
+    x: 2290,
+    y: 870,
+  }, this);
+  this.Bonuses[9].create();
+  this.Bonuses[10] = new Bonus({
+    x: 3260,
+    y: 1070,
+  }, this);
+  this.Bonuses[10].create();
+  this.Bonuses[11] = new Bonus({
+    x: 3120,
+    y: 1290,
+  }, this);
+  this.Bonuses[11].create();
+  this.Bonuses[12] = new Bonus({
+    x: 3700,
+    y: 1590,
+  }, this);
+  this.Bonuses[12].create();
+  this.Bonuses[13] = new Bonus({
+    x: 3000,
+    y: 1810,
+  }, this);
+  this.Bonuses[13].create();
+  this.Bonuses[14] = new Bonus({
+    x: 2640,
+    y: 1430,
+  }, this);
+  this.Bonuses[14].create();
+  this.Bonuses[15] = new Bonus({
+    x: 2420,
+    y: 1910,
+  }, this);
+  this.Bonuses[15].create();
+  this.Bonuses[16] = new Bonus({
+    x: 1620,
+    y: 1510,
+  }, this);
+  this.Bonuses[16].create();
+  this.Bonuses[17] = new Bonus({
+    x: 980,
+    y: 1630,
+  }, this);
+  this.Bonuses[17].create();
+  this.Bonuses[18] = new Bonus({
+    x: 220,
+    y: 1530,
+  }, this);
+  this.Bonuses[18].create();
+
   this.Player.create();
 
   //GUI
@@ -344,6 +442,9 @@ function update() {
   }
   for(let i = 0; i < this.Workers.length; i++) {
     this.Workers[i].update();
+  }
+  for(let i = 0; i < this.Bonuses.length; i++) {
+    this.Bonuses[i].update();
   }
 
   if (this.cursors.up.isDown) {

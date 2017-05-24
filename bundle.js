@@ -63,22 +63,23 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let Map = __webpack_require__( 1 );
-let Player = __webpack_require__( 3 );
-let Platform = __webpack_require__( 2 );
-let Spike = __webpack_require__( 5 );
-let Rope = __webpack_require__( 4 );
-let Stairs = __webpack_require__( 6 );
-let Worker = __webpack_require__( 7 );
-let Menu = __webpack_require__( 8 );
-let Money = __webpack_require__( 9 );
+let Map = __webpack_require__( 2 );
+let Player = __webpack_require__( 4 );
+let Platform = __webpack_require__( 3 );
+let Spike = __webpack_require__( 6 );
+let Rope = __webpack_require__( 5 );
+let Stairs = __webpack_require__( 7 );
+let Worker = __webpack_require__( 8 );
+let Bonus = __webpack_require__( 1 );
+let Menu = __webpack_require__( 9 );
+let Money = __webpack_require__( 10 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -366,6 +367,103 @@ function create() {
   }, this);
   this.Workers[14].create();
 
+  this.Bonuses = [];
+  this.Bonuses[0] = new Bonus({
+    x: 100,
+    y: 530,
+  }, this);
+  this.Bonuses[0].create();
+  this.Bonuses[1] = new Bonus({
+    x: 440,
+    y: 410,
+  }, this);
+  this.Bonuses[1].create();
+  this.Bonuses[2] = new Bonus({
+    x: 640,
+    y: 130,
+  }, this);
+  this.Bonuses[2].create();
+  this.Bonuses[3] = new Bonus({
+    x: 1480,
+    y: 330,
+  }, this);
+  this.Bonuses[3].create();
+  this.Bonuses[4] = new Bonus({
+    x: 2680,
+    y: 110,
+  }, this);
+  this.Bonuses[4].create();
+  this.Bonuses[5] = new Bonus({
+    x: 3480,
+    y: 130,
+  }, this);
+  this.Bonuses[5].create();
+  this.Bonuses[6] = new Bonus({
+    x: 440,
+    y: 870,
+  }, this);
+  this.Bonuses[6].create();
+  this.Bonuses[7] = new Bonus({
+    x: 900,
+    y: 950,
+  }, this);
+  this.Bonuses[7].create();
+  this.Bonuses[8] = new Bonus({
+    x: 2100,
+    y: 770,
+  }, this);
+  this.Bonuses[8].create();
+  this.Bonuses[9] = new Bonus({
+    x: 2290,
+    y: 870,
+  }, this);
+  this.Bonuses[9].create();
+  this.Bonuses[10] = new Bonus({
+    x: 3260,
+    y: 1070,
+  }, this);
+  this.Bonuses[10].create();
+  this.Bonuses[11] = new Bonus({
+    x: 3120,
+    y: 1290,
+  }, this);
+  this.Bonuses[11].create();
+  this.Bonuses[12] = new Bonus({
+    x: 3700,
+    y: 1590,
+  }, this);
+  this.Bonuses[12].create();
+  this.Bonuses[13] = new Bonus({
+    x: 3000,
+    y: 1810,
+  }, this);
+  this.Bonuses[13].create();
+  this.Bonuses[14] = new Bonus({
+    x: 2640,
+    y: 1430,
+  }, this);
+  this.Bonuses[14].create();
+  this.Bonuses[15] = new Bonus({
+    x: 2420,
+    y: 1910,
+  }, this);
+  this.Bonuses[15].create();
+  this.Bonuses[16] = new Bonus({
+    x: 1620,
+    y: 1510,
+  }, this);
+  this.Bonuses[16].create();
+  this.Bonuses[17] = new Bonus({
+    x: 980,
+    y: 1630,
+  }, this);
+  this.Bonuses[17].create();
+  this.Bonuses[18] = new Bonus({
+    x: 220,
+    y: 1530,
+  }, this);
+  this.Bonuses[18].create();
+
   this.Player.create();
 
   //GUI
@@ -416,6 +514,9 @@ function update() {
   }
   for(let i = 0; i < this.Workers.length; i++) {
     this.Workers[i].update();
+  }
+  for(let i = 0; i < this.Bonuses.length; i++) {
+    this.Bonuses[i].update();
   }
 
   if (this.cursors.up.isDown) {
@@ -469,7 +570,7 @@ function update() {
 }
 
 function render() {
-  //Game.debug.spriteInfo(this.Player.player, 32, 32);
+  Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
@@ -477,6 +578,43 @@ module.exports = Game;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+function Bonus(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Bonus.prototype.create = function() {
+  this.createBonus();
+}
+
+Bonus.prototype.update = function() {
+  //Наложение
+  this.Game.physics.arcade.overlap(this.Game.Player.player, this.bonus, this.overlap, null, this);
+}
+
+Bonus.prototype.overlap = function(player, bonus) {
+  bonus.destroy();
+  this.Game.Money.addMoney(100);
+  setTimeout(() => {
+    this.createBonus();
+  }, 20000);
+}
+
+Bonus.prototype.createBonus = function() {
+  this.bonus = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.bonus.rotation = 0.8;
+  this.Game.physics.enable(this.bonus, Phaser.Physics.ARCADE);
+  this.bonus.body.immovable = true;
+  this.bonus.body.allowGravity = false;
+}
+
+module.exports = Bonus;
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 function Map(Game) {
@@ -498,7 +636,7 @@ module.exports = Map;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 function Platform(type, set, Game) {
@@ -567,7 +705,7 @@ module.exports = Platform;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 function Player(Game) {
@@ -650,7 +788,7 @@ module.exports = Player;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function Rope(set, Game) {
@@ -680,7 +818,7 @@ module.exports = Rope;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -710,7 +848,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 function Stairs(set, Game) {
@@ -740,7 +878,7 @@ module.exports = Stairs;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Worker(set, Game) {
@@ -851,7 +989,7 @@ module.exports = Worker;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function Menu(Game) {
@@ -916,7 +1054,7 @@ module.exports = Menu;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function Money(Game) {
@@ -951,7 +1089,7 @@ module.exports = Money;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
