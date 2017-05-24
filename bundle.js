@@ -570,7 +570,7 @@ function update() {
 }
 
 function render() {
-  Game.debug.spriteInfo(this.Player.player, 32, 32);
+  //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
@@ -599,7 +599,7 @@ Bonus.prototype.overlap = function(player, bonus) {
   this.Game.Money.addMoney(100);
   setTimeout(() => {
     this.createBonus();
-  }, 20000);
+  }, this.Game.rnd.between(1, 2) * 60 * 1000);
 }
 
 Bonus.prototype.createBonus = function() {
