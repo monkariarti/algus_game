@@ -63,6 +63,7 @@ function create() {
 
   this.Map.create();
 
+  //Пропадающие платформы
   this.FadePlatforms = [];
   this.FadePlatforms[0] = new Platform('fade', {
     x: 1560,
@@ -103,6 +104,7 @@ function create() {
   }, this);
   this.FadePlatforms[5].create();
 
+  //Двигающиеся платформы
   this.MovingPlatforms = [];
   this.MovingPlatforms[0] = new Platform('moving', {
     x: 700,
@@ -136,6 +138,7 @@ function create() {
   }, this);
   this.MovingPlatforms[4].create();
 
+  //Шипы
   this.Spikes = [];
   this.Spikes[0] = new Spike({
     x: 1400,
@@ -161,6 +164,7 @@ function create() {
   }, this);
   this.Spikes[2].create();
 
+  //Веревки
   this.Ropes = [];
   this.Ropes[0] = new Rope({
     x: 1320,
@@ -187,6 +191,7 @@ function create() {
   }, this);
   this.Ropes[3].create();
 
+  //Лестницы
   this.Stairs = [];
   this.Stairs[0] = new Stairs({
     x: 3840,
@@ -203,6 +208,7 @@ function create() {
   }, this);
   this.Stairs[1].create();
 
+  //Работники
   this.Workers = [];
   //Саня
   this.Workers[0] = new Worker({
@@ -295,6 +301,7 @@ function create() {
   }, this);
   this.Workers[14].create();
 
+  //Бонусы
   this.Bonuses = [];
   this.Bonuses[0] = new Bonus({
     x: 100,
