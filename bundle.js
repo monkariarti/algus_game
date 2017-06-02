@@ -136,13 +136,15 @@ function create() {
 
   this.Map.create();
 
-  this.Guns = [];
-  this.Guns[0] = new Gun({
-    x: 500,
-    y: 1000,
-  }, this);
-  this.Guns[0].create();
 
+  // this.Guns = [];
+  // this.Guns[0] = new Gun({
+  //   x: 500,
+  //   y: 1000,
+  // }, this);
+  // this.Guns[0].create();
+
+  //Пропадающие платформы
   this.FadePlatforms = [];
   this.FadePlatforms[0] = new Platform('fade', {
     x: 1560,
@@ -183,6 +185,7 @@ function create() {
   }, this);
   this.FadePlatforms[5].create();
 
+  //Двигающиеся платформы
   this.MovingPlatforms = [];
   this.MovingPlatforms[0] = new Platform('moving', {
     x: 700,
@@ -216,6 +219,7 @@ function create() {
   }, this);
   this.MovingPlatforms[4].create();
 
+  //Шипы
   this.Spikes = [];
   this.Spikes[0] = new Spike({
     x: 1400,
@@ -241,6 +245,7 @@ function create() {
   }, this);
   this.Spikes[2].create();
 
+  //Веревки
   this.Ropes = [];
   this.Ropes[0] = new Rope({
     x: 1320,
@@ -267,6 +272,7 @@ function create() {
   }, this);
   this.Ropes[3].create();
 
+  //Лестницы
   this.Stairs = [];
   this.Stairs[0] = new Stairs({
     x: 3840,
@@ -283,6 +289,7 @@ function create() {
   }, this);
   this.Stairs[1].create();
 
+  //Работники
   this.Workers = [];
   //Саня
   this.Workers[0] = new Worker({
@@ -375,6 +382,7 @@ function create() {
   }, this);
   this.Workers[14].create();
 
+  //Бонусы
   this.Bonuses = [];
   this.Bonuses[0] = new Bonus({
     x: 100,
@@ -578,7 +586,7 @@ function update() {
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
   }
-  
+
 }
 
 
@@ -643,22 +651,22 @@ Gun.prototype.create = function() {
   this.Game.physics.enable(this.gun, Phaser.Physics.ARCADE);
   this.gun.body.immovable = true;
   this.gun.body.allowGravity = false;
-  this.gun.autofire = true;
-  //this.gun.angle.trackSprite(this.Game.Player, 0, 0);
 
   this.weapon = this.Game.add.weapon(40, 'black');
-  //this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
   this.weapon.bulletSpeed = 400;
-  this.weapon.fireRate = 50;
+  this.weapon.fireRate = 500;
   this.weapon.trackSprite(this.gun, 0, 0);
+  this.weapon.autofire = true;
 }
 
 Gun.prototype.update = function() {
-  
+
 }
 
 
 module.exports = Gun;
+
 
 /***/ }),
 /* 3 */
