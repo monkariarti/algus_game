@@ -63,14 +63,14 @@ function create() {
   this.jumpTimer = 0;
 
   this.Map.create();
-  
-  
-  this.Guns = [];
-  this.Guns[0] = new Gun({
-    x: 500,
-    y: 1000,
-  }, this);
-  this.Guns[0].create();
+
+
+  // this.Guns = [];
+  // this.Guns[0] = new Gun({
+  //   x: 500,
+  //   y: 1000,
+  // }, this);
+  // this.Guns[0].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
@@ -514,7 +514,7 @@ function update() {
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
   }
-  
+
 }
 
 

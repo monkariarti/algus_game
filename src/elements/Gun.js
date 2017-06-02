@@ -10,18 +10,17 @@ Gun.prototype.create = function() {
   this.Game.physics.enable(this.gun, Phaser.Physics.ARCADE);
   this.gun.body.immovable = true;
   this.gun.body.allowGravity = false;
-  this.gun.autofire = true;
-  //this.gun.angle.trackSprite(this.Game.Player, 0, 0);
 
   this.weapon = this.Game.add.weapon(40, 'black');
-  //this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
   this.weapon.bulletSpeed = 400;
-  this.weapon.fireRate = 50;
+  this.weapon.fireRate = 500;
   this.weapon.trackSprite(this.gun, 0, 0);
+  this.weapon.autofire = true;
 }
 
 Gun.prototype.update = function() {
-  
+
 }
 
 
