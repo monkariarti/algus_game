@@ -6,6 +6,7 @@ let Rope = require( './elements/Rope' );
 let Stairs = require( './elements/Stairs' );
 let Worker = require( './elements/Worker' );
 let Bonus = require( './elements/Bonus' );
+let Gun = require( './elements/Gun' );
 let Menu = require( './gui/Menu' );
 let Money = require( './gui/Money' );
 
@@ -62,6 +63,13 @@ function create() {
   this.jumpTimer = 0;
 
   this.Map.create();
+
+  this.Guns = [];
+  this.Guns[0] = new Gun({
+    x: 500,
+    y: 1000,
+  }, this);
+  this.Guns[0].create();
 
   this.FadePlatforms = [];
   this.FadePlatforms[0] = new Platform('fade', {
@@ -446,6 +454,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
+  for(let i = 0; i < this.Guns.length; i++) {
+    this.Guns[i].update();
+  }
 
   if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
@@ -495,10 +506,13 @@ function update() {
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
   }
+  
 }
 
+
+
 function render() {
-  //Game.debug.spriteInfo(this.Player.player, 32, 32);
+  Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;

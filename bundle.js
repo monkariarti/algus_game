@@ -63,23 +63,24 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let Map = __webpack_require__( 2 );
-let Player = __webpack_require__( 4 );
-let Platform = __webpack_require__( 3 );
-let Spike = __webpack_require__( 6 );
-let Rope = __webpack_require__( 5 );
-let Stairs = __webpack_require__( 7 );
-let Worker = __webpack_require__( 8 );
+let Map = __webpack_require__( 3 );
+let Player = __webpack_require__( 5 );
+let Platform = __webpack_require__( 4 );
+let Spike = __webpack_require__( 7 );
+let Rope = __webpack_require__( 6 );
+let Stairs = __webpack_require__( 8 );
+let Worker = __webpack_require__( 9 );
 let Bonus = __webpack_require__( 1 );
-let Menu = __webpack_require__( 9 );
-let Money = __webpack_require__( 10 );
+let Gun = __webpack_require__( 2 );
+let Menu = __webpack_require__( 10 );
+let Money = __webpack_require__( 11 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -134,6 +135,13 @@ function create() {
   this.jumpTimer = 0;
 
   this.Map.create();
+
+  this.Guns = [];
+  this.Guns[0] = new Gun({
+    x: 500,
+    y: 1000,
+  }, this);
+  this.Guns[0].create();
 
   this.FadePlatforms = [];
   this.FadePlatforms[0] = new Platform('fade', {
@@ -518,6 +526,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
+  for(let i = 0; i < this.Guns.length; i++) {
+    this.Guns[i].update();
+  }
 
   if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
@@ -567,10 +578,13 @@ function update() {
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
   }
+  
 }
 
+
+
 function render() {
-  //Game.debug.spriteInfo(this.Player.player, 32, 32);
+  Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
@@ -617,6 +631,39 @@ module.exports = Bonus;
 /* 2 */
 /***/ (function(module, exports) {
 
+function Gun(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Gun.prototype.create = function() {
+  this.gun = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.gun.width = 40;
+  this.gun.height = 40;
+  this.Game.physics.enable(this.gun, Phaser.Physics.ARCADE);
+  this.gun.body.immovable = true;
+  this.gun.body.allowGravity = false;
+  this.gun.autofire = true;
+  //this.gun.angle.trackSprite(this.Game.Player, 0, 0);
+
+  this.weapon = this.Game.add.weapon(40, 'black');
+  //this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletSpeed = 400;
+  this.weapon.fireRate = 50;
+  this.weapon.trackSprite(this.gun, 0, 0);
+}
+
+Gun.prototype.update = function() {
+  
+}
+
+
+module.exports = Gun;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 function Map(Game) {
     this.Game = Game;
 }
@@ -636,7 +683,7 @@ module.exports = Map;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 function Platform(type, set, Game) {
@@ -705,7 +752,7 @@ module.exports = Platform;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function Player(Game) {
@@ -788,7 +835,7 @@ module.exports = Player;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Rope(set, Game) {
@@ -818,7 +865,7 @@ module.exports = Rope;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -848,7 +895,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Stairs(set, Game) {
@@ -878,7 +925,7 @@ module.exports = Stairs;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function Worker(set, Game) {
@@ -989,7 +1036,7 @@ module.exports = Worker;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function Menu(Game) {
@@ -1054,7 +1101,7 @@ module.exports = Menu;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function Money(Game) {
@@ -1089,7 +1136,7 @@ module.exports = Money;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
