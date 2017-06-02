@@ -534,9 +534,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
-  for(let i = 0; i < this.Guns.length; i++) {
-    this.Guns[i].update();
-  }
+  // for(let i = 0; i < this.Guns.length; i++) {
+  //   this.Guns[i].update();
+  // }
 
   if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
@@ -592,7 +592,7 @@ function update() {
 
 
 function render() {
-  Game.debug.spriteInfo(this.Player.player, 32, 32);
+  //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
