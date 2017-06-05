@@ -135,14 +135,14 @@ function create() {
   this.jumpTimer = 0;
 
   this.Map.create();
-
-
-  // this.Guns = [];
-  // this.Guns[0] = new Gun({
-  //   x: 500,
-  //   y: 1000,
-  // }, this);
-  // this.Guns[0].create();
+  
+  
+  this.Guns = [];
+  this.Guns[0] = new Gun({
+    x: 500,
+    y: 1000,
+  }, this);
+  this.Guns[0].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
