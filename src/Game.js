@@ -7,6 +7,7 @@ let Stairs = require( './elements/Stairs' );
 let Worker = require( './elements/Worker' );
 let Bonus = require( './elements/Bonus' );
 let Gun = require( './elements/Gun' );
+let Fire = require( './elements/Fire' );
 let Menu = require( './gui/Menu' );
 let Money = require( './gui/Money' );
 
@@ -216,6 +217,15 @@ function create() {
     height: 100,
   }, this);
   this.Stairs[1].create();
+
+  //Огонь
+  this.FireAll = [];
+  this.FireAll[0] = new Fire({
+    x: 3400,
+    y: 1340,
+    height: 500,
+  }, this);
+  this.FireAll[0].create();
 
   //Работники
   this.Workers = [];
@@ -461,6 +471,9 @@ function update() {
   }
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
+  }
+  for(let i = 0; i < this.FireAll.length; i++) {
+    this.FireAll[i].update();
   }
   // for(let i = 0; i < this.Guns.length; i++) {
   //   this.Guns[i].update();

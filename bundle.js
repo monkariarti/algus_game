@@ -63,24 +63,25 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let Map = __webpack_require__( 3 );
-let Player = __webpack_require__( 5 );
-let Platform = __webpack_require__( 4 );
-let Spike = __webpack_require__( 7 );
-let Rope = __webpack_require__( 6 );
-let Stairs = __webpack_require__( 8 );
-let Worker = __webpack_require__( 9 );
+let Map = __webpack_require__( 4 );
+let Player = __webpack_require__( 6 );
+let Platform = __webpack_require__( 5 );
+let Spike = __webpack_require__( 8 );
+let Rope = __webpack_require__( 7 );
+let Stairs = __webpack_require__( 9 );
+let Worker = __webpack_require__( 10 );
 let Bonus = __webpack_require__( 1 );
-let Gun = __webpack_require__( 2 );
-let Menu = __webpack_require__( 10 );
-let Money = __webpack_require__( 11 );
+let Gun = __webpack_require__( 3 );
+let Fire = __webpack_require__( 2 );
+let Menu = __webpack_require__( 11 );
+let Money = __webpack_require__( 12 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -288,6 +289,15 @@ function create() {
     height: 100,
   }, this);
   this.Stairs[1].create();
+
+  //Огонь
+  this.FireAll = [];
+  this.FireAll[0] = new Fire({
+    x: 3400,
+    y: 1340,
+    height: 500,
+  }, this);
+  this.FireAll[0].create();
 
   //Работники
   this.Workers = [];
@@ -534,6 +544,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
+  for(let i = 0; i < this.FireAll.length; i++) {
+    this.FireAll[i].update();
+  }
   // for(let i = 0; i < this.Guns.length; i++) {
   //   this.Guns[i].update();
   // }
@@ -639,6 +652,50 @@ module.exports = Bonus;
 /* 2 */
 /***/ (function(module, exports) {
 
+function Fire(set, Game) {
+  this.set = set;
+  this.Game = Game;
+}
+
+Fire.prototype.create = function() {
+  this.fire = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.Game.physics.enable(this.fire, Phaser.Physics.ARCADE);
+  this.fire.width = 40;
+  this.fire.height = this.set.height;
+  this.fire.anchor.set(0, 1);
+  this.fire.visible = false;
+  this.fire.body.immovable = true;
+  this.fire.body.allowGravity = false;
+
+  this.rndFire();
+}
+
+Fire.prototype.update = function() {
+    if(this.fire.visible) {
+        this.Game.physics.arcade.collide(this.Game.Player.player, this.fire, this.checkFire, null, this);
+    }
+}
+
+Fire.prototype.checkFire = function(player, fire) {
+    player.death();
+}
+
+Fire.prototype.rndFire = function() {
+    this.interval = setInterval(() => {
+        this.fire.visible = true;
+        setTimeout(() => {
+            this.fire.visible = false;
+        }, 2000)
+    }, this.Game.rnd.between(3, 6) * 1000);
+}
+
+module.exports = Fire;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 function Gun(set, Game) {
   this.set = set;
   this.Game = Game;
@@ -669,7 +726,7 @@ module.exports = Gun;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 function Map(Game) {
@@ -691,7 +748,7 @@ module.exports = Map;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function Platform(type, set, Game) {
@@ -760,7 +817,7 @@ module.exports = Platform;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Player(Game) {
@@ -843,7 +900,7 @@ module.exports = Player;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 function Rope(set, Game) {
@@ -873,7 +930,7 @@ module.exports = Rope;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -903,7 +960,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function Stairs(set, Game) {
@@ -933,7 +990,7 @@ module.exports = Stairs;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function Worker(set, Game) {
@@ -1044,7 +1101,7 @@ module.exports = Worker;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function Menu(Game) {
@@ -1109,7 +1166,7 @@ module.exports = Menu;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function Money(Game) {
@@ -1144,7 +1201,7 @@ module.exports = Money;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
