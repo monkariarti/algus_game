@@ -24,6 +24,7 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
+    gun: 'images/gun.png',
 }
 
 function preload() {
@@ -65,12 +66,12 @@ function create() {
   this.Map.create();
 
 
-  // this.Guns = [];
-  // this.Guns[0] = new Gun({
-  //   x: 500,
-  //   y: 1000,
-  // }, this);
-  // this.Guns[0].create();
+  this.Guns = [];
+  this.Guns[0] = new Gun({
+    x: 720,
+    y: 700,
+  }, this);
+  this.Guns[0].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
@@ -462,9 +463,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
-  // for(let i = 0; i < this.Guns.length; i++) {
-  //   this.Guns[i].update();
-  // }
+  for(let i = 0; i < this.Guns.length; i++) {
+    this.Guns[i].update();
+  }
 
   if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
@@ -520,6 +521,7 @@ function update() {
 
 
 function render() {
+  //Game.debug.spriteInfo(this.Player.player, 32, 32);
   //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 

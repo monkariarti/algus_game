@@ -1,0 +1,22 @@
+{
+  "name": "algus_game",
+  "version": "1.0.0",
+  "description": "This is algus_game, and i don't know what is it.",
+  "main": "1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monkart/algus_game.git"
+  },
+  "keywords": [
+    "123456"
+  ],
+  "author": "ALGUS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/monkart/algus_game/issues"
+  },
+  "homepage": "https://github.com/monkart/algus_game#readme"
+}
