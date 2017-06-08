@@ -97,11 +97,12 @@ let sprites = {
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
     gun: 'images/gun.png',
+    weapon: 'images/weapon.png',
 }
 
 function preload() {
     for(spriteKey in sprites) {
-        this.load.image(spriteKey, sprites[spriteKey]);
+      this.load.image(spriteKey, sprites[spriteKey]);
     }
 
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
@@ -109,7 +110,7 @@ function preload() {
     Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
-        root: root,
+      root: root,
     };
 
     this.Map = new Map(this);
@@ -653,20 +654,21 @@ Gun.prototype.create = function() {
   this.Game.physics.enable(this.gun, Phaser.Physics.ARCADE);
   this.gun.body.immovable = true;
   this.gun.body.allowGravity = false;
+  this.gun.anchor.set(0.5);
 
-  this.weapon = this.Game.add.weapon(50, 'black');
+  this.weapon = this.Game.add.weapon(150, 'weapon');
+  this.weapon.width = 80;
+  this.weapon.height = 80;
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
   this.weapon.bulletSpeed = 1000;
   this.weapon.fireRate = 1000;
-  this.weapon.trackSprite(this.gun, 50, 50);
+  this.weapon.trackSprite(this.gun, 30, 0, true);
   this.weapon.autofire = true;
-  this.weapon.fireAngle = this.Game.ANGLE_LEFT; 
-  
 }
 
 Gun.prototype.update = function() {
   this.gun.rotation = this.Game.physics.arcade.angleBetween(this.gun, this.Game.Player.player);
-  console.log(this.Game.Guns[0].weapon);
+  
   //this.weapon = this.Game.physics.arcade.moveToXY(this.Game.Guns[0].weapon, 800, 1000, 400);
   //this.weapon.fireAtXY(this.Game.Player.player.body.velocity.x, this.Game.Player.player.body.velocity.y);
 }

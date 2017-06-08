@@ -25,11 +25,12 @@ let sprites = {
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
     gun: 'images/gun.png',
+    weapon: 'images/weapon.png',
 }
 
 function preload() {
     for(spriteKey in sprites) {
-        this.load.image(spriteKey, sprites[spriteKey]);
+      this.load.image(spriteKey, sprites[spriteKey]);
     }
 
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
@@ -37,7 +38,7 @@ function preload() {
     Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
-        root: root,
+      root: root,
     };
 
     this.Map = new Map(this);
