@@ -11,13 +11,13 @@ Gun.prototype.create = function() {
   this.gun.body.immovable = true;
   this.gun.body.allowGravity = false;
   this.gun.anchor.set(0, 0.5);
-  
+
   this.circle = new Phaser.Circle(this.set.x+350, this.set.y+350, 700);
   this.graphics = this.Game.add.graphics(0, 0);
   this.graphics.lineStyle(1, 0x00ff00, 1);
   this.graphics.drawCircle(this.circle.x, this.circle.y, this.circle.diameter);
 
-  this.weapon = this.Game.add.weapon(150, 'weapon');
+  this.weapon = this.Game.add.weapon(150, 'black');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
   this.weapon.bulletSpeed = 1000;
   this.weapon.fireRate = 2000;
@@ -35,7 +35,7 @@ Gun.prototype.update = function() {
     this.weapon.fire();
   }
 
-  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Player.player, function(bullet, enemy){bullet.death(); enemy.kill();}); 
+  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Player.player, function(bullet, enemy){bullet.death(); enemy.kill();});
 }
 
 
