@@ -468,6 +468,9 @@ function update() {
     this.Guns[i].update();
   }
 
+  
+
+  //стрелки
   if (this.cursors.up.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -250;
@@ -489,6 +492,31 @@ function update() {
     this.Player.jump();
     this.jumpTimer = Game.time.now + 150;
   }
+
+  w = Game.input.keyboard.addKey(Phaser.Keyboard.W);
+  a = Game.input.keyboard.addKey(Phaser.Keyboard.A);
+  s = Game.input.keyboard.addKey(Phaser.Keyboard.S);
+  d = Game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+  //WASD
+  console.log(this.cursors);
+  if (w.isDown) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
+      this.Player.player.body.velocity.y = -250;
+    }
+  }
+  if (s.isDown) {
+    if(this.Player.player.inRope || this.Player.player.inStairs) {
+      this.Player.player.body.velocity.y = 250;
+    }
+  }
+  if (a.isDown) {
+    this.Player.player.body.velocity.x = -250;
+  }
+  else if (d.isDown) {
+    this.Player.player.body.velocity.x = 250;
+  }
+
 
   //Камера по X
   if(this.Player.player.x > 660) {
