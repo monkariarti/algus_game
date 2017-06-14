@@ -658,7 +658,7 @@ Gun.prototype.create = function() {
 
   this.circle = new Phaser.Circle(this.set.x+350, this.set.y+350, 700);
   this.graphics = this.Game.add.graphics(0, 0);
-  this.graphics.lineStyle(1, 0x00ff00, 1);
+  //this.graphics.lineStyle(1, 0x00ff00, 1);
   this.graphics.drawCircle(this.circle.x, this.circle.y, this.circle.diameter);
 
   this.weapon = this.Game.add.weapon(150, 'black');
@@ -680,6 +680,7 @@ Gun.prototype.update = function() {
   }
 
   this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Player.player, function(bullet, enemy){bullet.death(); enemy.kill();});
+  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Map.mapLayer, function(bullet, enemy){/*bullet.death();*/ bullet.kill();});
 }
 
 
