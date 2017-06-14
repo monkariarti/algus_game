@@ -569,9 +569,9 @@ function update() {
   a = Game.input.keyboard.addKey(Phaser.Keyboard.A);
   s = Game.input.keyboard.addKey(Phaser.Keyboard.S);
   d = Game.input.keyboard.addKey(Phaser.Keyboard.D);
+  g = Game.input.keyboard.addKey(Phaser.Keyboard.G);
 
   //WASD
-  console.log(this.cursors);
   if (w.isDown) {
     if(this.Player.player.inRope || this.Player.player.inStairs) {
       this.Player.player.body.velocity.y = -250;
@@ -590,8 +590,10 @@ function update() {
   }
 
 
+
+//Game.camera.x = (this.Player.player.x - (screen.width/2));
   //Камера по X
-  if(this.Player.player.x > 660) {
+  /*if(this.Player.player.x > 660) {
     Game.camera.x = 550;
   }
   if(this.Player.player.x < 660) {
@@ -602,9 +604,9 @@ function update() {
   }
   if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
     Game.camera.x = 550;
-  }
+  }*/
   //Камера по Y
-  if(this.Player.player.y > 660) {
+  /*if(this.Player.player.y > 660) {
     Game.camera.y = 550;
   }
   if(this.Player.player.y < 660) {
@@ -615,7 +617,8 @@ function update() {
   }
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
-  }
+  }*/
+Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
 
 }
 
