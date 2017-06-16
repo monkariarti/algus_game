@@ -588,6 +588,9 @@ function update() {
   else if (d.isDown) {
     this.Player.player.body.velocity.x = 250;
   }
+  if (g.isDown) {
+    Game.world.setSize(2240, 2240);
+  }
 
 
 
@@ -618,7 +621,19 @@ function update() {
   if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
     Game.camera.y = 550;
   }*/
-Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
+  var terrainScalex = root.offsetWidth/2;
+  var terrainScaley = root.offsetHeight/2;
+  if (this.input.keyboard.isDown(Phaser.Keyboard.Q)) {
+    terrainScalex += 100;
+    terrainScaley += 100;
+    console.log(this.game);
+    this.game.renderer.resize(terrainScalex,terrainScaley);
+  } else if (this.input.keyboard.isDown(Phaser.Keyboard.A)) {
+    terrainScalex -= 100;
+    terrainScaley -= 100;
+    this.game.renderer.resize(terrainScalex,terrainScaley);
+  }
 
 }
 
@@ -631,6 +646,23 @@ function render() {
 
 module.exports = Game;
 
+
+/*zoomTo(scale, duration) {
+  ...
+  if (!duration) {
+      ...
+  } else {
+      Game.add.tween(cameraBounds).to({
+          x      : bounds.width  * (1 - scale) / 2,
+          y      : bounds.height * (1 - scale) / 2,
+          width  : bounds.width  * scale,
+          height : bounds.height * scale
+      }, duration).start();
+      return Game.add.tween(this.scale).to({
+          x: scale, y: scale
+      }, duration).start();
+  }
+}*/
 
 /***/ }),
 /* 1 */
