@@ -106,7 +106,8 @@ function preload() {
 
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
 
-    Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
         root: root,
@@ -574,33 +575,33 @@ function update() {
   }
 
   //Камера по X
-  // if(this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
-  // if(this.Player.player.x < 660) {
-  //   Game.camera.x = 0;
-  // }
-  // if(this.Player.player.x > 2180) {
-  //   Game.camera.x = 2080;
-  // }
-  // if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
+  if(this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
+  if(this.Player.player.x < 660) {
+    Game.camera.x = 0;
+  }
+  if(this.Player.player.x > 2180) {
+    Game.camera.x = 2080;
+  }
+  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
   //Камера по Y
-  // if(this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
-  // if(this.Player.player.y < 660) {
-  //   Game.camera.y = 0;
-  // }
-  // if(this.Player.player.y > 1280) {
-  //   Game.camera.y = 1280;
-  // }
-  // if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
+  if(this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
+  if(this.Player.player.y < 660) {
+    Game.camera.y = 0;
+  }
+  if(this.Player.player.y > 1280) {
+    Game.camera.y = 1280;
+  }
+  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
 
-  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
+  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 
@@ -736,6 +737,10 @@ function Map(Game) {
 }
 
 Map.prototype.create = function() {
+  this.walls = this.Game.add.tilemap('tilemapWalls', 20, 20);
+  this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
+  this.wallsLayer =  this.walls.createLayer(0);
+
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
   this.tilemap.setCollisionByExclusion([28, 31, 44, 57]);

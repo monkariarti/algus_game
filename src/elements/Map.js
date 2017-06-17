@@ -3,6 +3,10 @@ function Map(Game) {
 }
 
 Map.prototype.create = function() {
+  this.walls = this.Game.add.tilemap('tilemapWalls', 20, 20);
+  this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
+  this.wallsLayer =  this.walls.createLayer(0);
+
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
   this.tilemap.setCollisionByExclusion([28, 31, 44, 57]);
