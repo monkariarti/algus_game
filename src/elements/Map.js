@@ -9,7 +9,7 @@ Map.prototype.create = function() {
 
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
-  this.tilemap.setCollisionByExclusion([28, 31, 44, 57]);
+  this.tilemap.setCollisionByExclusion([28, 31, 44, 57, 104, 105, 106, 107, 108, 109, 110, 111, 91, 98]);
 
   this.mapLayer =  this.tilemap.createLayer(0);
   this.Game.physics.enable(this.mapLayer, Phaser.Physics.ARCADE);
