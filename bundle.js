@@ -63,25 +63,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let Map = __webpack_require__( 4 );
-let Player = __webpack_require__( 6 );
-let Platform = __webpack_require__( 5 );
-let Spike = __webpack_require__( 8 );
-let Rope = __webpack_require__( 7 );
-let Stairs = __webpack_require__( 9 );
-let Worker = __webpack_require__( 10 );
+let Map = __webpack_require__( 5 );
+let Player = __webpack_require__( 7 );
+let Boss = __webpack_require__( 2 );
+let Platform = __webpack_require__( 6 );
+let Spike = __webpack_require__( 9 );
+let Rope = __webpack_require__( 8 );
+let Stairs = __webpack_require__( 10 );
+let Worker = __webpack_require__( 11 );
 let Bonus = __webpack_require__( 1 );
-let Gun = __webpack_require__( 3 );
-let Fire = __webpack_require__( 2 );
-let Menu = __webpack_require__( 11 );
-let Money = __webpack_require__( 12 );
+let Gun = __webpack_require__( 4 );
+let Fire = __webpack_require__( 3 );
+let Menu = __webpack_require__( 12 );
+let Money = __webpack_require__( 13 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -97,6 +98,7 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
+    danila: 'images/danila1.png',
 }
 
 function preload() {
@@ -104,7 +106,8 @@ function preload() {
         this.load.image(spriteKey, sprites[spriteKey]);
     }
 
-    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
+    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
+    Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
@@ -115,6 +118,7 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+    this.Boss = new Boss(this);
 
     //GUI
     this.Money = new Money(this);
@@ -122,6 +126,12 @@ function preload() {
 }
 
 function create() {
+  Game.scale.setGameSize(this.global.root.offsetWidth / 2, this.global.root.offsetHeight / 2);
+  Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  Game.scale.pageAlignHorisontally = true;
+  Game.scale.pageAlignVertically = true;
+  Game.scale.forcePortrait = true;
+
   Game.world.setBounds(0, 0, 4000, 2000);
 
   Game.stage.backgroundColor = '#ffffff';
@@ -493,6 +503,8 @@ function create() {
 
   this.Player.create();
 
+  this.Boss.create();
+
   //GUI
   this.Money.create();
   this.Menu.create();
@@ -506,6 +518,8 @@ function update() {
   this.Money.update();
 
   this.Player.update();
+
+  this.Boss.update();
 
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
@@ -574,34 +588,34 @@ function update() {
     this.jumpTimer = Game.time.now + 150;
   }
 
-  //Камера по X
-  if(this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  if(this.Player.player.x < 660) {
-    Game.camera.x = 0;
-  }
-  if(this.Player.player.x > 2180) {
-    Game.camera.x = 2080;
-  }
-  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  //Камера по Y
-  if(this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-  if(this.Player.player.y < 660) {
-    Game.camera.y = 0;
-  }
-  if(this.Player.player.y > 1280) {
-    Game.camera.y = 1280;
-  }
-  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
+  // //Камера по X
+  // if(this.Player.player.x > 660) {
+  //   Game.camera.x = 550;
+  // }
+  // if(this.Player.player.x < 660) {
+  //   Game.camera.x = 0;
+  // }
+  // if(this.Player.player.x > 2180) {
+  //   Game.camera.x = 2080;
+  // }
+  // if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
+  //   Game.camera.x = 550;
+  // }
+  // //Камера по Y
+  // if(this.Player.player.y > 660) {
+  //   Game.camera.y = 550;
+  // }
+  // if(this.Player.player.y < 660) {
+  //   Game.camera.y = 0;
+  // }
+  // if(this.Player.player.y > 1280) {
+  //   Game.camera.y = 1280;
+  // }
+  // if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+  //   Game.camera.y = 550;
+  // }
 
-  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
+  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 
@@ -655,6 +669,112 @@ module.exports = Bonus;
 /* 2 */
 /***/ (function(module, exports) {
 
+function Boss(Game) {
+    this.Game = Game;
+
+    this.default = {
+      x: 2890,
+      y: 1890,
+    }
+
+    this.turn = 0;
+}
+
+Boss.prototype.create = function() {
+  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'black');
+  this.boss.width = 140;
+  this.boss.height = 140;
+  this.boss.anchor.set(0.5, 0.5);
+
+  this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
+  this.boss.body.collideWorldBounds = true;
+  this.boss.body.immovable = true;
+  this.boss.body.allowGravity = false;
+  this.boss.body.bounce.set(1);
+  this.boss.body.velocity.set(-150, 0);
+
+  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletAngleOffset = 90;
+  this.weapon.bulletSpeed = 400;
+  this.weapon.fireRate = 1500;
+  this.weapon.autofire = true;
+  this.weapon.bulletAngleVariance = 10;
+  this.weapon.fireAngle = 0;
+  this.weapon.setBulletBodyOffset(30, 30);
+  this.weapon.trackSprite(this.boss, 0, -20);
+  this.weapon.bullets.forEach((bullet) => {
+    bullet.width = 30;
+    bullet.height = 30;
+    bullet.damage = 1000;
+    bullet.body.bounce.set(0.6);
+  });
+
+  console.log(this.boss);
+}
+
+Boss.prototype.update = function() {
+  //this.Game.physics.arcade.collide(this.Game.Player.player, this.boss, this.collidePlayer, null, this.Game);
+  //this.Game.physics.arcade.collide(this.boss, this.Game.Map.mapLayer, null, null, this.Game);
+
+  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Map.mapLayer, this.collideBulletMap, null, this);
+  this.Game.physics.arcade.collide(this.Game.Player.player, this.weapon.bullets, this.collidePlayerBullet, null, this);
+  this.Game.physics.arcade.collide(this.Game.Player.player, this.boss, this.collidePlayerBoss, null, this);
+
+  if(this.boss.x >= 3890) {
+    this.turn = 0;
+    this.boss.body.velocity.set(-150, 0);
+  }
+  if(this.boss.x <= 2015) {
+    this.boss.body.velocity.set(150, 0);
+    this.turn = 1;
+  }
+
+  if(this.turn == 1) {
+    this.weapon.fireAngle = 0;
+  } else {
+    this.weapon.fireAngle = -180;
+  }
+}
+
+Boss.prototype.collidePlayerBoss = function(player, boss) {
+  player.death();
+}
+
+Boss.prototype.collideBulletMap = function(bullet, map) {
+  if(!bullet.timeout) {
+    bullet.timeout = setTimeout(() => {
+      this.bulletBoom(bullet);
+    }, 1200);
+  }
+}
+
+Boss.prototype.collidePlayerBullet = function(player, bullet) {
+  this.bulletBoom(bullet);
+  player.death();
+}
+
+Boss.prototype.bulletBoom = function(bullet) {
+  bullet.kill();
+
+  let explosion = this.Game.add.sprite(bullet.x, bullet.y, 'exp1');
+  explosion.width = 150;
+  explosion.height = 150;
+  explosion.anchor.set(0.5, 0.5);
+  explosion.animations.add('boom');
+  explosion.animations.play('boom', 64, false, true);
+
+  clearTimeout(bullet.timeout);
+  bullet.timeout = false;
+}
+
+module.exports = Boss;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
 function Fire(set, Game) {
   this.set = set;
   this.Game = Game;
@@ -696,7 +816,7 @@ module.exports = Fire;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 function Gun(set, Game) {
@@ -729,7 +849,7 @@ module.exports = Gun;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function Map(Game) {
@@ -755,7 +875,7 @@ module.exports = Map;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Platform(type, set, Game) {
@@ -824,24 +944,26 @@ module.exports = Platform;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
+      //x: 120,
+      //y: 1000,
+      x: 2290,
+      y: 1840,
     };
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_dih');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
-  this.player.width = 40;
-  this.player.height = 60;
+  this.player.width = 80;
+  this.player.height = 120;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
@@ -851,7 +973,7 @@ Player.prototype.create = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  this.player.animations.add('dih');
+  //this.player.animations.add('dih');
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -860,7 +982,7 @@ Player.prototype.create = function() {
 
   this.player.haveWorker = false;
 
-  this.player.animations.stop();
+  //this.player.animations.stop();
 
   //this.Game.camera.follow(this.player);
 }
@@ -885,11 +1007,11 @@ Player.prototype.update = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  if(this.player.body.velocity.x == 0) {
-    this.player.animations.play('dih', 9, true);
-  } else {
-    this.player.animations.stop('dih', 0);
-  }
+  // if(this.player.body.velocity.x == 0) {
+  //   this.player.animations.play('dih', 9, true);
+  // } else {
+  //   this.player.animations.stop('dih', 0);
+  // }
 }
 
 Player.prototype.collideMap = function(player, map) {
@@ -907,7 +1029,7 @@ module.exports = Player;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Rope(set, Game) {
@@ -937,7 +1059,7 @@ module.exports = Rope;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -967,7 +1089,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function Stairs(set, Game) {
@@ -997,7 +1119,7 @@ module.exports = Stairs;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function Worker(set, Game) {
@@ -1108,7 +1230,7 @@ module.exports = Worker;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function Menu(Game) {
@@ -1124,7 +1246,7 @@ function Menu(Game) {
 Menu.prototype.create = function() {
   this.bg = this.Game.add.tileSprite(0, 0, this.Game.camera.width, this.Game.camera.height, 'menuBg');
   this.bg.fixedToCamera = true;
-  this.startGame = this.Game.add.text(this.Game.global.root.clientWidth / 2, this.Game.global.root.clientHeight / 2 - 150, "Начать игру", this.textStyle);
+  this.startGame = this.Game.add.text(this.Game.camera.width / 2, this.Game.camera.height / 2 - 150, "Начать игру", this.textStyle);
   this.startGame.anchor.set(0.5, 0.5);
   this.startGame.fixedToCamera = true;
   this.startGame.inputEnabled = true;
@@ -1173,7 +1295,7 @@ module.exports = Menu;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function Money(Game) {
@@ -1208,7 +1330,7 @@ module.exports = Money;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );

@@ -1,5 +1,6 @@
 let Map = require( './elements/Map' );
 let Player = require( './elements/Player' );
+let Boss = require( './elements/Boss' );
 let Platform = require( './elements/Platform' );
 let Spike = require( './elements/Spike' );
 let Rope = require( './elements/Rope' );
@@ -25,6 +26,7 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
+    danila: 'images/danila1.png',
 }
 
 function preload() {
@@ -32,7 +34,8 @@ function preload() {
         this.load.image(spriteKey, sprites[spriteKey]);
     }
 
-    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
+    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
+    Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
@@ -43,6 +46,7 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+    this.Boss = new Boss(this);
 
     //GUI
     this.Money = new Money(this);
@@ -50,6 +54,12 @@ function preload() {
 }
 
 function create() {
+  Game.scale.setGameSize(this.global.root.offsetWidth / 2, this.global.root.offsetHeight / 2);
+  Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  Game.scale.pageAlignHorisontally = true;
+  Game.scale.pageAlignVertically = true;
+  Game.scale.forcePortrait = true;
+
   Game.world.setBounds(0, 0, 4000, 2000);
 
   Game.stage.backgroundColor = '#ffffff';
@@ -421,6 +431,8 @@ function create() {
 
   this.Player.create();
 
+  this.Boss.create();
+
   //GUI
   this.Money.create();
   this.Menu.create();
@@ -434,6 +446,8 @@ function update() {
   this.Money.update();
 
   this.Player.update();
+
+  this.Boss.update();
 
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
@@ -502,34 +516,34 @@ function update() {
     this.jumpTimer = Game.time.now + 150;
   }
 
-  //Камера по X
-  if(this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  if(this.Player.player.x < 660) {
-    Game.camera.x = 0;
-  }
-  if(this.Player.player.x > 2180) {
-    Game.camera.x = 2080;
-  }
-  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  //Камера по Y
-  if(this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-  if(this.Player.player.y < 660) {
-    Game.camera.y = 0;
-  }
-  if(this.Player.player.y > 1280) {
-    Game.camera.y = 1280;
-  }
-  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
+  // //Камера по X
+  // if(this.Player.player.x > 660) {
+  //   Game.camera.x = 550;
+  // }
+  // if(this.Player.player.x < 660) {
+  //   Game.camera.x = 0;
+  // }
+  // if(this.Player.player.x > 2180) {
+  //   Game.camera.x = 2080;
+  // }
+  // if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
+  //   Game.camera.x = 550;
+  // }
+  // //Камера по Y
+  // if(this.Player.player.y > 660) {
+  //   Game.camera.y = 550;
+  // }
+  // if(this.Player.player.y < 660) {
+  //   Game.camera.y = 0;
+  // }
+  // if(this.Player.player.y > 1280) {
+  //   Game.camera.y = 1280;
+  // }
+  // if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+  //   Game.camera.y = 550;
+  // }
 
-  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
+  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 

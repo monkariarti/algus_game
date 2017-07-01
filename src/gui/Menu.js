@@ -11,7 +11,7 @@ function Menu(Game) {
 Menu.prototype.create = function() {
   this.bg = this.Game.add.tileSprite(0, 0, this.Game.camera.width, this.Game.camera.height, 'menuBg');
   this.bg.fixedToCamera = true;
-  this.startGame = this.Game.add.text(this.Game.global.root.clientWidth / 2, this.Game.global.root.clientHeight / 2 - 150, "Начать игру", this.textStyle);
+  this.startGame = this.Game.add.text(this.Game.camera.width / 2, this.Game.camera.height / 2 - 150, "Начать игру", this.textStyle);
   this.startGame.anchor.set(0.5, 0.5);
   this.startGame.fixedToCamera = true;
   this.startGame.inputEnabled = true;
