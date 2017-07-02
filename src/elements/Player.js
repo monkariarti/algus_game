@@ -2,10 +2,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      //x: 120,
-      //y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 }
 
@@ -13,8 +13,8 @@ Player.prototype.create = function() {
   this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
-  this.player.width = 80;
-  this.player.height = 120;
+  this.player.width = 40;
+  this.player.height = 60;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;

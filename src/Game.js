@@ -9,6 +9,7 @@ let Worker = require( './elements/Worker' );
 let Bonus = require( './elements/Bonus' );
 let Gun = require( './elements/Gun' );
 let Fire = require( './elements/Fire' );
+let Door = require( './elements/Door' );
 let Menu = require( './gui/Menu' );
 let Money = require( './gui/Money' );
 
@@ -54,11 +55,11 @@ function preload() {
 }
 
 function create() {
-  Game.scale.setGameSize(this.global.root.offsetWidth / 2, this.global.root.offsetHeight / 2);
-  Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  Game.scale.pageAlignHorisontally = true;
-  Game.scale.pageAlignVertically = true;
-  Game.scale.forcePortrait = true;
+  // Game.scale.setGameSize(this.global.root.offsetWidth / 1.2, this.global.root.offsetHeight / 1.2);
+  // Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  // Game.scale.pageAlignHorisontally = true;
+  // Game.scale.pageAlignVertically = true;
+  // Game.scale.forcePortrait = true;
 
   Game.world.setBounds(0, 0, 4000, 2000);
 
@@ -429,6 +430,17 @@ function create() {
   }, this);
   this.Bonuses[18].create();
 
+  this.Doors = [];
+  this.Doors[0] = new Door({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 20,
+    rx: 80,
+    ry: 640,
+  }, this);
+  this.Doors[0].create();
+
   this.Player.create();
 
   this.Boss.create();
@@ -487,6 +499,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
+  for(let i = 0; i < this.Doors.length; i++) {
+    this.Doors[i].update();
+  }
   for(let i = 0; i < this.FireAll.length; i++) {
     this.FireAll[i].update();
   }
@@ -516,34 +531,34 @@ function update() {
     this.jumpTimer = Game.time.now + 150;
   }
 
-  // //Камера по X
-  // if(this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
-  // if(this.Player.player.x < 660) {
-  //   Game.camera.x = 0;
-  // }
-  // if(this.Player.player.x > 2180) {
-  //   Game.camera.x = 2080;
-  // }
-  // if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
-  // //Камера по Y
-  // if(this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
-  // if(this.Player.player.y < 660) {
-  //   Game.camera.y = 0;
-  // }
-  // if(this.Player.player.y > 1280) {
-  //   Game.camera.y = 1280;
-  // }
-  // if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
+  //Камера по X
+  if(this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
+  if(this.Player.player.x < 660) {
+    Game.camera.x = 0;
+  }
+  if(this.Player.player.x > 2180) {
+    Game.camera.x = 2080;
+  }
+  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
+  //Камера по Y
+  if(this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
+  if(this.Player.player.y < 660) {
+    Game.camera.y = 0;
+  }
+  if(this.Player.player.y > 1280) {
+    Game.camera.y = 1280;
+  }
+  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
 
-  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
+  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 

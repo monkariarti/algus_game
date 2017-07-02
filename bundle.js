@@ -63,26 +63,27 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-let Map = __webpack_require__( 5 );
-let Player = __webpack_require__( 7 );
+let Map = __webpack_require__( 6 );
+let Player = __webpack_require__( 8 );
 let Boss = __webpack_require__( 2 );
-let Platform = __webpack_require__( 6 );
-let Spike = __webpack_require__( 9 );
-let Rope = __webpack_require__( 8 );
-let Stairs = __webpack_require__( 10 );
-let Worker = __webpack_require__( 11 );
+let Platform = __webpack_require__( 7 );
+let Spike = __webpack_require__( 10 );
+let Rope = __webpack_require__( 9 );
+let Stairs = __webpack_require__( 11 );
+let Worker = __webpack_require__( 12 );
 let Bonus = __webpack_require__( 1 );
-let Gun = __webpack_require__( 4 );
-let Fire = __webpack_require__( 3 );
-let Menu = __webpack_require__( 12 );
-let Money = __webpack_require__( 13 );
+let Gun = __webpack_require__( 5 );
+let Fire = __webpack_require__( 4 );
+let Door = __webpack_require__( 3 );
+let Menu = __webpack_require__( 13 );
+let Money = __webpack_require__( 14 );
 
 let root = document.getElementById('root');
 var Game = new Phaser.Game(root.offsetWidth, root.offsetHeight, Phaser.AUTO, 'root', {
@@ -126,11 +127,11 @@ function preload() {
 }
 
 function create() {
-  Game.scale.setGameSize(this.global.root.offsetWidth / 2, this.global.root.offsetHeight / 2);
-  Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-  Game.scale.pageAlignHorisontally = true;
-  Game.scale.pageAlignVertically = true;
-  Game.scale.forcePortrait = true;
+  // Game.scale.setGameSize(this.global.root.offsetWidth / 1.2, this.global.root.offsetHeight / 1.2);
+  // Game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  // Game.scale.pageAlignHorisontally = true;
+  // Game.scale.pageAlignVertically = true;
+  // Game.scale.forcePortrait = true;
 
   Game.world.setBounds(0, 0, 4000, 2000);
 
@@ -501,6 +502,17 @@ function create() {
   }, this);
   this.Bonuses[18].create();
 
+  this.Doors = [];
+  this.Doors[0] = new Door({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 20,
+    rx: 80,
+    ry: 640,
+  }, this);
+  this.Doors[0].create();
+
   this.Player.create();
 
   this.Boss.create();
@@ -559,6 +571,9 @@ function update() {
   for(let i = 0; i < this.Bonuses.length; i++) {
     this.Bonuses[i].update();
   }
+  for(let i = 0; i < this.Doors.length; i++) {
+    this.Doors[i].update();
+  }
   for(let i = 0; i < this.FireAll.length; i++) {
     this.FireAll[i].update();
   }
@@ -588,34 +603,34 @@ function update() {
     this.jumpTimer = Game.time.now + 150;
   }
 
-  // //Камера по X
-  // if(this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
-  // if(this.Player.player.x < 660) {
-  //   Game.camera.x = 0;
-  // }
-  // if(this.Player.player.x > 2180) {
-  //   Game.camera.x = 2080;
-  // }
-  // if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-  //   Game.camera.x = 550;
-  // }
-  // //Камера по Y
-  // if(this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
-  // if(this.Player.player.y < 660) {
-  //   Game.camera.y = 0;
-  // }
-  // if(this.Player.player.y > 1280) {
-  //   Game.camera.y = 1280;
-  // }
-  // if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-  //   Game.camera.y = 550;
-  // }
+  //Камера по X
+  if(this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
+  if(this.Player.player.x < 660) {
+    Game.camera.x = 0;
+  }
+  if(this.Player.player.x > 2180) {
+    Game.camera.x = 2080;
+  }
+  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
+    Game.camera.x = 550;
+  }
+  //Камера по Y
+  if(this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
+  if(this.Player.player.y < 660) {
+    Game.camera.y = 0;
+  }
+  if(this.Player.player.y > 1280) {
+    Game.camera.y = 1280;
+  }
+  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
+    Game.camera.y = 550;
+  }
 
-  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
+  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 
@@ -775,6 +790,66 @@ module.exports = Boss;
 /* 3 */
 /***/ (function(module, exports) {
 
+function Door(set, Game) {
+  this.set = set;
+  this.Game = Game;
+
+  this.openTimer = 0;
+}
+
+Door.prototype.create = function() {
+  this.door = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.door.width = this.set.width;
+  this.door.height = this.set.height;
+  this.door.open = false;
+
+  this.Game.physics.enable(this.door, Phaser.Physics.ARCADE);
+  this.door.body.immovable = true;
+  this.door.body.allowGravity = false;
+
+  this.lever = this.Game.add.sprite(this.set.rx, this.set.ry, 'black');
+  this.lever.width = 20;
+  this.lever.height = 40;
+
+  this.Game.physics.enable(this.lever, Phaser.Physics.ARCADE);
+  this.lever.body.immovable = true;
+  this.lever.body.allowGravity = false;
+}
+
+Door.prototype.update = function() {
+  this.lever.overlapPlayer = false;
+
+  this.Game.physics.arcade.collide(this.door, this.Game.Player.player, null, null, this);
+
+  this.Game.physics.arcade.overlap(this.lever, this.Game.Player.player, this.leverOverlap, null, this);
+
+  if(this.lever.overlapPlayer && this.Game.checkButton.isDown && this.Game.time.now > this.openTimer) {
+    this.openCloseDoor();
+    this.openTimer = this.Game.time.now + 500;
+  }
+}
+
+Door.prototype.leverOverlap = function(lever, player) {
+  lever.overlapPlayer = true;
+}
+
+Door.prototype.openCloseDoor = function() {
+  if(this.door.open) {
+    this.door.open = false;
+    this.door.x = this.set.x;
+  } else {
+    this.door.open = true;
+    this.door.x -= this.door.width;
+  }
+}
+
+module.exports = Door;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
 function Fire(set, Game) {
   this.set = set;
   this.Game = Game;
@@ -816,7 +891,7 @@ module.exports = Fire;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 function Gun(set, Game) {
@@ -849,7 +924,7 @@ module.exports = Gun;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 function Map(Game) {
@@ -875,7 +950,7 @@ module.exports = Map;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 function Platform(type, set, Game) {
@@ -944,26 +1019,26 @@ module.exports = Platform;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      //x: 120,
-      //y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'char');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
-  this.player.width = 80;
-  this.player.height = 120;
+  this.player.width = 40;
+  this.player.height = 60;
   this.player.body.bounce.y = 0;
   this.player.body.gravity.y = 980;
   this.player.body.collideWorldBounds = true;
@@ -1029,7 +1104,7 @@ module.exports = Player;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function Rope(set, Game) {
@@ -1059,7 +1134,7 @@ module.exports = Rope;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function Spike(set, Game) {
@@ -1089,7 +1164,7 @@ module.exports = Spike;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function Stairs(set, Game) {
@@ -1119,7 +1194,7 @@ module.exports = Stairs;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function Worker(set, Game) {
@@ -1230,7 +1305,7 @@ module.exports = Worker;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function Menu(Game) {
@@ -1295,7 +1370,7 @@ module.exports = Menu;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 function Money(Game) {
@@ -1330,7 +1405,7 @@ module.exports = Money;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 let game = __webpack_require__( 0 );
