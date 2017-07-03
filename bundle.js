@@ -100,6 +100,7 @@ let sprites = {
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
     danila: 'images/danila1.png',
+    clear: 'images/clear.png',
 }
 
 function preload() {
@@ -112,6 +113,7 @@ function preload() {
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemapOther', 'tilemap_other.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
         root: root,
@@ -936,6 +938,10 @@ Map.prototype.create = function() {
   this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
   this.wallsLayer =  this.walls.createLayer(0);
 
+  this.other = this.Game.add.tilemap('tilemapOther', 20, 20);
+  this.other.addTilesetImage('tilemapOther', 'tilemap', 20, 20);
+  this.otherLayer =  this.other.createLayer(0);
+
   this.tilemap = this.Game.add.tilemap('tilemap', 20, 20);
   this.tilemap.addTilesetImage('tilemap', 'tilemap', 20, 20);
   this.tilemap.setCollisionByExclusion([28, 31, 44, 57, 104, 105, 106, 107, 108, 109, 110, 111, 91, 98]);
@@ -1173,7 +1179,7 @@ function Stairs(set, Game) {
 }
 
 Stairs.prototype.create = function() {
-  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
   this.stairs.width = this.set.width;
   this.stairs.height = this.set.height;
   this.Game.physics.enable(this.stairs, Phaser.Physics.ARCADE);
@@ -1206,7 +1212,7 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
   this.table.width = 100;
   this.table.height = 30;

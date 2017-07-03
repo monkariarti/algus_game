@@ -28,6 +28,7 @@ let sprites = {
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
     danila: 'images/danila1.png',
+    clear: 'images/clear.png',
 }
 
 function preload() {
@@ -40,6 +41,7 @@ function preload() {
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemapOther', 'tilemap_other.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
         root: root,

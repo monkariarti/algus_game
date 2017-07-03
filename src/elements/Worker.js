@@ -7,7 +7,7 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
   this.table.width = 100;
   this.table.height = 30;
