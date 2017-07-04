@@ -35,7 +35,7 @@ Player.prototype.create = function() {
 
   //this.player.animations.stop();
 
-  //this.Game.camera.follow(this.player);
+  //this.Game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 }
 
 Player.prototype.update = function() {
@@ -63,6 +63,32 @@ Player.prototype.update = function() {
   // } else {
   //   this.player.animations.stop('dih', 0);
   // }
+
+  if(this.player.x > 660) {
+    this.Game.camera.x = 550;
+  }
+  if(this.player.x < 660) {
+    this.Game.camera.x = 0;
+  }
+  if(this.player.x > 2180) {
+    this.Game.camera.x = 2080;
+  }
+  if(this.player.x < 2180 && this.player.x > 660) {
+    this.Game.camera.x = 550;
+  }
+  //Камера по Y
+  if(this.player.y > 660) {
+    this.Game.camera.y = 550;
+  }
+  if(this.player.y < 660) {
+    this.Game.camera.y = 0;
+  }
+  if(this.player.y > 1280) {
+    this.Game.camera.y = 1280;
+  }
+  if(this.player.y < 1280 && this.player.y > 660) {
+    this.Game.camera.y = 550;
+  }
 }
 
 Player.prototype.collideMap = function(player, map) {

@@ -4,7 +4,7 @@ function Stairs(set, Game) {
 }
 
 Stairs.prototype.create = function() {
-  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
+  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'black');
   this.stairs.width = this.set.width;
   this.stairs.height = this.set.height;
   this.Game.physics.enable(this.stairs, Phaser.Physics.ARCADE);

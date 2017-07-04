@@ -29,6 +29,8 @@ let sprites = {
     menuBg: 'images/menuBg.png',
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
+    bonus: 'images/bonus.png',
+    table: 'images/table.png',
 }
 
 function preload() {
@@ -231,6 +233,13 @@ function create() {
     height: 100,
   }, this);
   this.Stairs[1].create();
+  this.Stairs[2] = new Stairs({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 100,
+  }, this);
+  this.Stairs[2].create();
 
   //Огонь
   this.FireAll = [];
@@ -251,13 +260,13 @@ function create() {
   this.Workers[0].create();
   //Костя
   this.Workers[1] = new Worker({
-    x: 430,
+    x: 420,
     y: 650,
   }, this);
   this.Workers[1].create();
   //Ярик
   this.Workers[2] = new Worker({
-    x: 990,
+    x: 980,
     y: 650,
   }, this);
   this.Workers[2].create();
@@ -269,13 +278,13 @@ function create() {
   this.Workers[3].create();
   //Маша
   this.Workers[4] = new Worker({
-    x: 650,
+    x: 640,
     y: 550,
   }, this);
   this.Workers[4].create();
   //Ирина
   this.Workers[5] = new Worker({
-    x: 990,
+    x: 980,
     y: 350,
   }, this);
   this.Workers[5].create();
@@ -532,35 +541,6 @@ function update() {
     this.Player.jump();
     this.jumpTimer = Game.time.now + 150;
   }
-
-  //Камера по X
-  if(this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  if(this.Player.player.x < 660) {
-    Game.camera.x = 0;
-  }
-  if(this.Player.player.x > 2180) {
-    Game.camera.x = 2080;
-  }
-  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  //Камера по Y
-  if(this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-  if(this.Player.player.y < 660) {
-    Game.camera.y = 0;
-  }
-  if(this.Player.player.y > 1280) {
-    Game.camera.y = 1280;
-  }
-  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-
-  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
 
 }
 

@@ -101,6 +101,8 @@ let sprites = {
     menuBg: 'images/menuBg.png',
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
+    bonus: 'images/bonus.png',
+    table: 'images/table.png',
 }
 
 function preload() {
@@ -303,6 +305,13 @@ function create() {
     height: 100,
   }, this);
   this.Stairs[1].create();
+  this.Stairs[2] = new Stairs({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 100,
+  }, this);
+  this.Stairs[2].create();
 
   //Огонь
   this.FireAll = [];
@@ -323,13 +332,13 @@ function create() {
   this.Workers[0].create();
   //Костя
   this.Workers[1] = new Worker({
-    x: 430,
+    x: 420,
     y: 650,
   }, this);
   this.Workers[1].create();
   //Ярик
   this.Workers[2] = new Worker({
-    x: 990,
+    x: 980,
     y: 650,
   }, this);
   this.Workers[2].create();
@@ -341,13 +350,13 @@ function create() {
   this.Workers[3].create();
   //Маша
   this.Workers[4] = new Worker({
-    x: 650,
+    x: 640,
     y: 550,
   }, this);
   this.Workers[4].create();
   //Ирина
   this.Workers[5] = new Worker({
-    x: 990,
+    x: 980,
     y: 350,
   }, this);
   this.Workers[5].create();
@@ -605,35 +614,6 @@ function update() {
     this.jumpTimer = Game.time.now + 150;
   }
 
-  //Камера по X
-  if(this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  if(this.Player.player.x < 660) {
-    Game.camera.x = 0;
-  }
-  if(this.Player.player.x > 2180) {
-    Game.camera.x = 2080;
-  }
-  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  //Камера по Y
-  if(this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-  if(this.Player.player.y < 660) {
-    Game.camera.y = 0;
-  }
-  if(this.Player.player.y > 1280) {
-    Game.camera.y = 1280;
-  }
-  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-
-  //Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_PLATFORMER);
-
 }
 
 
@@ -672,8 +652,10 @@ Bonus.prototype.overlap = function(player, bonus) {
 }
 
 Bonus.prototype.createBonus = function() {
-  this.bonus = this.Game.add.sprite(this.set.x, this.set.y, 'black');
-  this.bonus.rotation = 0.8;
+  this.bonus = this.Game.add.sprite(this.set.x, this.set.y, 'bonus');
+  this.bonus.width = 30;
+  this.bonus.height = 30;
+  this.bonus.anchor.set(0.5, 0);
   this.Game.physics.enable(this.bonus, Phaser.Physics.ARCADE);
   this.bonus.body.immovable = true;
   this.bonus.body.allowGravity = false;
@@ -1065,7 +1047,7 @@ Player.prototype.create = function() {
 
   //this.player.animations.stop();
 
-  //this.Game.camera.follow(this.player);
+  //this.Game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 }
 
 Player.prototype.update = function() {
@@ -1093,6 +1075,32 @@ Player.prototype.update = function() {
   // } else {
   //   this.player.animations.stop('dih', 0);
   // }
+
+  if(this.player.x > 660) {
+    this.Game.camera.x = 550;
+  }
+  if(this.player.x < 660) {
+    this.Game.camera.x = 0;
+  }
+  if(this.player.x > 2180) {
+    this.Game.camera.x = 2080;
+  }
+  if(this.player.x < 2180 && this.player.x > 660) {
+    this.Game.camera.x = 550;
+  }
+  //Камера по Y
+  if(this.player.y > 660) {
+    this.Game.camera.y = 550;
+  }
+  if(this.player.y < 660) {
+    this.Game.camera.y = 0;
+  }
+  if(this.player.y > 1280) {
+    this.Game.camera.y = 1280;
+  }
+  if(this.player.y < 1280 && this.player.y > 660) {
+    this.Game.camera.y = 550;
+  }
 }
 
 Player.prototype.collideMap = function(player, map) {
@@ -1179,7 +1187,7 @@ function Stairs(set, Game) {
 }
 
 Stairs.prototype.create = function() {
-  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
+  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'black');
   this.stairs.width = this.set.width;
   this.stairs.height = this.set.height;
   this.Game.physics.enable(this.stairs, Phaser.Physics.ARCADE);
@@ -1212,10 +1220,8 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y-10, 'table');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
-  this.table.width = 100;
-  this.table.height = 30;
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;
 
@@ -1265,6 +1271,8 @@ Worker.prototype.update = function() {
     this.Game.Money.addMoney(1);
     this.moneyTimer = this.Game.time.now + 1000;
   }
+
+  this.table.bringToTop();
 }
 
 Worker.prototype.startWorkWorker = function() {

@@ -7,10 +7,8 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y-10, 'table');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
-  this.table.width = 100;
-  this.table.height = 30;
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;
 
@@ -60,6 +58,8 @@ Worker.prototype.update = function() {
     this.Game.Money.addMoney(1);
     this.moneyTimer = this.Game.time.now + 1000;
   }
+
+  this.table.bringToTop();
 }
 
 Worker.prototype.startWorkWorker = function() {
