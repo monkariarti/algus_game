@@ -1034,10 +1034,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      // x: 120,
-      // y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -1090,7 +1090,7 @@ Player.prototype.create = function() {
   this.weapon.bullets.forEach((bullet) => {
     bullet.width = 15;
     bullet.height = 15;
-    bullet.damage = 100;
+    bullet.damage = 500;
     bullet.body.width = 30;
     bullet.body.height = 30;
     bullet.body.bounce.set(0.6);
@@ -1111,13 +1111,6 @@ Player.prototype.update = function() {
 
   //Столкновения с картой
   this.Game.physics.arcade.collide(this.player, this.Game.Map.mapLayer, null, this.collideMap, this.Game);
-
-  //Платформы
-  this.Game.Player.player.inPlatform = false;
-  //Веревки
-  this.Game.Player.player.inRope = false;
-  //Лестницы
-  this.Game.Player.player.inStairs = false;
 
   //АНИМАЦИИ
   //Дыхание
@@ -1146,6 +1139,14 @@ Player.prototype.update = function() {
     this.turn = 'right';
   }
 
+  //Платформы
+  this.Game.Player.player.inPlatform = false;
+  //Веревки
+  this.Game.Player.player.inRope = false;
+  //Лестницы
+  this.Game.Player.player.inStairs = false;
+
+  //Прыжок
   if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
     this.jump();
     this.jumpTimer = this.Game.time.now + 150;
