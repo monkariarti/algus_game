@@ -482,10 +482,6 @@ function update() {
 
   this.Money.update();
 
-  this.Player.update();
-
-  this.Boss.update();
-
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
       Game.physics.arcade.collide(this.Workers[o].worker, this.FadePlatforms[i].platform);
@@ -498,6 +494,11 @@ function update() {
     }
     this.MovingPlatforms[i].update();
   }
+
+  this.Player.update();
+
+  this.Boss.update();
+  
   for(let i = 0; i < this.Spikes.length; i++) {
     if(!this.Spikes[i].set.noCollidesBot) {
       for(let o = 0; o < this.Workers.length; o++) {

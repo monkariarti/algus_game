@@ -554,10 +554,6 @@ function update() {
 
   this.Money.update();
 
-  this.Player.update();
-
-  this.Boss.update();
-
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
       Game.physics.arcade.collide(this.Workers[o].worker, this.FadePlatforms[i].platform);
@@ -570,6 +566,11 @@ function update() {
     }
     this.MovingPlatforms[i].update();
   }
+
+  this.Player.update();
+
+  this.Boss.update();
+  
   for(let i = 0; i < this.Spikes.length; i++) {
     if(!this.Spikes[i].set.noCollidesBot) {
       for(let o = 0; o < this.Workers.length; o++) {
@@ -1138,7 +1139,7 @@ Player.prototype.update = function() {
     this.player.body.velocity.x = 250;
     this.turn = 'right';
   }
-  
+
   //Прыжок
   if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
     this.jump();
@@ -1146,11 +1147,11 @@ Player.prototype.update = function() {
   }
 
   //Платформы
-  this.Game.Player.player.inPlatform = false;
+  this.player.inPlatform = false;
   //Веревки
-  this.Game.Player.player.inRope = false;
+  this.player.inRope = false;
   //Лестницы
-  this.Game.Player.player.inStairs = false;
+  this.player.inStairs = false;
 
 
   //Орудие

@@ -106,7 +106,7 @@ Player.prototype.update = function() {
     this.player.body.velocity.x = 250;
     this.turn = 'right';
   }
-  
+
   //Прыжок
   if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
     this.jump();
@@ -114,11 +114,11 @@ Player.prototype.update = function() {
   }
 
   //Платформы
-  this.Game.Player.player.inPlatform = false;
+  this.player.inPlatform = false;
   //Веревки
-  this.Game.Player.player.inRope = false;
+  this.player.inRope = false;
   //Лестницы
-  this.Game.Player.player.inStairs = false;
+  this.player.inStairs = false;
 
 
   //Орудие
