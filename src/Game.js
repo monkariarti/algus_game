@@ -24,8 +24,8 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
-    gun: 'images/gun.png',
-    weapon: 'images/weapon.png',
+    fan: 'images/fan.png',
+    air: 'images/air.png',
 }
 
 function preload() {
@@ -70,9 +70,43 @@ function create() {
   this.Guns = [];
   this.Guns[0] = new Gun({
     x: 720,
+    y: 860,
+  },
+  {
+    x: 720,
     y: 700,
   }, this);
   this.Guns[0].create();
+
+  this.Guns[1] = new Gun({
+    x: 2160,
+    y: 860,
+  },
+  {
+    x: 1620,
+    y: 730,
+  }, this);
+  this.Guns[1].create();
+
+  this.Guns[2] = new Gun({
+    x: 3920,
+    y: 400,
+  },
+  {
+    x: 3220,
+    y: 40,
+  }, this);
+  this.Guns[2].create();
+
+  this.Guns[3] = new Gun({
+    x: 3500,
+    y: 730,
+  },
+  {
+    x: 3250,
+    y: 730,
+  }, this);
+  this.Guns[3].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
@@ -553,7 +587,7 @@ Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
 
 
 function render() {
-  //Game.debug.spriteInfo(this.Player.player, 32, 32);
+  Game.debug.spriteInfo(this.Player.player, 32, 32);
   //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
