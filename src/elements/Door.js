@@ -2,6 +2,8 @@ function Door(set, Game) {
   this.set = set;
   this.Game = Game;
 
+  this.set.key = set.key || false;
+
   this.openTimer = 0;
 }
 
@@ -42,6 +44,10 @@ Door.prototype.leverOverlap = function(lever, player) {
 }
 
 Door.prototype.openCloseDoor = function() {
+  if(this.set.key && !this.Game.Player.haveBonusesKey) {
+    alert('Вам нужен ключ от хранилища!');
+    return;
+  }
   if(this.door.open) {
     this.door.open = false;
     this.door.x = this.set.x;

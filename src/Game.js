@@ -249,6 +249,13 @@ function create() {
     height: 500,
   }, this);
   this.FireAll[0].create();
+  this.FireAll[1] = new Fire({
+    x: 2620,
+    y: 1380,
+    height: 300,
+    align: 'top',
+  }, this);
+  this.FireAll[1].create();
 
   //Работники
   this.Workers = [];
@@ -440,6 +447,14 @@ function create() {
     y: 1530,
   }, this);
   this.Bonuses[18].create();
+  for(let b = 19; b < 39; b++) {
+    this.Bonuses[b] = new Bonus({
+      x: Game.rnd.between(250, 850),
+      y: Game.rnd.between(1820, 1910),
+      death: true,
+    }, this);
+    this.Bonuses[b].create();
+  }
 
   this.Doors = [];
   this.Doors[0] = new Door({
@@ -449,6 +464,16 @@ function create() {
     height: 20,
     rx: 80,
     ry: 640,
+  }, this);
+  this.Doors[0].create();
+  this.Doors[0] = new Door({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 20,
+    rx: 490,
+    ry: 1700,
+    //key: true
   }, this);
   this.Doors[0].create();
 

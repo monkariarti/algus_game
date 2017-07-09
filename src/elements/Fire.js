@@ -1,6 +1,7 @@
 function Fire(set, Game) {
   this.set = set;
   this.Game = Game;
+  this.set.align = this.set.align || 'bottom'
 }
 
 Fire.prototype.create = function() {
@@ -8,7 +9,11 @@ Fire.prototype.create = function() {
   this.Game.physics.enable(this.fire, Phaser.Physics.ARCADE);
   this.fire.width = 40;
   this.fire.height = this.set.height;
-  this.fire.anchor.set(0, 1);
+  if(this.set.align == 'bottom') {
+    this.fire.anchor.set(0, 1);
+  } else {
+    this.fire.anchor.set(0, 0);
+  }
   this.fire.visible = false;
   this.fire.body.immovable = true;
   this.fire.body.allowGravity = false;

@@ -1,6 +1,8 @@
 function Bonus(set, Game) {
   this.set = set;
   this.Game = Game;
+
+  this.set.death = set.death || false;
 }
 
 Bonus.prototype.create = function() {
@@ -15,9 +17,11 @@ Bonus.prototype.update = function() {
 Bonus.prototype.overlap = function(player, bonus) {
   bonus.destroy();
   this.Game.Money.addMoney(100);
-  setTimeout(() => {
-    this.createBonus();
-  }, this.Game.rnd.between(1, 2) * 60 * 1000);
+  if(!this.set.death) {
+    setTimeout(() => {
+      this.createBonus();
+    }, this.Game.rnd.between(1, 2) * 60 * 1000);
+  }
 }
 
 Bonus.prototype.createBonus = function() {

@@ -321,6 +321,13 @@ function create() {
     height: 500,
   }, this);
   this.FireAll[0].create();
+  this.FireAll[1] = new Fire({
+    x: 2620,
+    y: 1380,
+    height: 300,
+    align: 'top',
+  }, this);
+  this.FireAll[1].create();
 
   //Работники
   this.Workers = [];
@@ -512,6 +519,14 @@ function create() {
     y: 1530,
   }, this);
   this.Bonuses[18].create();
+  for(let b = 19; b < 40; b++) {
+    this.Bonuses[b] = new Bonus({
+      x: Game.rnd.between(250, 850),
+      y: Game.rnd.between(1820, 1910),
+      death: true,
+    }, this);
+    this.Bonuses[b].create();
+  }
 
   this.Doors = [];
   this.Doors[0] = new Door({
@@ -521,6 +536,16 @@ function create() {
     height: 20,
     rx: 80,
     ry: 640,
+  }, this);
+  this.Doors[0].create();
+  this.Doors[0] = new Door({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 20,
+    rx: 490,
+    ry: 1700,
+    //key: true
   }, this);
   this.Doors[0].create();
 
@@ -632,6 +657,8 @@ module.exports = Game;
 function Bonus(set, Game) {
   this.set = set;
   this.Game = Game;
+
+  this.set.death = set.death || false;
 }
 
 Bonus.prototype.create = function() {
@@ -646,9 +673,11 @@ Bonus.prototype.update = function() {
 Bonus.prototype.overlap = function(player, bonus) {
   bonus.destroy();
   this.Game.Money.addMoney(100);
-  setTimeout(() => {
-    this.createBonus();
-  }, this.Game.rnd.between(1, 2) * 60 * 1000);
+  if(!this.set.death) {
+    setTimeout(() => {
+      this.createBonus();
+    }, this.Game.rnd.between(1, 2) * 60 * 1000);
+  }
 }
 
 Bonus.prototype.createBonus = function() {
@@ -778,6 +807,8 @@ function Door(set, Game) {
   this.set = set;
   this.Game = Game;
 
+  this.set.key = set.key || false;
+
   this.openTimer = 0;
 }
 
@@ -818,6 +849,10 @@ Door.prototype.leverOverlap = function(lever, player) {
 }
 
 Door.prototype.openCloseDoor = function() {
+  if(this.set.key && !this.Game.Player.haveBonusesKey) {
+    alert('Вам нужен ключ от хранилища!');
+    return;
+  }
   if(this.door.open) {
     this.door.open = false;
     this.door.x = this.set.x;
@@ -837,6 +872,7 @@ module.exports = Door;
 function Fire(set, Game) {
   this.set = set;
   this.Game = Game;
+  this.set.align = this.set.align || 'bottom'
 }
 
 Fire.prototype.create = function() {
@@ -844,7 +880,11 @@ Fire.prototype.create = function() {
   this.Game.physics.enable(this.fire, Phaser.Physics.ARCADE);
   this.fire.width = 40;
   this.fire.height = this.set.height;
-  this.fire.anchor.set(0, 1);
+  if(this.set.align == 'bottom') {
+    this.fire.anchor.set(0, 1);
+  } else {
+    this.fire.anchor.set(0, 0);
+  }
   this.fire.visible = false;
   this.fire.body.immovable = true;
   this.fire.body.allowGravity = false;
@@ -1014,11 +1054,13 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
+
+    this.haveBonusesKey = false;
 }
 
 Player.prototype.create = function() {
@@ -1187,7 +1229,7 @@ function Stairs(set, Game) {
 }
 
 Stairs.prototype.create = function() {
-  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.stairs = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
   this.stairs.width = this.set.width;
   this.stairs.height = this.set.height;
   this.Game.physics.enable(this.stairs, Phaser.Physics.ARCADE);
@@ -1393,7 +1435,7 @@ function Money(Game) {
   this.textStyle = { font: "30px Arial", fill: "#000000" };
 
   this.money = 0;
-  this.maxMoney = 100000;
+  this.maxMoney = 10000;
 
   this.penalty = 200;
 }
