@@ -7,7 +7,7 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y-10, 'table');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y-30, 'table');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;

@@ -2,17 +2,18 @@ function Platform(type, set, Game) {
   this.type = type;
   this.set = set;
   this.Game = Game;
+  this.set.sprite = set.sprite || 'fadePlatform';
 }
 
 Platform.prototype.create = function() {
   this.set.height = this.set.height ? this.set.height : 20;
   //Подвижная плафторма
   if(this.type == 'moving') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'movePlatform');
   }
   //Пропадающая платформа
   if(this.type == 'fade') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, this.set.sprite);
   }
 
   this.platform.settedData = this.set;

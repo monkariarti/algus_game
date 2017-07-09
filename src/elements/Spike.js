@@ -4,7 +4,7 @@ function Spike(set, Game) {
 }
 
 Spike.prototype.create = function() {
-  this.spike = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.spike = this.Game.add.sprite(this.set.x, this.set.y, 'clear');
   this.spike.width = this.set.width;
   this.spike.height = this.set.height;
   this.Game.physics.enable(this.spike, Phaser.Physics.ARCADE);

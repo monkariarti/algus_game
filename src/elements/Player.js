@@ -2,10 +2,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      // x: 120,
-      // y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -66,17 +66,11 @@ Player.prototype.update = function() {
   //   this.player.animations.stop('dih', 0);
   // }
 
-  if(this.player.x > 660) {
-    this.Game.camera.x = 550;
-  }
-  if(this.player.x < 660) {
-    this.Game.camera.x = 0;
-  }
-  if(this.player.x > 2180) {
-    this.Game.camera.x = 2080;
-  }
-  if(this.player.x < 2180 && this.player.x > 660) {
-    this.Game.camera.x = 550;
+  //Камера по X
+  let widthScr = this.Game.global.root.offsetWidth / 3;
+  let screenWCount = Math.floor(this.player.x / widthScr);
+  if(this.player.x > widthScr * screenWCount) {
+    this.Game.camera.x = widthScr * screenWCount - widthScr / 2;
   }
   //Камера по Y
   if(this.player.y > 660) {
