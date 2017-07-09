@@ -2,10 +2,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -31,6 +31,8 @@ Player.prototype.create = function() {
   this.player.death = () => {
     this.player.x = this.default.x;
     this.player.y = this.default.y;
+    this.Game.camera.flash(0xff0000, 500);
+    //this.Game.camera.shake(0.05, 200);
   }
 
   this.player.haveWorker = false;

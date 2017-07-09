@@ -25,6 +25,8 @@ let sprites = {
     black: 'images/black.png',
     tilemap: 'images/map_sprites.png',
     char: 'images/char.png',
+    topWalls: 'images/top_walls.png',
+    bottomWalls: 'images/bottom_walls.png',
     fadePlatform: 'images/fade_platform.png',
     fadePlatform1: 'images/fade_platform_1.png',
     fadePlatform2: 'images/fade_platform_2.png',
@@ -431,7 +433,7 @@ function create() {
   this.Workers[11].create();
   //Анна
   this.Workers[12] = new Worker({
-    x: 580,
+    x: 560,
     y: 1550,
   }, this);
   this.Workers[12].create();

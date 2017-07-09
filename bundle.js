@@ -97,6 +97,8 @@ let sprites = {
     black: 'images/black.png',
     tilemap: 'images/map_sprites.png',
     char: 'images/char.png',
+    topWalls: 'images/top_walls.png',
+    bottomWalls: 'images/bottom_walls.png',
     fadePlatform: 'images/fade_platform.png',
     fadePlatform1: 'images/fade_platform_1.png',
     fadePlatform2: 'images/fade_platform_2.png',
@@ -503,7 +505,7 @@ function create() {
   this.Workers[11].create();
   //Анна
   this.Workers[12] = new Worker({
-    x: 580,
+    x: 560,
     y: 1550,
   }, this);
   this.Workers[12].create();
@@ -948,9 +950,11 @@ function Map(Game) {
 }
 
 Map.prototype.create = function() {
-  this.walls = this.Game.add.tilemap('tilemapWalls', 20, 20);
-  this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
-  this.wallsLayer =  this.walls.createLayer(0);
+  // this.walls = this.Game.add.tilemap('tilemapWalls', 20, 20);
+  // this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
+  // this.wallsLayer =  this.walls.createLayer(0);
+  this.topWalls = this.Game.add.tileSprite(0, 0, this.Game.world.width, 1360, 'topWalls');
+  this.bottomWalls = this.Game.add.tileSprite(0, 1360, this.Game.world.width, 4000 - 1360, 'bottomWalls');
 
   this.other = this.Game.add.tilemap('tilemapOther', 20, 20);
   this.other.addTilesetImage('tilemapOther', 'tilemap', 20, 20);
@@ -1047,10 +1051,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -1076,6 +1080,8 @@ Player.prototype.create = function() {
   this.player.death = () => {
     this.player.x = this.default.x;
     this.player.y = this.default.y;
+    this.Game.camera.flash(0xff0000, 500);
+    //this.Game.camera.shake(0.05, 200);
   }
 
   this.player.haveWorker = false;
