@@ -106,6 +106,12 @@ Player.prototype.update = function() {
     this.player.body.velocity.x = 250;
     this.turn = 'right';
   }
+  
+  //Прыжок
+  if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
+    this.jump();
+    this.jumpTimer = this.Game.time.now + 150;
+  }
 
   //Платформы
   this.Game.Player.player.inPlatform = false;
@@ -113,12 +119,6 @@ Player.prototype.update = function() {
   this.Game.Player.player.inRope = false;
   //Лестницы
   this.Game.Player.player.inStairs = false;
-
-  //Прыжок
-  if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
-    this.jump();
-    this.jumpTimer = this.Game.time.now + 150;
-  }
 
 
   //Орудие
