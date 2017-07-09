@@ -9,6 +9,13 @@ function Player(Game) {
     };
 
     this.haveBonusesKey = false;
+
+    this.cursors = this.Game.input.keyboard.createCursorKeys();
+    this.jumpButton = this.Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.checkButton = this.Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+    this.jumpTimer = 0;
+
+    this.turn = 'right';
 }
 
 Player.prototype.create = function() {
@@ -36,6 +43,26 @@ Player.prototype.create = function() {
   }
 
   this.player.haveWorker = false;
+
+
+  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletAngleOffset = 90;
+  this.weapon.bulletSpeed = 400;
+  this.weapon.fireRate = 800;
+  this.weapon.autofire = false;
+  this.weapon.bulletAngleVariance = 10;
+  this.weapon.fireAngle = 0;
+  this.weapon.setBulletBodyOffset(30, 30);
+  this.weapon.trackSprite(this.player, 10, 20);
+  this.weapon.bullets.forEach((bullet) => {
+    bullet.width = 15;
+    bullet.height = 15;
+    bullet.damage = 100;
+    bullet.body.width = 30;
+    bullet.body.height = 30;
+    bullet.body.bounce.set(0.6);
+  });
 
   //this.player.animations.stop();
 
@@ -68,6 +95,45 @@ Player.prototype.update = function() {
   //   this.player.animations.stop('dih', 0);
   // }
 
+  if (this.cursors.up.isDown) {
+    if(this.player.inRope || this.player.inStairs) {
+      this.player.body.velocity.y = -250;
+    }
+  }
+  if (this.cursors.down.isDown) {
+    if(this.player.inRope || this.player.inStairs) {
+      this.player.body.velocity.y = 250;
+    }
+  }
+  if (this.cursors.left.isDown) {
+    this.player.body.velocity.x = -250;
+    this.turn = 'left';
+  }
+  else if (this.cursors.right.isDown) {
+    this.player.body.velocity.x = 250;
+    this.turn = 'right';
+  }
+
+  if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
+    this.jump();
+    this.jumpTimer = this.Game.time.now + 150;
+  }
+
+
+  //Орудие
+  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Map.mapLayer, this.collideBulletMap, null, this);
+  this.Game.physics.arcade.collide(this.Game.Boss.boss, this.weapon.bullets, this.collideBossBullet, null, this);
+  this.Game.physics.arcade.collide(this.Game.Boss.weapon.bullets, this.weapon.bullets, this.collideBulletVsBullet, null, this);
+
+  if(this.turn == 'left') {
+    this.weapon.fireAngle = 180;
+  } else {
+    this.weapon.fireAngle = 0;
+  }
+  if (this.checkButton.isDown && (this.player.x >= 1995 && this.player.x <= 3920) && this.player.y >= 1760) {
+    this.weapon.fire();
+  }
+
   //Камера по X
   let widthScr = this.Game.global.root.offsetWidth / 3;
   let screenWCount = Math.floor(this.player.x / widthScr);
@@ -98,6 +164,37 @@ Player.prototype.collideMap = function(player, map) {
 
 Player.prototype.jump = function() {
   this.player.body.velocity.y = -620;
+}
+
+Player.prototype.collideBulletMap = function(bullet, map) {
+  if(!bullet.timeout) {
+    bullet.timeout = setTimeout(() => {
+      this.bulletBoom(bullet);
+    }, 2000);
+  }
+}
+
+Player.prototype.collideBossBullet = function(boss, bullet) {
+  this.bulletBoom(bullet);
+  this.Game.Boss.boss.health -= bullet.damage;
+}
+Player.prototype.collideBulletVsBullet = function(bullet1, bullet2) {
+  this.Game.Boss.bulletBoom(bullet1);
+  this.bulletBoom(bullet2);
+}
+
+Player.prototype.bulletBoom = function(bullet) {
+  bullet.kill();
+
+  let explosion = this.Game.add.sprite(bullet.x, bullet.y, 'exp1');
+  explosion.width = 100;
+  explosion.height = 100;
+  explosion.anchor.set(0.5, 0.5);
+  explosion.animations.add('boom');
+  explosion.animations.play('boom', 64, false, true);
+
+  clearTimeout(bullet.timeout);
+  bullet.timeout = false;
 }
 
 module.exports = Player;

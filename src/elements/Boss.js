@@ -14,6 +14,7 @@ Boss.prototype.create = function() {
   this.boss.width = 140;
   this.boss.height = 140;
   this.boss.anchor.set(0.5, 0.5);
+  this.boss.health = 10000;
 
   this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
   this.boss.body.collideWorldBounds = true;
@@ -38,8 +39,6 @@ Boss.prototype.create = function() {
     bullet.damage = 1000;
     bullet.body.bounce.set(0.6);
   });
-
-  console.log(this.boss);
 }
 
 Boss.prototype.update = function() {
@@ -64,6 +63,10 @@ Boss.prototype.update = function() {
   } else {
     this.weapon.fireAngle = -180;
   }
+
+  if(this.boss.health <= 0) {
+    this.death();
+  }
 }
 
 Boss.prototype.collidePlayerBoss = function(player, boss) {
@@ -74,7 +77,7 @@ Boss.prototype.collideBulletMap = function(bullet, map) {
   if(!bullet.timeout) {
     bullet.timeout = setTimeout(() => {
       this.bulletBoom(bullet);
-    }, 1200);
+    }, 2000);
   }
 }
 
@@ -95,6 +98,11 @@ Boss.prototype.bulletBoom = function(bullet) {
 
   clearTimeout(bullet.timeout);
   bullet.timeout = false;
+}
+
+Boss.prototype.death = function() {
+  this.boss.kill();
+  this.weapon.autofire = false;
 }
 
 module.exports = Boss;

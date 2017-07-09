@@ -33,7 +33,7 @@ Door.prototype.update = function() {
 
   this.Game.physics.arcade.overlap(this.lever, this.Game.Player.player, this.leverOverlap, null, this);
 
-  if(this.lever.overlapPlayer && this.Game.checkButton.isDown && this.Game.time.now > this.openTimer) {
+  if(this.lever.overlapPlayer && this.Game.Player.checkButton.isDown && this.Game.time.now > this.openTimer) {
     this.openCloseDoor();
     this.openTimer = this.Game.time.now + 500;
   }

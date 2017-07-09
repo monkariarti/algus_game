@@ -146,11 +146,6 @@ function create() {
 
   Game.camera.y = 550;
 
-  this.cursors = Game.input.keyboard.createCursorKeys();
-  this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.checkButton = Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-  this.jumpTimer = 0;
-
   this.Map.create();
 
   //Бонусы
@@ -611,28 +606,6 @@ function update() {
   //   this.Guns[i].update();
   // }
 
-  if (this.cursors.up.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -250;
-    }
-  }
-  if (this.cursors.down.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 250;
-    }
-  }
-  if (this.cursors.left.isDown) {
-    this.Player.player.body.velocity.x = -250;
-  }
-  else if (this.cursors.right.isDown) {
-    this.Player.player.body.velocity.x = 250;
-  }
-
-  if (this.jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > this.jumpTimer) {
-    this.Player.jump();
-    this.jumpTimer = Game.time.now + 150;
-  }
-
 }
 
 
@@ -707,6 +680,7 @@ Boss.prototype.create = function() {
   this.boss.width = 140;
   this.boss.height = 140;
   this.boss.anchor.set(0.5, 0.5);
+  this.boss.health = 10000;
 
   this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
   this.boss.body.collideWorldBounds = true;
@@ -731,8 +705,6 @@ Boss.prototype.create = function() {
     bullet.damage = 1000;
     bullet.body.bounce.set(0.6);
   });
-
-  console.log(this.boss);
 }
 
 Boss.prototype.update = function() {
@@ -757,6 +729,10 @@ Boss.prototype.update = function() {
   } else {
     this.weapon.fireAngle = -180;
   }
+
+  if(this.boss.health <= 0) {
+    this.death();
+  }
 }
 
 Boss.prototype.collidePlayerBoss = function(player, boss) {
@@ -767,7 +743,7 @@ Boss.prototype.collideBulletMap = function(bullet, map) {
   if(!bullet.timeout) {
     bullet.timeout = setTimeout(() => {
       this.bulletBoom(bullet);
-    }, 1200);
+    }, 2000);
   }
 }
 
@@ -788,6 +764,11 @@ Boss.prototype.bulletBoom = function(bullet) {
 
   clearTimeout(bullet.timeout);
   bullet.timeout = false;
+}
+
+Boss.prototype.death = function() {
+  this.boss.kill();
+  this.weapon.autofire = false;
 }
 
 module.exports = Boss;
@@ -832,7 +813,7 @@ Door.prototype.update = function() {
 
   this.Game.physics.arcade.overlap(this.lever, this.Game.Player.player, this.leverOverlap, null, this);
 
-  if(this.lever.overlapPlayer && this.Game.checkButton.isDown && this.Game.time.now > this.openTimer) {
+  if(this.lever.overlapPlayer && this.Game.Player.checkButton.isDown && this.Game.time.now > this.openTimer) {
     this.openCloseDoor();
     this.openTimer = this.Game.time.now + 500;
   }
@@ -1016,7 +997,6 @@ Platform.prototype.update = function() {
         this.platform.body.velocity.set(150, 0);
       }
     }
-
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
@@ -1027,6 +1007,9 @@ Platform.prototype.update = function() {
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
   }
+
+  this.Game.physics.arcade.collide(this.Game.Player.weapon.bullets, this.platform, null, null, this.Game);
+  this.Game.physics.arcade.collide(this.Game.Boss.weapon.bullets, this.platform, null, null, this.Game);
 }
 
 Platform.prototype.checkPlatform = function(player, platform) {
@@ -1058,6 +1041,13 @@ function Player(Game) {
     };
 
     this.haveBonusesKey = false;
+
+    this.cursors = this.Game.input.keyboard.createCursorKeys();
+    this.jumpButton = this.Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.checkButton = this.Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+    this.jumpTimer = 0;
+
+    this.turn = 'right';
 }
 
 Player.prototype.create = function() {
@@ -1085,6 +1075,26 @@ Player.prototype.create = function() {
   }
 
   this.player.haveWorker = false;
+
+
+  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+  this.weapon.bulletAngleOffset = 90;
+  this.weapon.bulletSpeed = 400;
+  this.weapon.fireRate = 800;
+  this.weapon.autofire = false;
+  this.weapon.bulletAngleVariance = 10;
+  this.weapon.fireAngle = 0;
+  this.weapon.setBulletBodyOffset(30, 30);
+  this.weapon.trackSprite(this.player, 10, 20);
+  this.weapon.bullets.forEach((bullet) => {
+    bullet.width = 15;
+    bullet.height = 15;
+    bullet.damage = 100;
+    bullet.body.width = 30;
+    bullet.body.height = 30;
+    bullet.body.bounce.set(0.6);
+  });
 
   //this.player.animations.stop();
 
@@ -1117,6 +1127,45 @@ Player.prototype.update = function() {
   //   this.player.animations.stop('dih', 0);
   // }
 
+  if (this.cursors.up.isDown) {
+    if(this.player.inRope || this.player.inStairs) {
+      this.player.body.velocity.y = -250;
+    }
+  }
+  if (this.cursors.down.isDown) {
+    if(this.player.inRope || this.player.inStairs) {
+      this.player.body.velocity.y = 250;
+    }
+  }
+  if (this.cursors.left.isDown) {
+    this.player.body.velocity.x = -250;
+    this.turn = 'left';
+  }
+  else if (this.cursors.right.isDown) {
+    this.player.body.velocity.x = 250;
+    this.turn = 'right';
+  }
+
+  if (this.jumpButton.isDown && (this.player.body.onFloor() || this.player.inPlatform) && this.Game.time.now > this.jumpTimer) {
+    this.jump();
+    this.jumpTimer = this.Game.time.now + 150;
+  }
+
+
+  //Орудие
+  this.Game.physics.arcade.collide(this.weapon.bullets, this.Game.Map.mapLayer, this.collideBulletMap, null, this);
+  this.Game.physics.arcade.collide(this.Game.Boss.boss, this.weapon.bullets, this.collideBossBullet, null, this);
+  this.Game.physics.arcade.collide(this.Game.Boss.weapon.bullets, this.weapon.bullets, this.collideBulletVsBullet, null, this);
+
+  if(this.turn == 'left') {
+    this.weapon.fireAngle = 180;
+  } else {
+    this.weapon.fireAngle = 0;
+  }
+  if (this.checkButton.isDown && (this.player.x >= 1995 && this.player.x <= 3920) && this.player.y >= 1760) {
+    this.weapon.fire();
+  }
+
   //Камера по X
   let widthScr = this.Game.global.root.offsetWidth / 3;
   let screenWCount = Math.floor(this.player.x / widthScr);
@@ -1147,6 +1196,37 @@ Player.prototype.collideMap = function(player, map) {
 
 Player.prototype.jump = function() {
   this.player.body.velocity.y = -620;
+}
+
+Player.prototype.collideBulletMap = function(bullet, map) {
+  if(!bullet.timeout) {
+    bullet.timeout = setTimeout(() => {
+      this.bulletBoom(bullet);
+    }, 2000);
+  }
+}
+
+Player.prototype.collideBossBullet = function(boss, bullet) {
+  this.bulletBoom(bullet);
+  this.Game.Boss.boss.health -= bullet.damage;
+}
+Player.prototype.collideBulletVsBullet = function(bullet1, bullet2) {
+  this.Game.Boss.bulletBoom(bullet1);
+  this.bulletBoom(bullet2);
+}
+
+Player.prototype.bulletBoom = function(bullet) {
+  bullet.kill();
+
+  let explosion = this.Game.add.sprite(bullet.x, bullet.y, 'exp1');
+  explosion.width = 100;
+  explosion.height = 100;
+  explosion.anchor.set(0.5, 0.5);
+  explosion.animations.add('boom');
+  explosion.animations.play('boom', 64, false, true);
+
+  clearTimeout(bullet.timeout);
+  bullet.timeout = false;
 }
 
 module.exports = Player;
@@ -1284,7 +1364,7 @@ Worker.prototype.update = function() {
     this.moveWorker();
   }
 
-  if(this.worker.overlapPlayer && this.Game.checkButton.isDown && this.worker.isUp ) {
+  if(this.worker.overlapPlayer && this.Game.Player.checkButton.isDown && this.worker.isUp ) {
     this.goInPlayer();
     this.Game.Player.player.haveWorker = true;
   }

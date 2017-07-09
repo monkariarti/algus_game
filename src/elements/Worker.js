@@ -38,7 +38,7 @@ Worker.prototype.update = function() {
     this.moveWorker();
   }
 
-  if(this.worker.overlapPlayer && this.Game.checkButton.isDown && this.worker.isUp ) {
+  if(this.worker.overlapPlayer && this.Game.Player.checkButton.isDown && this.worker.isUp ) {
     this.goInPlayer();
     this.Game.Player.player.haveWorker = true;
   }

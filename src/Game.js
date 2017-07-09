@@ -74,11 +74,6 @@ function create() {
 
   Game.camera.y = 550;
 
-  this.cursors = Game.input.keyboard.createCursorKeys();
-  this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.checkButton = Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-  this.jumpTimer = 0;
-
   this.Map.create();
 
   //Бонусы
@@ -538,28 +533,6 @@ function update() {
   // for(let i = 0; i < this.Guns.length; i++) {
   //   this.Guns[i].update();
   // }
-
-  if (this.cursors.up.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -250;
-    }
-  }
-  if (this.cursors.down.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 250;
-    }
-  }
-  if (this.cursors.left.isDown) {
-    this.Player.player.body.velocity.x = -250;
-  }
-  else if (this.cursors.right.isDown) {
-    this.Player.player.body.velocity.x = 250;
-  }
-
-  if (this.jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > this.jumpTimer) {
-    this.Player.jump();
-    this.jumpTimer = Game.time.now + 150;
-  }
 
 }
 
