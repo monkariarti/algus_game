@@ -30,6 +30,9 @@ Worker.prototype.update = function() {
   //Столкновения с картой
   this.Game.physics.arcade.collide(this.worker, this.Game.Map.mapLayer, this.collideMap, null, this.Game);
 
+  //Столкновения с заплатками
+  this.Game.physics.arcade.collide(this.worker, this.Game.Patches);
+
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.worker, this.overlapPlayer, null, this.Game);
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.table, this.overlapTablePlayer, null, this.Game);
 

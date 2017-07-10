@@ -473,6 +473,18 @@ function create() {
   //GUI
   this.Money.create();
   this.Menu.create();
+
+
+  //Создание заплаток для юнитов
+  this.Patches = [];
+  this.Patches[0] = Game.add.sprite(1540, 1700, 'black');
+  this.Patches[0].width = 20;
+  this.Patches[0].height = 60;
+  for(let i = 0; i < this.Patches.length; i++) {
+    Game.physics.enable(this.Patches[i], Phaser.Physics.ARCADE);
+    this.Patches[i].body.immovable = true;
+    this.Patches[i].body.allowGravity = false;
+  }
 }
 
 function update() {
@@ -498,7 +510,7 @@ function update() {
   this.Player.update();
 
   this.Boss.update();
-  
+
   for(let i = 0; i < this.Spikes.length; i++) {
     if(!this.Spikes[i].set.noCollidesBot) {
       for(let o = 0; o < this.Workers.length; o++) {
