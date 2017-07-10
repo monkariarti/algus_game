@@ -549,7 +549,7 @@ function create() {
 
   //Создание заплаток для юнитов
   this.Patches = [];
-  this.Patches[0] = Game.add.sprite(1540, 1700, 'black');
+  this.Patches[0] = Game.add.sprite(1540, 1700, 'clear');
   this.Patches[0].width = 20;
   this.Patches[0].height = 60;
   for(let i = 0; i < this.Patches.length; i++) {
@@ -947,7 +947,8 @@ Map.prototype.create = function() {
   // this.walls = this.Game.add.tilemap('tilemapWalls', 20, 20);
   // this.walls.addTilesetImage('tilemapWalls', 'tilemap', 20, 20);
   // this.wallsLayer =  this.walls.createLayer(0);
-  this.topWalls = this.Game.add.tileSprite(0, 0, this.Game.world.width, 1360, 'topWalls');
+  this.topWalls = this.Game.add.tileSprite(0, 0, this.Game.camera.width, this.Game.camera.height, 'topWalls');
+  this.topWalls.fixedToCamera = true;
   this.bottomWalls = this.Game.add.tileSprite(0, 1360, this.Game.world.width, 4000 - 1360, 'bottomWalls');
 
   this.other = this.Game.add.tilemap('tilemapOther', 20, 20);

@@ -477,7 +477,7 @@ function create() {
 
   //Создание заплаток для юнитов
   this.Patches = [];
-  this.Patches[0] = Game.add.sprite(1540, 1700, 'black');
+  this.Patches[0] = Game.add.sprite(1540, 1700, 'clear');
   this.Patches[0].width = 20;
   this.Patches[0].height = 60;
   for(let i = 0; i < this.Patches.length; i++) {
