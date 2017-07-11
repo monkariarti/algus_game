@@ -101,16 +101,27 @@ function create() {
   }, this);
   this.Guns[2].create();
 
-  this.Guns[3] = new Gun(2,
+  this.Guns[3] = new Gun(1,
   {
-    x: 3500,
-    y: 720,
+    x: 3060,
+    y: 980,
   },
   {
     x: 3250,
     y: 730,
   }, this);
   this.Guns[3].create();
+
+  this.Guns[4] = new Gun(2,
+  {
+    x: 2620,
+    y: 1500,
+  },
+  {
+    x: 2300,
+    y: 1350,
+  }, this);
+  this.Guns[4].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];

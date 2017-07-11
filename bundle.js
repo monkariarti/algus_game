@@ -173,16 +173,27 @@ function create() {
   }, this);
   this.Guns[2].create();
 
-  this.Guns[3] = new Gun(2,
+  this.Guns[3] = new Gun(1,
   {
-    x: 3500,
-    y: 720,
+    x: 3060,
+    y: 980,
   },
   {
     x: 3250,
     y: 730,
   }, this);
   this.Guns[3].create();
+
+  this.Guns[4] = new Gun(2,
+  {
+    x: 2620,
+    y: 1500,
+  },
+  {
+    x: 2300,
+    y: 1350,
+  }, this);
+  this.Guns[4].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
@@ -761,7 +772,8 @@ Gun.prototype.create = function() {
 
   this.circle = new Phaser.Circle(this.poligon_set.x+350, this.poligon_set.y+350, 700);
   this.graphics = this.Game.add.graphics(0, 0);
-  this.graphics.lineStyle(1, 0x00ff00, 1);
+  //очертание полигона
+  //this.graphics.lineStyle(1, 0x00ff00, 1);
   this.graphics.drawCircle(this.circle.x, this.circle.y, this.circle.diameter);
 
   this.weapon = this.Game.add.weapon(30, 'air');

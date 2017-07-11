@@ -16,7 +16,8 @@ Gun.prototype.create = function() {
 
   this.circle = new Phaser.Circle(this.poligon_set.x+350, this.poligon_set.y+350, 700);
   this.graphics = this.Game.add.graphics(0, 0);
-  this.graphics.lineStyle(1, 0x00ff00, 1);
+  //очертание полигона
+  //this.graphics.lineStyle(1, 0x00ff00, 1);
   this.graphics.drawCircle(this.circle.x, this.circle.y, this.circle.diameter);
 
   this.weapon = this.Game.add.weapon(30, 'air');
