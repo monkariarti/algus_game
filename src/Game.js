@@ -36,6 +36,7 @@ let sprites = {
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
     bonus: 'images/bonus.png',
+    hrusha: 'images/hrusha.png',
     fan: 'images/fan2.png',
     air: 'images/air2.png',
 }
@@ -602,7 +603,6 @@ function update() {
   // for(let i = 0; i < this.FireAll.length; i++) {
   //   this.FireAll[i].update();
   // }
-  
   this.Money.update();
 }
 
