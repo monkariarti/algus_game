@@ -24,8 +24,8 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
-    fan: 'images/fan.png',
-    air: 'images/air.png',
+    fan: 'images/fan2.png',
+    air: 'images/air2.png',
 }
 
 function preload() {
@@ -68,8 +68,9 @@ function create() {
 
 
   this.Guns = [];
-  this.Guns[0] = new Gun({
-    x: 720,
+  this.Guns[0] = new Gun(1,
+  {
+    x: 700,
     y: 860,
   },
   {
@@ -78,8 +79,9 @@ function create() {
   }, this);
   this.Guns[0].create();
 
-  this.Guns[1] = new Gun({
-    x: 2160,
+  this.Guns[1] = new Gun(3,
+  {
+    x: 2200,
     y: 860,
   },
   {
@@ -88,9 +90,10 @@ function create() {
   }, this);
   this.Guns[1].create();
 
-  this.Guns[2] = new Gun({
+  this.Guns[2] = new Gun(3,
+  {
     x: 3920,
-    y: 400,
+    y: 380,
   },
   {
     x: 3220,
@@ -98,9 +101,10 @@ function create() {
   }, this);
   this.Guns[2].create();
 
-  this.Guns[3] = new Gun({
+  this.Guns[3] = new Gun(2,
+  {
     x: 3500,
-    y: 730,
+    y: 720,
   },
   {
     x: 3250,

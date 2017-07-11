@@ -96,8 +96,8 @@ let sprites = {
     char: 'images/char.png',
     fadePlatform: 'images/fade_platform.png',
     menuBg: 'images/menuBg.png',
-    fan: 'images/fan.png',
-    air: 'images/air.png',
+    fan: 'images/fan2.png',
+    air: 'images/air2.png',
 }
 
 function preload() {
@@ -140,8 +140,9 @@ function create() {
 
 
   this.Guns = [];
-  this.Guns[0] = new Gun({
-    x: 720,
+  this.Guns[0] = new Gun(1,
+  {
+    x: 700,
     y: 860,
   },
   {
@@ -150,8 +151,9 @@ function create() {
   }, this);
   this.Guns[0].create();
 
-  this.Guns[1] = new Gun({
-    x: 2160,
+  this.Guns[1] = new Gun(3,
+  {
+    x: 2200,
     y: 860,
   },
   {
@@ -160,9 +162,10 @@ function create() {
   }, this);
   this.Guns[1].create();
 
-  this.Guns[2] = new Gun({
+  this.Guns[2] = new Gun(3,
+  {
     x: 3920,
-    y: 400,
+    y: 380,
   },
   {
     x: 3220,
@@ -170,9 +173,10 @@ function create() {
   }, this);
   this.Guns[2].create();
 
-  this.Guns[3] = new Gun({
+  this.Guns[3] = new Gun(2,
+  {
     x: 3500,
-    y: 730,
+    y: 720,
   },
   {
     x: 3250,
@@ -739,7 +743,8 @@ module.exports = Bonus;
 /* 2 */
 /***/ (function(module, exports) {
 
-function Gun(set, poligon_set, Game) {
+function Gun(rotation, set, poligon_set, Game) {
+  this.rotation = rotation;
   this.set = set;
   this.poligon_set = poligon_set;
   this.Game = Game;
@@ -747,8 +752,8 @@ function Gun(set, poligon_set, Game) {
 
 Gun.prototype.create = function() {
   this.gun = this.Game.add.sprite(this.set.x, this.set.y, 'fan');
-  this.gun.width = 55;
-  this.gun.height = 110;
+  this.gun.width = 31;
+  this.gun.height = 62;
   this.Game.physics.enable(this.gun, Phaser.Physics.ARCADE);
   this.gun.body.immovable = true;
   this.gun.body.allowGravity = false;
@@ -756,21 +761,31 @@ Gun.prototype.create = function() {
 
   this.circle = new Phaser.Circle(this.poligon_set.x+350, this.poligon_set.y+350, 700);
   this.graphics = this.Game.add.graphics(0, 0);
-  //this.graphics.lineStyle(1, 0x00ff00, 1);
+  this.graphics.lineStyle(1, 0x00ff00, 1);
   this.graphics.drawCircle(this.circle.x, this.circle.y, this.circle.diameter);
 
   this.weapon = this.Game.add.weapon(30, 'air');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-  this.weapon.bulletSpeed = 1000;
+  this.weapon.bulletSpeed = 700;
   this.weapon.fireRate = 4000;
   this.weapon.trackSprite(this.gun, 60, 0, true);
   this.weapon.bullets.forEach((bullet) => {
-    bullet.width = 62;
-    bullet.height = 69;
+    bullet.width = 48;
+    bullet.height = 38;
   });
 }
 
 Gun.prototype.update = function() {
+  if (this.rotation == 1) {
+    this.gun.angle = 0;
+  } else if (this.rotation == 2) {
+    this.gun.angle = 90;
+  } else if (this.rotation == 3) {
+    this.gun.angle = 180;
+  } else if (this.rotation == 4) {
+    this.gun.angle = 270;
+  }
+
   if (check_overlap(this.Game.Player.player, this.graphics)) {
     this.gun.rotation = this.Game.physics.arcade.angleBetween(this.gun, this.Game.Player.player);
     this.weapon.fire();
