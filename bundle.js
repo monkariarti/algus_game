@@ -108,6 +108,7 @@ let sprites = {
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
     bonus: 'images/bonus.png',
+    hrusha: 'images/hrusha.png',
 }
 
 function preload() {
@@ -564,8 +565,6 @@ function update() {
 
   if(Game.physics.arcade.isPaused) return;
 
-  this.Money.update();
-
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
       Game.physics.arcade.collide(this.Workers[o].worker, this.FadePlatforms[i].platform);
@@ -618,6 +617,8 @@ function update() {
   // for(let i = 0; i < this.Guns.length; i++) {
   //   this.Guns[i].update();
   // }
+
+  this.Money.update();
 
 }
 
@@ -1545,7 +1546,7 @@ module.exports = Menu;
 function Money(Game) {
   this.Game = Game;
 
-  this.textStyle = { font: "30px Arial", fill: "#000000" };
+  this.textStyle = { font: "40px Arial", fill: "#fbd609" };
 
   this.money = 0;
   this.maxMoney = 10000;
@@ -1554,12 +1555,19 @@ function Money(Game) {
 }
 
 Money.prototype.create = function() {
-  this.text = this.Game.add.text(40, 40, this.money + " / " + this.maxMoney, this.textStyle);
+  this.hrusha = this.Game.add.sprite(5, 5, 'hrusha');
+  this.hrusha.fixedToCamera = true;
+
+  this.text = this.Game.add.text(120, 36, this.money + " / " + this.maxMoney, this.textStyle);
+  this.text.stroke = "#f4951d";
+  this.text.strokeThickness = 8;
   this.text.fixedToCamera = true;
 }
 
 Money.prototype.update = function() {
+  this.hrusha.bringToTop();
   this.text.setText(this.money + " / " + this.maxMoney);
+  this.text.bringToTop();
 }
 
 Money.prototype.addMoney = function(money) {

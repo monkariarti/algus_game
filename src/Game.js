@@ -36,6 +36,7 @@ let sprites = {
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
     bonus: 'images/bonus.png',
+    hrusha: 'images/hrusha.png',
 }
 
 function preload() {
@@ -492,8 +493,6 @@ function update() {
 
   if(Game.physics.arcade.isPaused) return;
 
-  this.Money.update();
-
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
       Game.physics.arcade.collide(this.Workers[o].worker, this.FadePlatforms[i].platform);
@@ -546,6 +545,8 @@ function update() {
   // for(let i = 0; i < this.Guns.length; i++) {
   //   this.Guns[i].update();
   // }
+
+  this.Money.update();
 
 }
 
