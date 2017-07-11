@@ -4,9 +4,7 @@ function Rope(set, Game) {
 }
 
 Rope.prototype.create = function() {
-  this.rope = this.Game.add.sprite(this.set.x, this.set.y, 'black');
-  this.rope.width = 5;
-  this.rope.height = this.set.height;
+  this.rope = this.Game.add.tileSprite(this.set.x-3, this.set.y, 7, this.set.height, 'rope');
   this.Game.physics.enable(this.rope, Phaser.Physics.ARCADE);
   this.rope.body.immovable = true;
   this.rope.body.allowGravity = false;

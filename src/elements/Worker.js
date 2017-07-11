@@ -7,12 +7,11 @@ function Worker(set, Game) {
 }
 
 Worker.prototype.create = function() {
-  this.table = this.Game.add.sprite(this.set.x, this.set.y, 'fadePlatform');
+  this.table = this.Game.add.sprite(this.set.x, this.set.y-30, 'table');
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
-  this.table.width = 100;
-  this.table.height = 30;
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;
+  this.table.animations.add('select');
 
   this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
@@ -32,6 +31,9 @@ Worker.prototype.update = function() {
   //Столкновения с картой
   this.Game.physics.arcade.collide(this.worker, this.Game.Map.mapLayer, this.collideMap, null, this.Game);
 
+  //Столкновения с заплатками
+  this.Game.physics.arcade.collide(this.worker, this.Game.Patches);
+
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.worker, this.overlapPlayer, null, this.Game);
   this.Game.physics.arcade.overlap(this.Game.Player.player, this.table, this.overlapTablePlayer, null, this.Game);
 
@@ -40,7 +42,7 @@ Worker.prototype.update = function() {
     this.moveWorker();
   }
 
-  if(this.worker.overlapPlayer && this.Game.checkButton.isDown && this.worker.isUp ) {
+  if(this.worker.overlapPlayer && this.Game.Player.checkButton.isDown && this.worker.isUp ) {
     this.goInPlayer();
     this.Game.Player.player.haveWorker = true;
   }
@@ -48,6 +50,11 @@ Worker.prototype.update = function() {
   if(this.worker.inPlayer) {
     this.worker.position.x = this.Game.Player.player.position.x + 50;
     this.worker.position.y = this.Game.Player.player.position.y - 40;
+
+    this.table.animations.play('select', 1);
+  } else {
+    this.table.animations.currentAnim.setFrame(0);
+    this.table.animations.stop('select', 1);
   }
 
   if(this.table.overlapPlayer && this.worker.inPlayer) {
@@ -60,6 +67,8 @@ Worker.prototype.update = function() {
     this.Game.Money.addMoney(1);
     this.moneyTimer = this.Game.time.now + 1000;
   }
+
+  this.table.bringToTop();
 }
 
 Worker.prototype.startWorkWorker = function() {

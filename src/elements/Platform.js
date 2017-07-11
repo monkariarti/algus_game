@@ -2,17 +2,18 @@ function Platform(type, set, Game) {
   this.type = type;
   this.set = set;
   this.Game = Game;
+  this.set.sprite = set.sprite || 'fadePlatform';
 }
 
 Platform.prototype.create = function() {
   this.set.height = this.set.height ? this.set.height : 20;
   //Подвижная плафторма
   if(this.type == 'moving') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'movePlatform');
   }
   //Пропадающая платформа
   if(this.type == 'fade') {
-    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, 'fadePlatform');
+    this.platform = this.Game.add.tileSprite(this.set.x, this.set.y, this.set.width, this.set.height, this.set.sprite);
   }
 
   this.platform.settedData = this.set;
@@ -36,7 +37,6 @@ Platform.prototype.update = function() {
         this.platform.body.velocity.set(150, 0);
       }
     }
-
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Map.mapLayer, this.platform);
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.checkPlatform, null, this.Game);
@@ -47,6 +47,9 @@ Platform.prototype.update = function() {
     //Столкновения
     this.Game.physics.arcade.collide(this.Game.Player.player, this.platform, this.fade, null, this.Game);
   }
+
+  this.Game.physics.arcade.collide(this.Game.Player.weapon.bullets, this.platform, null, null, this.Game);
+  this.Game.physics.arcade.collide(this.Game.Boss.weapon.bullets, this.platform, null, null, this.Game);
 }
 
 Platform.prototype.checkPlatform = function(player, platform) {

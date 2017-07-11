@@ -1,5 +1,6 @@
 let Map = require( './elements/Map' );
 let Player = require( './elements/Player' );
+let Boss = require( './elements/Boss' );
 let Platform = require( './elements/Platform' );
 let Spike = require( './elements/Spike' );
 let Rope = require( './elements/Rope' );
@@ -7,6 +8,8 @@ let Stairs = require( './elements/Stairs' );
 let Worker = require( './elements/Worker' );
 let Bonus = require( './elements/Bonus' );
 let Gun = require( './elements/Gun' );
+let Fire = require( './elements/Fire' );
+let Door = require( './elements/Door' );
 let Menu = require( './gui/Menu' );
 let Money = require( './gui/Money' );
 
@@ -22,8 +25,17 @@ let sprites = {
     black: 'images/black.png',
     tilemap: 'images/map_sprites.png',
     char: 'images/char.png',
+    topWalls: 'images/top_walls.png',
+    bottomWalls: 'images/bottom_walls.png',
     fadePlatform: 'images/fade_platform.png',
+    fadePlatform1: 'images/fade_platform_1.png',
+    fadePlatform2: 'images/fade_platform_2.png',
+    movePlatform: 'images/move_platform.png',
+    rope: 'images/rope.png',
     menuBg: 'images/menuBg.png',
+    danila: 'images/danila1.png',
+    clear: 'images/clear.png',
+    bonus: 'images/bonus.png',
     fan: 'images/fan2.png',
     air: 'images/air2.png',
 }
@@ -33,9 +45,13 @@ function preload() {
       this.load.image(spriteKey, sprites[spriteKey]);
     }
 
-    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 40, 60);
+    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
+    Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
+    Game.load.spritesheet('table', 'images/table.png', 110, 60);
 
-    Game.load.tilemap('tilemap', 'tilemap.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
+    Game.load.tilemap('tilemapOther', 'tilemap_other.csv', null, Phaser.Tilemap.CSV);
 
     this.global = {
       root: root,
@@ -43,6 +59,7 @@ function preload() {
 
     this.Map = new Map(this);
     this.Player = new Player(this);
+    this.Boss = new Boss(this);
 
     //GUI
     this.Money = new Money(this);
@@ -59,308 +76,8 @@ function create() {
 
   Game.camera.y = 550;
 
-  this.cursors = Game.input.keyboard.createCursorKeys();
-  this.jumpButton = Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  this.checkButton = Game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-  this.jumpTimer = 0;
-
   this.Map.create();
-
-
-  this.Guns = [];
-  this.Guns[0] = new Gun(1,
-  {
-    x: 700,
-    y: 860,
-  },
-  {
-    x: 720,
-    y: 700,
-  }, this);
-  this.Guns[0].create();
-
-  this.Guns[1] = new Gun(3,
-  {
-    x: 2200,
-    y: 860,
-  },
-  {
-    x: 1620,
-    y: 730,
-  }, this);
-  this.Guns[1].create();
-
-  this.Guns[2] = new Gun(3,
-  {
-    x: 3920,
-    y: 380,
-  },
-  {
-    x: 3220,
-    y: 40,
-  }, this);
-  this.Guns[2].create();
-
-  this.Guns[3] = new Gun(1,
-  {
-    x: 3060,
-    y: 980,
-  },
-  {
-    x: 3250,
-    y: 730,
-  }, this);
-  this.Guns[3].create();
-
-  this.Guns[4] = new Gun(2,
-  {
-    x: 2620,
-    y: 1500,
-  },
-  {
-    x: 2300,
-    y: 1350,
-  }, this);
-  this.Guns[4].create();
-
-  //Пропадающие платформы
-  this.FadePlatforms = [];
-  this.FadePlatforms[0] = new Platform('fade', {
-    x: 1560,
-    y: 920,
-    width: 60,
-  }, this);
-  this.FadePlatforms[0].create();
-  this.FadePlatforms[1] = new Platform('fade', {
-    x: 1900,
-    y: 1120,
-    width: 100,
-  }, this);
-  this.FadePlatforms[1].create();
-  this.FadePlatforms[2] = new Platform('fade', {
-    x: 2580,
-    y: 1960,
-    width: 120,
-    height: 40,
-  }, this);
-  this.FadePlatforms[2].create();
-  this.FadePlatforms[3] = new Platform('fade', {
-    x: 1740,
-    y: 1660,
-    width: 100,
-  }, this);
-  this.FadePlatforms[3].create();
-  this.FadePlatforms[4] = new Platform('fade', {
-    x: 1560,
-    y: 680,
-    width: 80,
-    height: 40,
-  }, this);
-  this.FadePlatforms[4].create();
-  this.FadePlatforms[5] = new Platform('fade', {
-    x: 840,
-    y: 480,
-    width: 60,
-  }, this);
-  this.FadePlatforms[5].create();
-
-  //Двигающиеся платформы
-  this.MovingPlatforms = [];
-  this.MovingPlatforms[0] = new Platform('moving', {
-    x: 700,
-    y: 920,
-    width: 120,
-  }, this);
-  this.MovingPlatforms[0].create();
-  this.MovingPlatforms[1] = new Platform('moving', {
-    x: 3080,
-    y: 880,
-    width: 120,
-  }, this);
-  this.MovingPlatforms[1].create();
-  this.MovingPlatforms[2] = new Platform('moving', {
-    x: 2710,
-    y: 1580,
-    x2: 3480,
-    width: 120,
-  }, this);
-  this.MovingPlatforms[2].create();
-  this.MovingPlatforms[3] = new Platform('moving', {
-    x: 1060,
-    y: 180,
-    width: 120,
-  }, this);
-  this.MovingPlatforms[3].create();
-  this.MovingPlatforms[4] = new Platform('moving', {
-    x: 360,
-    y: 380,
-    width: 120,
-  }, this);
-  this.MovingPlatforms[4].create();
-
-  //Шипы
-  this.Spikes = [];
-  this.Spikes[0] = new Spike({
-    x: 1400,
-    y: 1220,
-    width: 620,
-    height: 120,
-  }, this);
-  this.Spikes[0].create();
-  this.Spikes[1] = new Spike({
-    x: 790,
-    y: 660,
-    width: 60,
-    height: 20,
-    noCollidesBot: true,
-  }, this);
-  this.Spikes[1].create();
-  this.Spikes[2] = new Spike({
-    x: 3040,
-    y: 660,
-    width: 60,
-    height: 20,
-    noCollidesBot: true,
-  }, this);
-  this.Spikes[2].create();
-
-  //Веревки
-  this.Ropes = [];
-  this.Ropes[0] = new Rope({
-    x: 1320,
-    y: 920,
-    height: 160,
-  }, this);
-  this.Ropes[0].create();
-  this.Ropes[1] = new Rope({
-    x: 2400,
-    y: 680,
-    height: 160,
-  }, this);
-  this.Ropes[1].create();
-  this.Ropes[2] = new Rope({
-    x: 3900,
-    y: 880,
-    height: 360,
-  }, this);
-  this.Ropes[2].create();
-  this.Ropes[3] = new Rope({
-    x: 240,
-    y: 140,
-    height: 160,
-  }, this);
-  this.Ropes[3].create();
-
-  //Лестницы
-  this.Stairs = [];
-  this.Stairs[0] = new Stairs({
-    x: 3840,
-    y: 1340,
-    width: 120,
-    height: 280,
-  }, this);
-  this.Stairs[0].create();
-  this.Stairs[1] = new Stairs({
-    x: 160,
-    y: 680,
-    width: 120,
-    height: 100,
-  }, this);
-  this.Stairs[1].create();
-
-  //Работники
-  this.Workers = [];
-  //Саня
-  this.Workers[0] = new Worker({
-    x: 400,
-    y: 250,
-  }, this);
-  this.Workers[0].create();
-  //Костя
-  this.Workers[1] = new Worker({
-    x: 430,
-    y: 650,
-  }, this);
-  this.Workers[1].create();
-  //Ярик
-  this.Workers[2] = new Worker({
-    x: 990,
-    y: 650,
-  }, this);
-  this.Workers[2].create();
-  //Миха
-  this.Workers[3] = new Worker({
-    x: 1680,
-    y: 650,
-  }, this);
-  this.Workers[3].create();
-  //Маша
-  this.Workers[4] = new Worker({
-    x: 650,
-    y: 550,
-  }, this);
-  this.Workers[4].create();
-  //Ирина
-  this.Workers[5] = new Worker({
-    x: 990,
-    y: 350,
-  }, this);
-  this.Workers[5].create();
-  //Оля СЕО
-  this.Workers[6] = new Worker({
-    x: 2540,
-    y: 330,
-  }, this);
-  this.Workers[6].create();
-  //Инна
-  this.Workers[7] = new Worker({
-    x: 2900,
-    y: 330,
-  }, this);
-  this.Workers[7].create();
-  //Илья
-  this.Workers[8] = new Worker({
-    x: 3700,
-    y: 150,
-  }, this);
-  this.Workers[8].create();
-  //Лера
-  this.Workers[9] = new Worker({
-    x: 3540,
-    y: 650,
-  }, this);
-  this.Workers[9].create();
-  //Катя
-  this.Workers[10] = new Worker({
-    x: 3820,
-    y: 530,
-  }, this);
-  this.Workers[10].create();
-  //Анжелика
-  this.Workers[11] = new Worker({
-    x: 1140,
-    y: 1730,
-  }, this);
-  this.Workers[11].create();
-  //Анна
-  this.Workers[12] = new Worker({
-    x: 580,
-    y: 1550,
-  }, this);
-  this.Workers[12].create();
-  //Вера
-  this.Workers[13] = new Worker({
-    x: 200,
-    y: 1730,
-  }, this);
-  this.Workers[13].create();
-  //Рыжич
-  this.Workers[14] = new Worker({
-    x: 860,
-    y: 130,
-  }, this);
-  this.Workers[14].create();
-
+  
   //Бонусы
   this.Bonuses = [];
   this.Bonuses[0] = new Bonus({
@@ -458,22 +175,380 @@ function create() {
     y: 1530,
   }, this);
   this.Bonuses[18].create();
+  for(let b = 19; b < 39; b++) {
+    this.Bonuses[b] = new Bonus({
+      x: Game.rnd.between(250, 850),
+      y: Game.rnd.between(1820, 1910),
+      death: true,
+    }, this);
+    this.Bonuses[b].create();
+  }
+  
+  this.Guns = [];
+  this.Guns[0] = new Gun(1,
+  {
+    x: 700,
+    y: 860,
+  },
+  {
+    x: 720,
+    y: 700,
+  }, this);
+  this.Guns[0].create();
+
+  this.Guns[1] = new Gun(3,
+  {
+    x: 2200,
+    y: 860,
+  },
+  {
+    x: 1620,
+    y: 730,
+  }, this);
+  this.Guns[1].create();
+
+  this.Guns[2] = new Gun(3,
+  {
+    x: 3920,
+    y: 380,
+  },
+  {
+    x: 3220,
+    y: 40,
+  }, this);
+  this.Guns[2].create();
+
+  this.Guns[3] = new Gun(1,
+  {
+    x: 3060,
+    y: 980,
+  },
+  {
+    x: 3250,
+    y: 730,
+  }, this);
+  this.Guns[3].create();
+
+  this.Guns[4] = new Gun(2,
+  {
+    x: 2620,
+    y: 1500,
+  },
+  {
+    x: 2300,
+    y: 1350,
+  }, this);
+  this.Guns[4].create();
+
+  //Пропадающие платформы
+  this.FadePlatforms = [];
+  this.FadePlatforms[0] = new Platform('fade', {
+    x: 1560,
+    y: 920,
+    width: 60,
+  }, this);
+  this.FadePlatforms[0].create();
+  this.FadePlatforms[1] = new Platform('fade', {
+    x: 1900,
+    y: 1120,
+    width: 100,
+  }, this);
+  this.FadePlatforms[1].create();
+  this.FadePlatforms[2] = new Platform('fade', {
+    x: 2580,
+    y: 1960,
+    width: 120,
+    height: 40,
+    sprite: 'fadePlatform2',
+  }, this);
+  this.FadePlatforms[2].create();
+  this.FadePlatforms[3] = new Platform('fade', {
+    x: 1740,
+    y: 1660,
+    width: 100,
+  }, this);
+  this.FadePlatforms[3].create();
+  this.FadePlatforms[4] = new Platform('fade', {
+    x: 1560,
+    y: 680,
+    width: 80,
+    height: 40,
+    sprite: 'fadePlatform1',
+  }, this);
+  this.FadePlatforms[4].create();
+  this.FadePlatforms[5] = new Platform('fade', {
+    x: 840,
+    y: 480,
+    width: 60,
+  }, this);
+  this.FadePlatforms[5].create();
+
+  //Двигающиеся платформы
+  this.MovingPlatforms = [];
+  this.MovingPlatforms[0] = new Platform('moving', {
+    x: 700,
+    y: 920,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[0].create();
+  this.MovingPlatforms[1] = new Platform('moving', {
+    x: 3080,
+    y: 880,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[1].create();
+  this.MovingPlatforms[2] = new Platform('moving', {
+    x: 2710,
+    y: 1580,
+    x2: 3480,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[2].create();
+  this.MovingPlatforms[3] = new Platform('moving', {
+    x: 1060,
+    y: 180,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[3].create();
+  this.MovingPlatforms[4] = new Platform('moving', {
+    x: 360,
+    y: 380,
+    width: 120,
+  }, this);
+  this.MovingPlatforms[4].create();
+
+  //Шипы
+  this.Spikes = [];
+  this.Spikes[0] = new Spike({
+    x: 1400,
+    y: 1220,
+    width: 620,
+    height: 120,
+  }, this);
+  this.Spikes[0].create();
+  this.Spikes[1] = new Spike({
+    x: 780,
+    y: 660,
+    width: 60,
+    height: 20,
+    noCollidesBot: true,
+  }, this);
+  this.Spikes[1].create();
+  this.Spikes[2] = new Spike({
+    x: 3040,
+    y: 660,
+    width: 60,
+    height: 20,
+    noCollidesBot: true,
+  }, this);
+  this.Spikes[2].create();
+
+  //Веревки
+  this.Ropes = [];
+  this.Ropes[0] = new Rope({
+    x: 1320,
+    y: 920,
+    height: 160,
+  }, this);
+  this.Ropes[0].create();
+  this.Ropes[1] = new Rope({
+    x: 2400,
+    y: 680,
+    height: 160,
+  }, this);
+  this.Ropes[1].create();
+  this.Ropes[2] = new Rope({
+    x: 3900,
+    y: 880,
+    height: 360,
+  }, this);
+  this.Ropes[2].create();
+  this.Ropes[3] = new Rope({
+    x: 240,
+    y: 140,
+    height: 160,
+  }, this);
+  this.Ropes[3].create();
+
+  //Лестницы
+  this.Stairs = [];
+  this.Stairs[0] = new Stairs({
+    x: 3840,
+    y: 1340,
+    width: 120,
+    height: 280,
+  }, this);
+  this.Stairs[0].create();
+  this.Stairs[1] = new Stairs({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 100,
+  }, this);
+  this.Stairs[1].create();
+  this.Stairs[2] = new Stairs({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 100,
+  }, this);
+  this.Stairs[2].create();
+
+  // //Огонь
+  // this.FireAll = [];
+  // this.FireAll[0] = new Fire({
+  //   x: 3400,
+  //   y: 1340,
+  //   height: 500,
+  // }, this);
+  // this.FireAll[0].create();
+  // this.FireAll[1] = new Fire({
+  //   x: 2620,
+  //   y: 1380,
+  //   height: 300,
+  //   align: 'top',
+  // }, this);
+  // this.FireAll[1].create();
+
+  //Работники
+  this.Workers = [];
+  //Саня
+  this.Workers[0] = new Worker({
+    x: 400,
+    y: 250,
+  }, this);
+  this.Workers[0].create();
+  //Костя
+  this.Workers[1] = new Worker({
+    x: 420,
+    y: 650,
+  }, this);
+  this.Workers[1].create();
+  //Ярик
+  this.Workers[2] = new Worker({
+    x: 980,
+    y: 650,
+  }, this);
+  this.Workers[2].create();
+  //Миха
+  this.Workers[3] = new Worker({
+    x: 1680,
+    y: 650,
+  }, this);
+  this.Workers[3].create();
+  //Маша
+  this.Workers[4] = new Worker({
+    x: 640,
+    y: 550,
+  }, this);
+  this.Workers[4].create();
+  //Ирина
+  this.Workers[5] = new Worker({
+    x: 980,
+    y: 350,
+  }, this);
+  this.Workers[5].create();
+  //Оля СЕО
+  this.Workers[6] = new Worker({
+    x: 2540,
+    y: 330,
+  }, this);
+  this.Workers[6].create();
+  //Инна
+  this.Workers[7] = new Worker({
+    x: 2900,
+    y: 330,
+  }, this);
+  this.Workers[7].create();
+  //Илья
+  this.Workers[8] = new Worker({
+    x: 3700,
+    y: 150,
+  }, this);
+  this.Workers[8].create();
+  //Лера
+  this.Workers[9] = new Worker({
+    x: 3540,
+    y: 650,
+  }, this);
+  this.Workers[9].create();
+  //Катя
+  this.Workers[10] = new Worker({
+    x: 3820,
+    y: 530,
+  }, this);
+  this.Workers[10].create();
+  //Анжелика
+  this.Workers[11] = new Worker({
+    x: 1140,
+    y: 1730,
+  }, this);
+  this.Workers[11].create();
+  //Анна
+  this.Workers[12] = new Worker({
+    x: 560,
+    y: 1550,
+  }, this);
+  this.Workers[12].create();
+  //Вера
+  this.Workers[13] = new Worker({
+    x: 200,
+    y: 1730,
+  }, this);
+  this.Workers[13].create();
+  //Рыжич
+  this.Workers[14] = new Worker({
+    x: 860,
+    y: 130,
+  }, this);
+  this.Workers[14].create();
+
+  this.Doors = [];
+  this.Doors[0] = new Door({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 20,
+    rx: 80,
+    ry: 640,
+  }, this);
+  this.Doors[0].create();
+  this.Doors[1] = new Door({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 20,
+    rx: 490,
+    ry: 1700,
+    key: true
+  }, this);
+  this.Doors[1].create();
 
   this.Player.create();
+
+  this.Boss.create();
 
   //GUI
   this.Money.create();
   this.Menu.create();
+
+
+  //Создание заплаток для юнитов
+  this.Patches = [];
+  this.Patches[0] = Game.add.sprite(1540, 1700, 'clear');
+  this.Patches[0].width = 20;
+  this.Patches[0].height = 60;
+  for(let i = 0; i < this.Patches.length; i++) {
+    Game.physics.enable(this.Patches[i], Phaser.Physics.ARCADE);
+    this.Patches[i].body.immovable = true;
+    this.Patches[i].body.allowGravity = false;
+  }
 }
 
 function update() {
   this.Menu.update();
 
   if(Game.physics.arcade.isPaused) return;
-
-  this.Money.update();
-
-  this.Player.update();
 
   for(let i = 0; i < this.FadePlatforms.length; i++) {
     for(let o = 0; o < this.Workers.length; o++) {
@@ -487,6 +562,11 @@ function update() {
     }
     this.MovingPlatforms[i].update();
   }
+
+  this.Player.update();
+
+  this.Boss.update();
+
   for(let i = 0; i < this.Spikes.length; i++) {
     if(!this.Spikes[i].set.noCollidesBot) {
       for(let o = 0; o < this.Workers.length; o++) {
@@ -516,127 +596,19 @@ function update() {
   for(let i = 0; i < this.Guns.length; i++) {
     this.Guns[i].update();
   }
-
+  for(let i = 0; i < this.Doors.length; i++) {
+    this.Doors[i].update();
+  }
+  // for(let i = 0; i < this.FireAll.length; i++) {
+  //   this.FireAll[i].update();
+  // }
   
-
-  //стрелки
-  if (this.cursors.up.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -250;
-    }
-  }
-  if (this.cursors.down.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 250;
-    }
-  }
-  if (this.cursors.left.isDown) {
-    this.Player.player.body.velocity.x = -250;
-  }
-  else if (this.cursors.right.isDown) {
-    this.Player.player.body.velocity.x = 250;
-  }
-
-  if (this.jumpButton.isDown && (this.Player.player.body.onFloor() || this.Player.player.inPlatform) && Game.time.now > this.jumpTimer) {
-    this.Player.jump();
-    this.jumpTimer = Game.time.now + 150;
-  }
-
-  w = Game.input.keyboard.addKey(Phaser.Keyboard.W);
-  a = Game.input.keyboard.addKey(Phaser.Keyboard.A);
-  s = Game.input.keyboard.addKey(Phaser.Keyboard.S);
-  d = Game.input.keyboard.addKey(Phaser.Keyboard.D);
-  g = Game.input.keyboard.addKey(Phaser.Keyboard.G);
-
-  //WASD
-  if (w.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = -250;
-    }
-  }
-  if (s.isDown) {
-    if(this.Player.player.inRope || this.Player.player.inStairs) {
-      this.Player.player.body.velocity.y = 250;
-    }
-  }
-  if (a.isDown) {
-    this.Player.player.body.velocity.x = -250;
-  }
-  else if (d.isDown) {
-    this.Player.player.body.velocity.x = 250;
-  }
-  if (g.isDown) {
-    Game.world.setSize(2240, 2240);
-  }
-
-
-
-//Game.camera.x = (this.Player.player.x - (screen.width/2));
-  //Камера по X
-  /*if(this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }
-  if(this.Player.player.x < 660) {
-    Game.camera.x = 0;
-  }
-  if(this.Player.player.x > 2180) {
-    Game.camera.x = 2080;
-  }
-  if(this.Player.player.x < 2180 && this.Player.player.x > 660) {
-    Game.camera.x = 550;
-  }*/
-  //Камера по Y
-  /*if(this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }
-  if(this.Player.player.y < 660) {
-    Game.camera.y = 0;
-  }
-  if(this.Player.player.y > 1280) {
-    Game.camera.y = 1280;
-  }
-  if(this.Player.player.y < 1280 && this.Player.player.y > 660) {
-    Game.camera.y = 550;
-  }*/
-  Game.camera.follow(this.Player.player, Phaser.Camera.FOLLOW_TOPDOWN_TIGHT);
-  var terrainScalex = root.offsetWidth/2;
-  var terrainScaley = root.offsetHeight/2;
-  if (this.input.keyboard.isDown(Phaser.Keyboard.Q)) {
-    terrainScalex += 100;
-    terrainScaley += 100;
-    console.log(this.game);
-    this.game.renderer.resize(terrainScalex,terrainScaley);
-  } else if (this.input.keyboard.isDown(Phaser.Keyboard.A)) {
-    terrainScalex -= 100;
-    terrainScaley -= 100;
-    this.game.renderer.resize(terrainScalex,terrainScaley);
-  }
-
+  this.Money.update();
 }
 
 
-
 function render() {
-  Game.debug.spriteInfo(this.Player.player, 32, 32);
   //Game.debug.spriteInfo(this.Player.player, 32, 32);
 }
 
 module.exports = Game;
-
-
-/*zoomTo(scale, duration) {
-  ...
-  if (!duration) {
-      ...
-  } else {
-      Game.add.tween(cameraBounds).to({
-          x      : bounds.width  * (1 - scale) / 2,
-          y      : bounds.height * (1 - scale) / 2,
-          width  : bounds.width  * scale,
-          height : bounds.height * scale
-      }, duration).start();
-      return Game.add.tween(this.scale).to({
-          x: scale, y: scale
-      }, duration).start();
-  }
-}*/
