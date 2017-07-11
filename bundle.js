@@ -743,8 +743,13 @@ Boss.prototype.update = function() {
     this.weapon.fireAngle = -180;
   }
 
-  if(this.boss.health <= 0) {
+  if(this.boss.health <= 0 && !this.boss.death) {
     this.death();
+  }
+
+  if(this.key) {
+    this.Game.physics.arcade.collide(this.key, this.Game.Player.player, this.collidePlayerKey, null, this);
+    this.Game.physics.arcade.collide(this.key, this.Game.Map.mapLayer);
   }
 }
 
@@ -779,9 +784,22 @@ Boss.prototype.bulletBoom = function(bullet) {
   bullet.timeout = false;
 }
 
+Boss.prototype.createKey = function() {
+  this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'black');
+  this.key.anchor.set(0.5, 0.5);
+  this.Game.physics.enable(this.key, Phaser.Physics.ARCADE);
+}
+
+Boss.prototype.collidePlayerKey = function(key, player) {
+  this.Game.Player.haveBonusesKey = true;
+  key.kill();
+}
+
 Boss.prototype.death = function() {
   this.boss.kill();
   this.weapon.autofire = false;
+  this.createKey();
+  this.boss.death = true;
 }
 
 module.exports = Boss;
@@ -1048,10 +1066,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
 
     this.haveBonusesKey = false;

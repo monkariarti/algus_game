@@ -2,10 +2,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
 
     this.haveBonusesKey = false;
