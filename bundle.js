@@ -108,7 +108,6 @@ let sprites = {
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
     bonus: 'images/bonus.png',
-    table: 'images/table.png',
 }
 
 function preload() {
@@ -118,6 +117,7 @@ function preload() {
 
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
+    Game.load.spritesheet('table', 'images/table.png', 110, 60);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
@@ -1352,6 +1352,7 @@ Worker.prototype.create = function() {
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;
+  this.table.animations.add('select');
 
   this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
@@ -1390,6 +1391,11 @@ Worker.prototype.update = function() {
   if(this.worker.inPlayer) {
     this.worker.position.x = this.Game.Player.player.position.x + 50;
     this.worker.position.y = this.Game.Player.player.position.y - 40;
+
+    this.table.animations.play('select', 1);
+  } else {
+    this.table.animations.currentAnim.setFrame(0);
+    this.table.animations.stop('select', 1);
   }
 
   if(this.table.overlapPlayer && this.worker.inPlayer) {

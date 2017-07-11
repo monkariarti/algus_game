@@ -36,7 +36,6 @@ let sprites = {
     danila: 'images/danila1.png',
     clear: 'images/clear.png',
     bonus: 'images/bonus.png',
-    table: 'images/table.png',
 }
 
 function preload() {
@@ -46,6 +45,7 @@ function preload() {
 
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
+    Game.load.spritesheet('table', 'images/table.png', 110, 60);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);

@@ -11,6 +11,7 @@ Worker.prototype.create = function() {
   this.Game.physics.enable(this.table, Phaser.Physics.ARCADE);
   this.table.body.immovable = true;
   this.table.body.allowGravity = false;
+  this.table.animations.add('select');
 
   this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
@@ -49,6 +50,11 @@ Worker.prototype.update = function() {
   if(this.worker.inPlayer) {
     this.worker.position.x = this.Game.Player.player.position.x + 50;
     this.worker.position.y = this.Game.Player.player.position.y - 40;
+
+    this.table.animations.play('select', 1);
+  } else {
+    this.table.animations.currentAnim.setFrame(0);
+    this.table.animations.stop('select', 1);
   }
 
   if(this.table.overlapPlayer && this.worker.inPlayer) {
