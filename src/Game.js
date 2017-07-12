@@ -46,6 +46,23 @@ function preload() {
       this.load.image(spriteKey, sprites[spriteKey]);
     }
 
+    this.load.image('worker_1', 'images/workers/1.png');
+    this.load.image('worker_1', 'images/workers/2.png');
+    this.load.image('worker_3', 'images/workers/3.png');
+    this.load.image('worker_4', 'images/workers/4.png');
+    this.load.image('worker_5', 'images/workers/5.png');
+    this.load.image('worker_6', 'images/workers/6.png');
+    this.load.image('worker_7', 'images/workers/7.png');
+    this.load.image('worker_8', 'images/workers/8.png');
+    this.load.image('worker_9', 'images/workers/9.png');
+    this.load.image('worker_10', 'images/workers/10.png');
+    this.load.image('worker_1`', 'images/workers/11.png');
+    this.load.image('worker_12', 'images/workers/12.png');
+    this.load.image('worker_13', 'images/workers/13.png');
+    this.load.image('worker_14', 'images/workers/14.png');
+    this.load.image('worker_15', 'images/workers/15.png');
+    this.load.image('worker_16', 'images/workers/16.png');
+
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
@@ -78,7 +95,7 @@ function create() {
   Game.camera.y = 550;
 
   this.Map.create();
-  
+
   //Бонусы
   this.Bonuses = [];
   this.Bonuses[0] = new Bonus({
@@ -184,7 +201,7 @@ function create() {
     }, this);
     this.Bonuses[b].create();
   }
-  
+
   this.Guns = [];
   this.Guns[0] = new Gun(1,
   {
@@ -417,90 +434,105 @@ function create() {
   this.Workers[0] = new Worker({
     x: 400,
     y: 250,
+    sprite: 'worker_4'
   }, this);
   this.Workers[0].create();
   //Костя
   this.Workers[1] = new Worker({
     x: 420,
     y: 650,
+    sprite: 'worker_13'
   }, this);
   this.Workers[1].create();
   //Ярик
   this.Workers[2] = new Worker({
     x: 980,
     y: 650,
+    sprite: 'worker_14'
   }, this);
   this.Workers[2].create();
   //Миха
   this.Workers[3] = new Worker({
     x: 1680,
     y: 650,
+    sprite: 'worker_12'
   }, this);
   this.Workers[3].create();
   //Маша
   this.Workers[4] = new Worker({
     x: 640,
     y: 550,
+    sprite: 'worker_9'
   }, this);
   this.Workers[4].create();
   //Ирина
   this.Workers[5] = new Worker({
     x: 980,
     y: 350,
+    sprite: 'worker_15'
   }, this);
   this.Workers[5].create();
   //Оля СЕО
   this.Workers[6] = new Worker({
     x: 2540,
     y: 330,
+    sprite: 'worker_6'
   }, this);
   this.Workers[6].create();
   //Инна
   this.Workers[7] = new Worker({
     x: 2900,
     y: 330,
+    sprite: 'worker_10'
   }, this);
   this.Workers[7].create();
   //Илья
   this.Workers[8] = new Worker({
     x: 3700,
     y: 150,
+    sprite: 'worker_8'
   }, this);
   this.Workers[8].create();
   //Лера
   this.Workers[9] = new Worker({
     x: 3540,
     y: 650,
+    sprite: 'worker_7'
   }, this);
   this.Workers[9].create();
   //Катя
   this.Workers[10] = new Worker({
     x: 3820,
     y: 530,
+    sprite: 'worker_3'
   }, this);
   this.Workers[10].create();
-  //Анжелика
+  //Ярик СЕО
   this.Workers[11] = new Worker({
     x: 1140,
     y: 1730,
+    sprite: 'worker_5'
   }, this);
   this.Workers[11].create();
   //Анна
   this.Workers[12] = new Worker({
     x: 560,
     y: 1550,
+    sprite: 'worker_2'
   }, this);
   this.Workers[12].create();
   //Вера
   this.Workers[13] = new Worker({
     x: 200,
     y: 1730,
+    sprite: 'worker_16'
   }, this);
   this.Workers[13].create();
   //Рыжич
   this.Workers[14] = new Worker({
     x: 860,
     y: 130,
+    sprite: 'worker_1'
   }, this);
   this.Workers[14].create();
 

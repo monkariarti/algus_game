@@ -16,6 +16,8 @@ function Player(Game) {
     this.jumpTimer = 0;
 
     this.turn = 'right';
+
+    this.countWorkers = 0;
 }
 
 Player.prototype.create = function() {

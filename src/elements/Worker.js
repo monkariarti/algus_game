@@ -2,6 +2,8 @@ function Worker(set, Game) {
   this.set = set;
   this.Game = Game;
 
+  this.set.sprite = set.sprite || 'char';
+
   this.upTimer = 0;
   this.moneyTimer = 0;
 }
@@ -13,12 +15,13 @@ Worker.prototype.create = function() {
   this.table.body.allowGravity = false;
   this.table.animations.add('select');
 
-  this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, 'char');
+  this.worker = this.Game.add.sprite(this.set.x + 30, this.set.y - 30, this.set.sprite);
   this.Game.physics.enable(this.worker, Phaser.Physics.ARCADE);
   this.worker.width = 40;
   this.worker.height = 60;
   this.worker.body.bounce.x = 1;
   this.worker.body.gravity.y = 980;
+  this.worker.body.width = 30;
   this.worker.body.collideWorldBounds = true;
   this.worker.isUp = false;
   this.worker.inPlayer = false;
@@ -81,6 +84,7 @@ Worker.prototype.startWorkWorker = function() {
   this.worker.angle = 0;
   this.worker.inPlayer = false;
   this.worker.isUp = false;
+  this.Game.Player.countWorkers--;
 }
 
 Worker.prototype.goInPlayer = function() {
@@ -90,6 +94,7 @@ Worker.prototype.goInPlayer = function() {
   this.worker.body.allowGravity = false;
   this.worker.inPlayer = true;
   this.worker.isUp = false;
+  this.Game.Player.countWorkers++;
 }
 
 Worker.prototype.moveWorker = function() {

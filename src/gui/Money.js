@@ -4,7 +4,7 @@ function Money(Game) {
   this.textStyle = { font: "40px Arial", fill: "#fbd609" };
 
   this.money = 0;
-  this.maxMoney = 10000;
+  this.maxMoney = 8000;
 
   this.penalty = 200;
 }
