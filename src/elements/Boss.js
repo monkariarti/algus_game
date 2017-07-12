@@ -10,13 +10,13 @@ function Boss(Game) {
 }
 
 Boss.prototype.create = function() {
-  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'boss');
-  this.boss.width = 256;
+  this.boss = this.Game.add.sprite(this.default.x, this.default.y + 10, 'boss');
+  this.boss.width = 239;
   this.boss.height = 140;
   this.boss.anchor.set(0.5, 0.5);
   this.boss.health = 10000;
-  this.boss.animations.add('right', [1, 3], 3, true);
-  this.boss.animations.add('left', [2, 4], 3, true);
+  this.boss.animations.add('left', [1, 3, 5, 7, 5, 3], 6, true);
+  this.boss.animations.add('right', [0, 2, 4, 6, 4, 2], 6, true);
 
   this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
   this.boss.body.collideWorldBounds = true;
@@ -24,6 +24,7 @@ Boss.prototype.create = function() {
   this.boss.body.allowGravity = false;
   this.boss.body.bounce.set(1);
   this.boss.body.velocity.set(-150, 0);
+  this.boss.body.setSize(161, 140, 39, 0);
 
   this.weapon = this.Game.add.weapon(30, 'black');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -52,8 +53,8 @@ Boss.prototype.update = function() {
   this.Game.physics.arcade.collide(this.Game.Player.player, this.boss, this.collidePlayerBoss, null, this);
 
   if(this.boss.x >= 3890) {
-    this.turn = 0;
     this.boss.body.velocity.set(-150, 0);
+    this.turn = 0;
   }
   if(this.boss.x <= 2015) {
     this.boss.body.velocity.set(150, 0);
@@ -62,10 +63,10 @@ Boss.prototype.update = function() {
 
   if(this.turn == 1) {
     this.weapon.fireAngle = 0;
-    this.boss.play('left', 3, true);
+    this.boss.play('right', 10, false);
   } else {
     this.weapon.fireAngle = -180;
-    this.boss.play('right', 3, true);
+    this.boss.play('left', 10, false);
   }
 
   if(this.boss.health <= 0 && !this.boss.death) {
