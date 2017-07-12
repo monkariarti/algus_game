@@ -119,7 +119,7 @@ function preload() {
     }
 
     this.load.image('worker_1', 'images/workers/1.png');
-    this.load.image('worker_1', 'images/workers/2.png');
+    this.load.image('worker_2', 'images/workers/2.png');
     this.load.image('worker_3', 'images/workers/3.png');
     this.load.image('worker_4', 'images/workers/4.png');
     this.load.image('worker_5', 'images/workers/5.png');
@@ -138,6 +138,7 @@ function preload() {
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
+    Game.load.spritesheet('boss', 'images/boss.png', 256, 140);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
@@ -292,14 +293,14 @@ function create() {
     y: 860,
   },
   {
-    x: 1620,
+    x: 1520,
     y: 730,
   }, this);
   this.Guns[1].create();
 
   this.Guns[2] = new Gun(3,
   {
-    x: 3920,
+    x: 3960,
     y: 380,
   },
   {
@@ -319,16 +320,16 @@ function create() {
   }, this);
   this.Guns[3].create();
 
-  this.Guns[4] = new Gun(2,
-  {
-    x: 2620,
-    y: 1500,
-  },
-  {
-    x: 2300,
-    y: 1350,
-  }, this);
-  this.Guns[4].create();
+  // this.Guns[4] = new Gun(2,
+  // {
+  //   x: 2620,
+  //   y: 1500,
+  // },
+  // {
+  //   x: 2300,
+  //   y: 1350,
+  // }, this);
+  // this.Guns[4].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];
@@ -777,11 +778,13 @@ function Boss(Game) {
 }
 
 Boss.prototype.create = function() {
-  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'black');
-  this.boss.width = 140;
+  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'boss');
+  this.boss.width = 256;
   this.boss.height = 140;
   this.boss.anchor.set(0.5, 0.5);
   this.boss.health = 10000;
+  this.boss.animations.add('right', [1, 3], 3, true);
+  this.boss.animations.add('left', [2, 4], 3, true);
 
   this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
   this.boss.body.collideWorldBounds = true;
@@ -827,8 +830,10 @@ Boss.prototype.update = function() {
 
   if(this.turn == 1) {
     this.weapon.fireAngle = 0;
+    this.boss.play('left', 3, true);
   } else {
     this.weapon.fireAngle = -180;
+    this.boss.play('right', 3, true);
   }
 
   if(this.boss.health <= 0 && !this.boss.death) {
@@ -1040,8 +1045,8 @@ Gun.prototype.create = function() {
   this.weapon.fireRate = 4000;
   this.weapon.trackSprite(this.gun, 60, 0, true);
   this.weapon.bullets.forEach((bullet) => {
-    bullet.width = 48;
-    bullet.height = 38;
+    bullet.width = 38;
+    bullet.height = 28;
   });
 }
 
@@ -1189,10 +1194,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      x: 120,
-      y: 1000,
-      // x: 2290,
-      // y: 1840,
+      // x: 120,
+      // y: 1000,
+      x: 2290,
+      y: 1840,
     };
 
     this.haveBonusesKey = false;

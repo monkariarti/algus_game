@@ -10,11 +10,13 @@ function Boss(Game) {
 }
 
 Boss.prototype.create = function() {
-  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'black');
-  this.boss.width = 140;
+  this.boss = this.Game.add.sprite(this.default.x, this.default.y, 'boss');
+  this.boss.width = 256;
   this.boss.height = 140;
   this.boss.anchor.set(0.5, 0.5);
   this.boss.health = 10000;
+  this.boss.animations.add('right', [1, 3], 3, true);
+  this.boss.animations.add('left', [2, 4], 3, true);
 
   this.Game.physics.enable(this.boss, Phaser.Physics.ARCADE);
   this.boss.body.collideWorldBounds = true;
@@ -60,8 +62,10 @@ Boss.prototype.update = function() {
 
   if(this.turn == 1) {
     this.weapon.fireAngle = 0;
+    this.boss.play('left', 3, true);
   } else {
     this.weapon.fireAngle = -180;
+    this.boss.play('right', 3, true);
   }
 
   if(this.boss.health <= 0 && !this.boss.death) {

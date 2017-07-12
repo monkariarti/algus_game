@@ -47,7 +47,7 @@ function preload() {
     }
 
     this.load.image('worker_1', 'images/workers/1.png');
-    this.load.image('worker_1', 'images/workers/2.png');
+    this.load.image('worker_2', 'images/workers/2.png');
     this.load.image('worker_3', 'images/workers/3.png');
     this.load.image('worker_4', 'images/workers/4.png');
     this.load.image('worker_5', 'images/workers/5.png');
@@ -66,6 +66,7 @@ function preload() {
     Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
+    Game.load.spritesheet('boss', 'images/boss.png', 256, 140);
 
     Game.load.tilemap('tilemap', 'tilemap_objects.csv', null, Phaser.Tilemap.CSV);
     Game.load.tilemap('tilemapWalls', 'tilemap_walls.csv', null, Phaser.Tilemap.CSV);
@@ -220,14 +221,14 @@ function create() {
     y: 860,
   },
   {
-    x: 1620,
+    x: 1520,
     y: 730,
   }, this);
   this.Guns[1].create();
 
   this.Guns[2] = new Gun(3,
   {
-    x: 3920,
+    x: 3960,
     y: 380,
   },
   {
@@ -247,16 +248,16 @@ function create() {
   }, this);
   this.Guns[3].create();
 
-  this.Guns[4] = new Gun(2,
-  {
-    x: 2620,
-    y: 1500,
-  },
-  {
-    x: 2300,
-    y: 1350,
-  }, this);
-  this.Guns[4].create();
+  // this.Guns[4] = new Gun(2,
+  // {
+  //   x: 2620,
+  //   y: 1500,
+  // },
+  // {
+  //   x: 2300,
+  //   y: 1350,
+  // }, this);
+  // this.Guns[4].create();
 
   //Пропадающие платформы
   this.FadePlatforms = [];

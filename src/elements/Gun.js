@@ -26,8 +26,8 @@ Gun.prototype.create = function() {
   this.weapon.fireRate = 4000;
   this.weapon.trackSprite(this.gun, 60, 0, true);
   this.weapon.bullets.forEach((bullet) => {
-    bullet.width = 48;
-    bullet.height = 38;
+    bullet.width = 38;
+    bullet.height = 28;
   });
 }
 
