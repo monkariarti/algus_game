@@ -26,9 +26,8 @@ Boss.prototype.create = function() {
   this.boss.body.velocity.set(-150, 0);
   this.boss.body.setSize(161, 140, 39, 0);
 
-  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon = this.Game.add.weapon(30, 'bomb');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-  this.weapon.bulletAngleOffset = 90;
   this.weapon.bulletSpeed = 400;
   this.weapon.fireRate = 1500;
   this.weapon.autofire = true;
@@ -39,6 +38,7 @@ Boss.prototype.create = function() {
   this.weapon.bullets.forEach((bullet) => {
     bullet.width = 30;
     bullet.height = 30;
+    bullet.body.setSize(30, 30, 0, 0);
     bullet.damage = 1000;
     bullet.body.bounce.set(0.6);
   });
@@ -111,7 +111,7 @@ Boss.prototype.bulletBoom = function(bullet) {
 }
 
 Boss.prototype.createKey = function() {
-  this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'black');
+  this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'key');
   this.key.anchor.set(0.5, 0.5);
   this.Game.physics.enable(this.key, Phaser.Physics.ARCADE);
 }

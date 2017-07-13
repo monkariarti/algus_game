@@ -8,7 +8,7 @@ function Door(set, Game) {
 }
 
 Door.prototype.create = function() {
-  this.door = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.door = this.Game.add.sprite(this.set.x, this.set.y, 'door');
   this.door.width = this.set.width;
   this.door.height = this.set.height;
   this.door.open = false;
@@ -17,7 +17,8 @@ Door.prototype.create = function() {
   this.door.body.immovable = true;
   this.door.body.allowGravity = false;
 
-  this.lever = this.Game.add.sprite(this.set.rx, this.set.ry, 'black');
+  this.lever = this.Game.add.sprite(this.set.rx, this.set.ry + 40, 'lever');
+  this.lever.anchor.set(0, 1);
   this.lever.width = 20;
   this.lever.height = 40;
 
@@ -51,7 +52,9 @@ Door.prototype.openCloseDoor = function() {
   if(this.door.open) {
     this.door.open = false;
     this.door.x = this.set.x;
+    this.lever.angle = 0;
   } else {
+    this.lever.angle = 20;
     this.door.open = true;
     this.door.x -= this.door.width;
   }

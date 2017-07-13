@@ -111,6 +111,10 @@ let sprites = {
     hrusha: 'images/hrusha.png',
     fan: 'images/fan2.png',
     air: 'images/air2.png',
+    bomb: 'images/bomb.png',
+    key: 'images/key.png',
+    door: 'images/door.png',
+    lever: 'images/lever.png',
 }
 
 function preload() {
@@ -135,7 +139,7 @@ function preload() {
     this.load.image('worker_15', 'images/workers/15.png');
     this.load.image('worker_16', 'images/workers/16.png');
 
-    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
+    Game.load.spritesheet('danila_run', 'images/danila_run.png', 40, 60);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
     Game.load.spritesheet('boss', 'images/boss.png', 239, 140);
@@ -501,6 +505,27 @@ function create() {
   // }, this);
   // this.FireAll[1].create();
 
+  this.Doors = [];
+  this.Doors[0] = new Door({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 20,
+    rx: 80,
+    ry: 640,
+  }, this);
+  this.Doors[0].create();
+  this.Doors[1] = new Door({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 20,
+    rx: 490,
+    ry: 1700,
+    key: true
+  }, this);
+  this.Doors[1].create();
+
   //Работники
   this.Workers = [];
   //Саня
@@ -608,27 +633,6 @@ function create() {
     sprite: 'worker_1'
   }, this);
   this.Workers[14].create();
-
-  this.Doors = [];
-  this.Doors[0] = new Door({
-    x: 160,
-    y: 680,
-    width: 120,
-    height: 20,
-    rx: 80,
-    ry: 640,
-  }, this);
-  this.Doors[0].create();
-  this.Doors[1] = new Door({
-    x: 360,
-    y: 1760,
-    width: 120,
-    height: 20,
-    rx: 490,
-    ry: 1700,
-    key: true
-  }, this);
-  this.Doors[1].create();
 
   this.Player.create();
 
@@ -794,9 +798,8 @@ Boss.prototype.create = function() {
   this.boss.body.velocity.set(-150, 0);
   this.boss.body.setSize(161, 140, 39, 0);
 
-  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon = this.Game.add.weapon(30, 'bomb');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-  this.weapon.bulletAngleOffset = 90;
   this.weapon.bulletSpeed = 400;
   this.weapon.fireRate = 1500;
   this.weapon.autofire = true;
@@ -807,6 +810,7 @@ Boss.prototype.create = function() {
   this.weapon.bullets.forEach((bullet) => {
     bullet.width = 30;
     bullet.height = 30;
+    bullet.body.setSize(30, 30, 0, 0);
     bullet.damage = 1000;
     bullet.body.bounce.set(0.6);
   });
@@ -879,7 +883,7 @@ Boss.prototype.bulletBoom = function(bullet) {
 }
 
 Boss.prototype.createKey = function() {
-  this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'black');
+  this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'key');
   this.key.anchor.set(0.5, 0.5);
   this.Game.physics.enable(this.key, Phaser.Physics.ARCADE);
 }
@@ -913,7 +917,7 @@ function Door(set, Game) {
 }
 
 Door.prototype.create = function() {
-  this.door = this.Game.add.sprite(this.set.x, this.set.y, 'black');
+  this.door = this.Game.add.sprite(this.set.x, this.set.y, 'door');
   this.door.width = this.set.width;
   this.door.height = this.set.height;
   this.door.open = false;
@@ -922,7 +926,8 @@ Door.prototype.create = function() {
   this.door.body.immovable = true;
   this.door.body.allowGravity = false;
 
-  this.lever = this.Game.add.sprite(this.set.rx, this.set.ry, 'black');
+  this.lever = this.Game.add.sprite(this.set.rx, this.set.ry + 40, 'lever');
+  this.lever.anchor.set(0, 1);
   this.lever.width = 20;
   this.lever.height = 40;
 
@@ -956,7 +961,9 @@ Door.prototype.openCloseDoor = function() {
   if(this.door.open) {
     this.door.open = false;
     this.door.x = this.set.x;
+    this.lever.angle = 0;
   } else {
+    this.lever.angle = 20;
     this.door.open = true;
     this.door.x -= this.door.width;
   }
@@ -1195,10 +1202,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      // x: 120,
-      // y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -1214,7 +1221,7 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_run');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.width = 40;
@@ -1228,7 +1235,9 @@ Player.prototype.create = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  //this.player.animations.add('dih');
+  this.player.animations.add('stay', [0], 0, true);
+  this.player.animations.add('right', [1, 2, 3, 4, 5], 8, true);
+  this.player.animations.add('left', [6, 7, 8, 9, 10], 8, true);
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -1240,9 +1249,8 @@ Player.prototype.create = function() {
   this.player.haveWorker = false;
 
 
-  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon = this.Game.add.weapon(30, 'bomb');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-  this.weapon.bulletAngleOffset = 90;
   this.weapon.bulletSpeed = 400;
   this.weapon.fireRate = 800;
   this.weapon.autofire = false;
@@ -1254,8 +1262,7 @@ Player.prototype.create = function() {
     bullet.width = 15;
     bullet.height = 15;
     bullet.damage = 500;
-    bullet.body.width = 30;
-    bullet.body.height = 30;
+    bullet.body.setSize(15, 15, 0, 0);
     bullet.body.bounce.set(0.6);
   });
 
@@ -1287,8 +1294,7 @@ Player.prototype.update = function() {
     if(this.player.inRope || this.player.inStairs) {
       this.player.body.velocity.y = -250;
     }
-  }
-  if (this.cursors.down.isDown) {
+  } else if (this.cursors.down.isDown) {
     if(this.player.inRope || this.player.inStairs) {
       this.player.body.velocity.y = 250;
     }
@@ -1296,10 +1302,14 @@ Player.prototype.update = function() {
   if (this.cursors.left.isDown) {
     this.player.body.velocity.x = -250;
     this.turn = 'left';
+    this.player.animations.play('left', 12);
   }
   else if (this.cursors.right.isDown) {
     this.player.body.velocity.x = 250;
     this.turn = 'right';
+    this.player.animations.play('right', 12);
+  } else {
+    this.player.animations.play('stay', 0);
   }
 
   //Прыжок

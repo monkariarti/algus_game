@@ -39,6 +39,10 @@ let sprites = {
     hrusha: 'images/hrusha.png',
     fan: 'images/fan2.png',
     air: 'images/air2.png',
+    bomb: 'images/bomb.png',
+    key: 'images/key.png',
+    door: 'images/door.png',
+    lever: 'images/lever.png',
 }
 
 function preload() {
@@ -63,7 +67,7 @@ function preload() {
     this.load.image('worker_15', 'images/workers/15.png');
     this.load.image('worker_16', 'images/workers/16.png');
 
-    Game.load.spritesheet('danila_dih', 'images/danila_dih.png', 80, 120);
+    Game.load.spritesheet('danila_run', 'images/danila_run.png', 40, 60);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
     Game.load.spritesheet('boss', 'images/boss.png', 239, 140);
@@ -429,6 +433,27 @@ function create() {
   // }, this);
   // this.FireAll[1].create();
 
+  this.Doors = [];
+  this.Doors[0] = new Door({
+    x: 160,
+    y: 680,
+    width: 120,
+    height: 20,
+    rx: 80,
+    ry: 640,
+  }, this);
+  this.Doors[0].create();
+  this.Doors[1] = new Door({
+    x: 360,
+    y: 1760,
+    width: 120,
+    height: 20,
+    rx: 490,
+    ry: 1700,
+    key: true
+  }, this);
+  this.Doors[1].create();
+
   //Работники
   this.Workers = [];
   //Саня
@@ -536,27 +561,6 @@ function create() {
     sprite: 'worker_1'
   }, this);
   this.Workers[14].create();
-
-  this.Doors = [];
-  this.Doors[0] = new Door({
-    x: 160,
-    y: 680,
-    width: 120,
-    height: 20,
-    rx: 80,
-    ry: 640,
-  }, this);
-  this.Doors[0].create();
-  this.Doors[1] = new Door({
-    x: 360,
-    y: 1760,
-    width: 120,
-    height: 20,
-    rx: 490,
-    ry: 1700,
-    key: true
-  }, this);
-  this.Doors[1].create();
 
   this.Player.create();
 

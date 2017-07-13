@@ -2,10 +2,10 @@ function Player(Game) {
     this.Game = Game;
 
     this.default = {
-      // x: 120,
-      // y: 1000,
-      x: 2290,
-      y: 1840,
+      x: 120,
+      y: 1000,
+      // x: 2290,
+      // y: 1840,
     };
 
     this.haveBonusesKey = false;
@@ -21,7 +21,7 @@ function Player(Game) {
 }
 
 Player.prototype.create = function() {
-  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila');
+  this.player = this.Game.add.sprite(this.default.x, this.default.y, 'danila_run');
   this.Game.physics.enable(this.player, Phaser.Physics.ARCADE);
 
   this.player.width = 40;
@@ -35,7 +35,9 @@ Player.prototype.create = function() {
 
   //АНИМАЦИИ
   //Дыхание
-  //this.player.animations.add('dih');
+  this.player.animations.add('stay', [0], 0, true);
+  this.player.animations.add('right', [1, 2, 3, 4, 5], 8, true);
+  this.player.animations.add('left', [6, 7, 8, 9, 10], 8, true);
 
   this.player.death = () => {
     this.player.x = this.default.x;
@@ -47,9 +49,8 @@ Player.prototype.create = function() {
   this.player.haveWorker = false;
 
 
-  this.weapon = this.Game.add.weapon(30, 'black');
+  this.weapon = this.Game.add.weapon(30, 'bomb');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-  this.weapon.bulletAngleOffset = 90;
   this.weapon.bulletSpeed = 400;
   this.weapon.fireRate = 800;
   this.weapon.autofire = false;
@@ -61,8 +62,7 @@ Player.prototype.create = function() {
     bullet.width = 15;
     bullet.height = 15;
     bullet.damage = 500;
-    bullet.body.width = 30;
-    bullet.body.height = 30;
+    bullet.body.setSize(15, 15, 0, 0);
     bullet.body.bounce.set(0.6);
   });
 
@@ -94,8 +94,7 @@ Player.prototype.update = function() {
     if(this.player.inRope || this.player.inStairs) {
       this.player.body.velocity.y = -250;
     }
-  }
-  if (this.cursors.down.isDown) {
+  } else if (this.cursors.down.isDown) {
     if(this.player.inRope || this.player.inStairs) {
       this.player.body.velocity.y = 250;
     }
@@ -103,10 +102,14 @@ Player.prototype.update = function() {
   if (this.cursors.left.isDown) {
     this.player.body.velocity.x = -250;
     this.turn = 'left';
+    this.player.animations.play('left', 12);
   }
   else if (this.cursors.right.isDown) {
     this.player.body.velocity.x = 250;
     this.turn = 'right';
+    this.player.animations.play('right', 12);
+  } else {
+    this.player.animations.play('stay', 0);
   }
 
   //Прыжок
