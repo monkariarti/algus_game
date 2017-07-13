@@ -68,6 +68,7 @@ function preload() {
     this.load.image('worker_16', 'images/workers/16.png');
 
     Game.load.spritesheet('danila_run', 'images/danila_run.png', 40, 60);
+    Game.load.spritesheet('danila2', 'images/danila2.png', 40, 60);
     Game.load.spritesheet('exp1', 'images/exp1.png', 150, 150);
     Game.load.spritesheet('table', 'images/table.png', 110, 60);
     Game.load.spritesheet('boss', 'images/boss.png', 239, 140);

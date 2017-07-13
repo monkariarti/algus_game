@@ -51,8 +51,8 @@ Worker.prototype.update = function() {
   }
 
   if(this.worker.inPlayer) {
-    this.worker.position.x = this.Game.Player.player.position.x + 50;
-    this.worker.position.y = this.Game.Player.player.position.y - 40;
+    this.worker.position.x = this.Game.Player.player.position.x + 30;
+    this.worker.position.y = this.Game.Player.player.position.y - 90;
 
     this.table.animations.play('select', 1);
   } else {
