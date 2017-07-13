@@ -124,7 +124,7 @@ Player.prototype.update = function() {
     }
   }
 
-  if(this.countWorkers) {
+  if(this.countWorkers > 0) {
     this.player.animations.play('handup', 0);
   } else {
     this.player.animations.play('stay', 0);

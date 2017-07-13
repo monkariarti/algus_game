@@ -4,7 +4,7 @@ function Money(Game) {
   this.textStyle = { font: "40px Arial", fill: "#fbd609" };
 
   this.money = 0;
-  this.maxMoney = 8000;
+  this.maxMoney = 6000;
 
   this.penalty = 200;
 }
@@ -27,6 +27,9 @@ Money.prototype.update = function() {
 
 Money.prototype.addMoney = function(money) {
   this.money += money;
+  if(this.money >= this.maxMoney) {
+    this.Game.endGame = true;
+  }
 }
 
 Money.prototype.setPenalty = function(money) {

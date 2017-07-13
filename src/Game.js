@@ -43,6 +43,8 @@ let sprites = {
     key: 'images/key.png',
     door: 'images/door.png',
     lever: 'images/lever.png',
+    start: 'images/start.png',
+    end: 'images/end.png',
 }
 
 function preload() {
@@ -582,10 +584,30 @@ function create() {
     this.Patches[i].body.immovable = true;
     this.Patches[i].body.allowGravity = false;
   }
+
+  this.endGame = false;
+
+  this.endGameScreen = Game.add.sprite(0, 0, 'end');
+  this.endGameScreen.width = Game.camera.width;
+  this.endGameScreen.height = Game.camera.height;
+  this.endGameScreen.visible = false;
+  this.endGameScreen.alpha = 0;
+  this.endGameScreen.fixedToCamera = true;
 }
 
 function update() {
   this.Menu.update();
+
+  if(this.endGame)  {
+    Game.physics.arcade.isPaused = true;
+    this.endGameScreen.visible = true;
+    this.endGameScreen.alpha += 0.09;
+    if(this.endGameScreen.alpha >= 1) {
+      this.endGameScreen.alpha = 1;
+    }
+    this.endGameScreen.bringToTop();
+    return;
+  }
 
   if(Game.physics.arcade.isPaused) return;
 

@@ -115,6 +115,8 @@ let sprites = {
     key: 'images/key.png',
     door: 'images/door.png',
     lever: 'images/lever.png',
+    start: 'images/start.png',
+    end: 'images/end.png',
 }
 
 function preload() {
@@ -654,10 +656,30 @@ function create() {
     this.Patches[i].body.immovable = true;
     this.Patches[i].body.allowGravity = false;
   }
+
+  this.endGame = false;
+
+  this.endGameScreen = Game.add.sprite(0, 0, 'end');
+  this.endGameScreen.width = Game.camera.width;
+  this.endGameScreen.height = Game.camera.height;
+  this.endGameScreen.visible = false;
+  this.endGameScreen.alpha = 0;
+  this.endGameScreen.fixedToCamera = true;
 }
 
 function update() {
   this.Menu.update();
+
+  if(this.endGame)  {
+    Game.physics.arcade.isPaused = true;
+    this.endGameScreen.visible = true;
+    this.endGameScreen.alpha += 0.09;
+    if(this.endGameScreen.alpha >= 1) {
+      this.endGameScreen.alpha = 1;
+    }
+    this.endGameScreen.bringToTop();
+    return;
+  }
 
   if(Game.physics.arcade.isPaused) return;
 
@@ -1325,10 +1347,9 @@ Player.prototype.update = function() {
     }
   }
 
-  if(this.countWorkers) {
+  this.player.animations.play('stay', 0);
+  if(this.countWorkers > 0) {
     this.player.animations.play('handup', 0);
-  } else {
-    this.player.animations.play('stay', 0);
   }
 
   //Прыжок
@@ -1645,17 +1666,21 @@ module.exports = Worker;
 function Menu(Game) {
   this.Game = Game;
 
-  this.textStyle = { font: "40px Arial", fill: "#ffffff" };
-  this.textStyleHover = { font: "40px Arial", fill: "#cccccc" };
+  this.textStyle = { font: "40px Arial", fill: "#000000" };
+  this.textStyleHover = { font: "40px Arial", fill: "#333333" };
 
   this.paused = false;
   this.firstStart = true;
 }
 
 Menu.prototype.create = function() {
-  this.bg = this.Game.add.tileSprite(0, 0, this.Game.camera.width, this.Game.camera.height, 'menuBg');
+  this.bg = this.Game.add.sprite(0, 0, 'start');
   this.bg.fixedToCamera = true;
-  this.startGame = this.Game.add.text(this.Game.camera.width / 2, this.Game.camera.height / 2 - 150, "Начать игру", this.textStyle);
+  //this.bg.anchor.set(0.5, 05);
+  this.bg.width = this.Game.camera.width;
+  this.bg.height = this.Game.camera.height;
+
+  this.startGame = this.Game.add.text(this.Game.camera.width / 2, this.Game.camera.height / 2 + 5, "Начать игру", this.textStyle);
   this.startGame.anchor.set(0.5, 0.5);
   this.startGame.fixedToCamera = true;
   this.startGame.inputEnabled = true;
@@ -1675,6 +1700,8 @@ Menu.prototype.create = function() {
 
 Menu.prototype.update = function() {
   this.bindKey();
+  this.bg.bringToTop();
+  this.startGame.bringToTop();
 }
 
 Menu.prototype.bindKey = function() {
@@ -1698,6 +1725,7 @@ Menu.prototype.close = function() {
   this.Game.physics.arcade.isPaused = false;
   this.bg.kill();
   this.startGame.kill();
+  this.endGame = false;
 }
 
 module.exports = Menu;
@@ -1713,7 +1741,7 @@ function Money(Game) {
   this.textStyle = { font: "40px Arial", fill: "#fbd609" };
 
   this.money = 0;
-  this.maxMoney = 8000;
+  this.maxMoney = 6000;
 
   this.penalty = 200;
 }
@@ -1736,6 +1764,9 @@ Money.prototype.update = function() {
 
 Money.prototype.addMoney = function(money) {
   this.money += money;
+  if(this.money >= this.maxMoney) {
+    this.Game.endGame = true;
+  }
 }
 
 Money.prototype.setPenalty = function(money) {
