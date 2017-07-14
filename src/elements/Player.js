@@ -154,7 +154,7 @@ Player.prototype.update = function() {
   } else {
     this.weapon.fireAngle = 0;
   }
-  if (this.checkButton.isDown && (this.player.x >= 1995 && this.player.x <= 3920) && this.player.y >= 1760) {
+  if (this.checkButton.isDown && (this.player.x >= 1995 && this.player.x <= 3920) && this.player.y >= 1820) {
     this.weapon.fire();
   }
 

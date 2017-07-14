@@ -26,6 +26,12 @@ Boss.prototype.create = function() {
   this.boss.body.velocity.set(-150, 0);
   this.boss.body.setSize(161, 140, 39, 0);
 
+
+  this.name = this.Game.add.text(this.boss.x, this.boss.y - 140, "Васелиск ШУРА", { font: "20px Arial", fill: "#ffffff" });
+  this.name.anchor.set(0.5, 0);
+  this.name.stroke = "#000000";
+  this.name.strokeThickness = 2;
+
   this.weapon = this.Game.add.weapon(30, 'bomb');
   this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
   this.weapon.bulletSpeed = 400;
@@ -73,6 +79,9 @@ Boss.prototype.update = function() {
     this.death();
   }
 
+  this.name.x = this.boss.x;
+  this.name.bringToTop();
+
   if(this.key) {
     this.Game.physics.arcade.collide(this.key, this.Game.Player.player, this.collidePlayerKey, null, this);
     this.Game.physics.arcade.collide(this.key, this.Game.Map.mapLayer);
@@ -114,6 +123,7 @@ Boss.prototype.createKey = function() {
   this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'key');
   this.key.anchor.set(0.5, 0.5);
   this.Game.physics.enable(this.key, Phaser.Physics.ARCADE);
+  this.key.collideWorldBounds = true;
 }
 
 Boss.prototype.collidePlayerKey = function(key, player) {
@@ -126,6 +136,7 @@ Boss.prototype.death = function() {
   this.weapon.autofire = false;
   this.createKey();
   this.boss.death = true;
+  this.name.kill();
 }
 
 module.exports = Boss;
