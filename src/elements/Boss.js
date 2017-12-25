@@ -27,7 +27,7 @@ Boss.prototype.create = function() {
   this.boss.body.setSize(161, 140, 39, 0);
 
 
-  this.name = this.Game.add.text(this.boss.x, this.boss.y - 140, "Васелиск ШУРА", { font: "20px Arial", fill: "#ffffff" });
+  this.name = this.Game.add.text(this.boss.x, this.boss.y - 140, "Василиск ШУРА", { font: "20px Arial", fill: "#ffffff" });
   this.name.anchor.set(0.5, 0);
   this.name.stroke = "#000000";
   this.name.strokeThickness = 2;
@@ -123,7 +123,7 @@ Boss.prototype.createKey = function() {
   this.key = this.Game.add.sprite(this.boss.x, this.boss.y, 'key');
   this.key.anchor.set(0.5, 0.5);
   this.Game.physics.enable(this.key, Phaser.Physics.ARCADE);
-  this.key.collideWorldBounds = true;
+  this.key.body.collideWorldBounds = true;
 }
 
 Boss.prototype.collidePlayerKey = function(key, player) {
